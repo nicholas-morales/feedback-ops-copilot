@@ -219,8 +219,13 @@ test('repo docs link the offer and the Notion demo', async () => {
   assert.match(readme, /npm test/);
   assert.match(readme, /5679/);
   assert.match(readme, /https:\/\/app\.notion\.com\/p\/3ceeb1cdb78b813bbf92f7f21591e482/);
-  assert.match(offer, /\$350/);
+  assert.match(offer, /\$500/);
+  assert.match(offer, /\$199/);
   assert.match(offer, /\$250/);
-  assert.match(offer, /72h|72 hours/i);
+  assert.match(offer, /48h|48 hours/i);
+  assert.match(offer, /same-day audit/i);
   assert.match(offer, /Acceptance/i);
+  const withoutChangelog = offer.replace(/Changelog:[^\n]*/g, '');
+  assert.doesNotMatch(withoutChangelog, /\$350/);
+  assert.doesNotMatch(withoutChangelog, /72h|72 hours|seventy-two/i);
 });

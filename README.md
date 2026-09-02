@@ -4,7 +4,7 @@ n8n + Notion proof for a **client-feedback inbox**: classify → summarize → N
 
 This is Nick’s income-proof repo for Upwork / Contra. **Not Verde Comply.**
 
-**Founding offer:** [$350 / 72 hours](./OFFER.md) (or $250 Notion-only). See [OFFER.md](./OFFER.md) for scope, exclusions, and measurable acceptance checks.
+**Founding offer:** [$500 / 48 hours](./OFFER.md) (or $250 Notion-only). Optional **$199 same-day audit** credits in full toward the $500 build. See [OFFER.md](./OFFER.md) for scope, exclusions, and measurable acceptance checks.
 
 **Live Notion demo (fictional data):** [Demo — Feedback Ops Copilot (mock)](https://app.notion.com/p/3ceeb1cdb78b813bbf92f7f21591e482)
 
@@ -100,7 +100,7 @@ Do not add credentials. Do not enable the workflow. Do not click Activate.
 
 ## Pitch pack
 
-- [OFFER.md](./OFFER.md) — $350 / 72h founding or $250 Notion-only
+- [OFFER.md](./OFFER.md) — $500 / 48h founding, $199 same-day audit → $500 build, or $250 Notion-only
 - [proposals/upwork-paste.md](./proposals/upwork-paste.md)
 - [proposals/contra-dm.md](./proposals/contra-dm.md)
 - [proposals/demo-checklist.md](./proposals/demo-checklist.md)

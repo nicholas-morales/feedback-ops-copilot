@@ -26,7 +26,7 @@ Use this on a sales call. All data is fictional (`*.example`). Do **not** connec
 | 1:40 | “Approved draft — checkbox off, still **never auto-sent**.” | **Issue credit memo for double setup fee** — read the reply |
 | 2:10 | “Waiting approval still blocks send.” | CSV truncation task + Retries “Send gate blocked” |
 | 2:30 | “Exceptions: 429 retried; empty-body still open.” | Retries / Exceptions |
-| 2:50 | “Same pattern on your inbox for $350 / 72h. Send stays off until you flip it.” | [OFFER.md](../OFFER.md) acceptance table |
+| 2:50 | “Same pattern on your inbox for $500 / 48h — or a $199 same-day audit that credits into the $500 build. Send stays off until you flip it.” | [OFFER.md](../OFFER.md) acceptance table |
 
 ## If they ask to see n8n
 
@@ -47,7 +47,7 @@ Point at `"sent": false` and the Task `Status: Approved` / `Approval needed: fal
 
 ## Close
 
-- [ ] Ask: founding $350 (n8n + Notion) or $250 Notion-only?
+- [ ] Ask: founding $500 / 48h (n8n + Notion), $199 same-day audit → $500 build, or $250 Notion-only?
 - [ ] Ask: one source — mailbox, form, or CSV?
 - [ ] Send the repo + Notion link in chat so they can replay without you.
 - [ ] Do not promise send-on, Intercom, or a production host in this fee.
