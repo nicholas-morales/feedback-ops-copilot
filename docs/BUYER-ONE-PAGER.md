@@ -1,6 +1,8 @@
 # Feedback Ops Copilot — buyer one-pager
 
-**$350 / 72 hours** to wire one source → classify → Notion Inbox + Tasks → human-approved reply draft → retries log.
+**$500 / 48 hours** to wire one source → classify → Notion Inbox + Tasks → human-approved reply draft → retries log.
+
+**$199 same-day audit** — inbox + hold/send report. Credits toward the $500 build.
 
 **$250 Notion-only** if you already have n8n (or another runner) and only want the data model, views, sample rows, and upsert JSON.
 
@@ -23,7 +25,7 @@ You want a tracked inbox, not another chatbot that auto-replies.
 
 ## Deliverables
 
-**Founding — $350 / 72h**
+**Founding — $500 / 48h**
 
 1. One ingest source (mailbox *or* form webhook *or* a CSV/JSON drop you already have).
 2. Classify + one-line summary into a Notion **Inbox / Feedback** DB (Category, Priority, Status, Summary, From, Received).
@@ -31,6 +33,10 @@ You want a tracked inbox, not another chatbot that auto-replies.
 4. **Human send gate** — no reply leaves unless a human clears Approval needed. Default: send stays off.
 5. **Retries / Exceptions** log (empty body, API 429, send-gate block).
 6. 15-minute handoff: approve a draft, replay a retry, where secrets live (your vault).
+
+**Same-day audit — $199**
+
+Inbox + hold/send report on five sanitized tickets (or the public mock). Credits toward the $500 founding build.
 
 **Notion-only — $250**
 
@@ -73,9 +79,9 @@ What the mock already shows: five categories, empty-body hold (no Task), approve
 
 ## How we start
 
-1. You pick founding **$350** or Notion-only **$250**.
+1. You pick founding **$500**, same-day audit **$199**, or Notion-only **$250**.
 2. You share a 10-row anonymized sample (or we use the public mock).
-3. I deliver in 72 hours against the [OFFER.md](../OFFER.md) table.
+3. I deliver founding in 48 hours against the [OFFER.md](../OFFER.md) table. The $199 audit is same-day and credits toward the $500 build.
 4. You replay Inbox → Task → Approved draft → Retries. If a check fails, I fix it before the remainder.
 
 No retainers. No surprise hours. If the source is messier than one mailbox/form, we stop and requote.

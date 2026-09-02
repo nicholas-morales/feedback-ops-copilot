@@ -1,6 +1,8 @@
 # Offer — Feedback Ops Copilot (founding)
 
-**$350 / 72 hours** to wire *your* inbox (or form) → classify/summarize → Notion Inbox + Tasks → human-approved reply draft → retries log.
+**$500 / 48 hours** to wire *your* inbox (or form) → classify/summarize → Notion Inbox + Tasks → human-approved reply draft → retries log.
+
+**$199 same-day audit** if you want the inbox + hold/send report first. It credits toward the $500 build.
 
 **$250 Notion-only** if you already have n8n (or another runner) and only want the data model, properties, views, and upsert JSON.
 
@@ -12,7 +14,7 @@ Send-ready one-pager: [docs/BUYER-ONE-PAGER.md](./docs/BUYER-ONE-PAGER.md)
 
 ---
 
-## What $350 / 72h includes
+## What $500 / 48h includes
 
 1. n8n workflow (or equivalent) that ingests **one** agreed source: email mailbox *or* form webhook *or* a CSV/JSON drop you already have.
 2. Classify + one-line summary into a Notion **Inbox / Feedback** DB (Category, Priority, Status, Summary, From, Received).
@@ -20,6 +22,13 @@ Send-ready one-pager: [docs/BUYER-ONE-PAGER.md](./docs/BUYER-ONE-PAGER.md)
 4. **Human send gate** — no reply leaves the building unless a human clears Approval needed. Default: send stays off until you explicitly ask to connect a sender.
 5. **Retries / Exceptions** log (empty body, API 429, send-gate block) with retry count + resolved checkbox.
 6. 15-minute handoff: how to approve a draft, how to replay a retry, where the secrets live (your vault, not this repo).
+
+## What $199 same-day audit includes
+
+- Classify + inbox report on **five** of your sanitized tickets (or the public mock).
+- Hold vs send-ready call: empty-body hold, approval gate, `sent === false`.
+- Written next-step: founding $500 build or Notion-only $250.
+- Fee credits toward the $500 founding build if you continue within 14 days.
 
 ## What $250 Notion-only includes
 
@@ -65,9 +74,9 @@ For a paid install, we swap “this repo’s samples” for **five of your sanit
 
 ## How we start
 
-1. You pick **founding ($350)** or **Notion-only ($250)**.
+1. You pick **founding ($500)**, **same-day audit ($199)**, or **Notion-only ($250)**.
 2. You share a 10-row anonymized sample (or we use the public mock).
-3. I deliver in 72 hours against the table above.
+3. I deliver founding in 48 hours against the table above. The $199 audit is same-day and credits toward the $500 build.
 4. You run `npm test` / the demo checklist. If a row fails, I fix it before you pay the remainder (50% to start, 50% on checks 1–8).
 
 No retainers. No surprise hours. If the source is messier than one mailbox/form, we stop and requote before writing more.

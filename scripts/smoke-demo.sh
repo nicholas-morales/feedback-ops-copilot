@@ -32,7 +32,7 @@ Talking track (proposals/demo-checklist.md):
   1:40  Approved credit-memo draft — checkbox off, sent still false
   2:10  Waiting approval still blocks send (CSV truncation)
   2:30  Retries: 429 retried; empty-body still open
-  2:50  Close: $350 / 72h founding or $250 Notion-only. Send stays off.
+  2:50  Close: $500 / 48h founding, $199 same-day audit (credits toward $500), or $250 Notion-only. Send stays off.
 
 Optional one-sample proof:
 

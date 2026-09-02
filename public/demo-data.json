@@ -1,7 +1,8 @@
 {
   "product": "Feedback Ops Copilot",
   "offer": {
-    "founding": "$350 / 72 hours",
+    "founding": "$500 / 48 hours",
+    "audit": "$199 same-day (credits toward $500 build)",
     "notionOnly": "$250 Notion-only"
   },
   "notionDemo": "https://app.notion.com/p/3ceeb1cdb78b813bbf92f7f21591e482",
