@@ -1,6 +1,8 @@
 # Feedback Ops Copilot — buyer one-pager
 
-**$350 / 72 hours** to wire one source → classify → Notion Inbox + Tasks → human-approved reply draft → retries log.
+**$500 / 48 hours** to wire one source → classify → Notion Inbox + Tasks → human-approved reply draft → retries log.
+
+**$199 same-day audit → $500 build:** I map five sanitized tickets onto the mock the same day. If you start founding, the $199 **credits in full** toward the $500 (you pay $301 to start the 48h clock).
 
 **$250 Notion-only** if you already have n8n (or another runner) and only want the data model, views, sample rows, and upsert JSON.
 
@@ -23,7 +25,7 @@ You want a tracked inbox, not another chatbot that auto-replies.
 
 ## Deliverables
 
-**Founding — $350 / 72h**
+**Founding — $500 / 48h** (primary)
 
 1. One ingest source (mailbox *or* form webhook *or* a CSV/JSON drop you already have).
 2. Classify + one-line summary into a Notion **Inbox / Feedback** DB (Category, Priority, Status, Summary, From, Received).
@@ -32,13 +34,19 @@ You want a tracked inbox, not another chatbot that auto-replies.
 5. **Retries / Exceptions** log (empty body, API 429, send-gate block).
 6. 15-minute handoff: approve a draft, replay a retry, where secrets live (your vault).
 
+**Same-day audit — $199** (optional; converts to founding)
+
+- Same-day map of five sanitized tickets onto Inbox / Tasks / Retries.
+- Written go/no-go: founding **$500 / 48h** vs Notion-only **$250**.
+- $199 credits in full toward the $500 build if you convert.
+
 **Notion-only — $250**
 
 - Inbox, Tasks, and Retries DBs in *your* workspace (same properties as the demo).
 - Sample rows + one approved credit-memo draft.
 - Upsert JSON contract so your builder can attach a runner later.
 
-**Acceptance:** you run `npm test` and the 3-minute walkthrough. 50% to start, 50% when the eight checks in [OFFER.md](../OFFER.md) pass.
+**Acceptance:** you run `npm test` and the 3-minute walkthrough. 50% to start, 50% when the eight checks in [OFFER.md](../OFFER.md) pass. Audit is due same day; credited if you convert.
 
 ---
 
@@ -73,9 +81,9 @@ What the mock already shows: five categories, empty-body hold (no Task), approve
 
 ## How we start
 
-1. You pick founding **$350** or Notion-only **$250**.
+1. You pick founding **$500 / 48h**, same-day audit **$199** (credits into the $500 build), or Notion-only **$250**.
 2. You share a 10-row anonymized sample (or we use the public mock).
-3. I deliver in 72 hours against the [OFFER.md](../OFFER.md) table.
+3. Founding delivers in 48 hours against the [OFFER.md](../OFFER.md) table. The audit is same-day.
 4. You replay Inbox → Task → Approved draft → Retries. If a check fails, I fix it before the remainder.
 
 No retainers. No surprise hours. If the source is messier than one mailbox/form, we stop and requote.

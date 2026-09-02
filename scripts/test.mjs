@@ -224,14 +224,16 @@ test('repo docs link the offer, buyer one-pager, and the Notion demo', async () 
   assert.match(readme, /npm run smoke|smoke-demo\.sh/);
   assert.match(readme, /5679/);
   assert.match(readme, new RegExp(NOTION_DEMO.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
-  assert.match(offer, /\$350/);
+  assert.match(offer, /\$500/);
+  assert.match(offer, /\$199/);
   assert.match(offer, /\$250/);
-  assert.match(offer, /72h|72 hours/i);
+  assert.match(offer, /48h|48 hours/i);
   assert.match(offer, /Acceptance/i);
   assert.match(offer, /BUYER-ONE-PAGER\.md/);
+  assert.match(offer, /same-day audit/i);
 });
 
-test('OFFER.md and proposals match $350/72h founding and $250 Notion-only', async () => {
+test('OFFER.md and proposals match $500/48h founding, $199 audit upsell, and $250 Notion-only', async () => {
   const files = [
     'OFFER.md',
     'docs/BUYER-ONE-PAGER.md',
@@ -241,11 +243,24 @@ test('OFFER.md and proposals match $350/72h founding and $250 Notion-only', asyn
   ];
   for (const rel of files) {
     const text = await readFile(join(root, rel), 'utf8');
-    assert.match(text, /\$350/, `${rel} missing $350`);
+    assert.match(text, /\$500/, `${rel} missing $500`);
+    assert.match(text, /\$199/, `${rel} missing $199 same-day audit`);
     assert.match(text, /\$250/, `${rel} missing $250`);
-    assert.match(text, /72h|72 hours/i, `${rel} missing 72h`);
+    assert.match(text, /48h|48 hours/i, `${rel} missing 48h`);
+    assert.match(text, /same-day audit/i, `${rel} missing same-day audit`);
     assert.match(text, /Notion-only/i, `${rel} missing Notion-only`);
     assert.match(text, /send/i, `${rel} should mention send stays off`);
+    const withoutChangelog = text.replace(/Changelog:[^\n]*/g, '');
+    assert.doesNotMatch(
+      withoutChangelog,
+      /\$350/,
+      `${rel} still has buyer-facing $350 (changelog-only is ok)`,
+    );
+    assert.doesNotMatch(
+      withoutChangelog,
+      /72h|72 hours|seventy-two/i,
+      `${rel} still has buyer-facing 72h (changelog-only is ok)`,
+    );
     assert.doesNotMatch(text, /gmail\.com|sk-[A-Za-z0-9]{10,}|ntn_[A-Za-z0-9]+|secret_[A-Za-z0-9]+/i);
   }
 });
@@ -256,10 +271,15 @@ test('buyer one-pager is one page: pain, deliverables, exclusions, proof links',
   assert.match(pager, /## Deliverables/i);
   assert.match(pager, /## Exclusions/i);
   assert.match(pager, /## Proof/i);
-  assert.match(pager, /\$350/);
+  assert.match(pager, /\$500/);
+  assert.match(pager, /\$199/);
   assert.match(pager, /\$250/);
-  assert.match(pager, /72 hours/i);
+  assert.match(pager, /48 hours|48h/i);
+  assert.match(pager, /same-day audit/i);
+  assert.match(pager, /credits in full/i);
   assert.match(pager, /Notion-only/i);
+  assert.doesNotMatch(pager, /\$350/);
+  assert.doesNotMatch(pager, /72h|72 hours/i);
   assert.match(pager, new RegExp(NOTION_DEMO.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   assert.match(pager, new RegExp(REPO_URL.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   assert.match(pager, /human (send )?gate|Approval needed/i);
@@ -278,8 +298,13 @@ test('smoke-demo.sh runs npm test and prints the 3-min demo path', async () => {
   assert.match(smoke, new RegExp(NOTION_DEMO.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   assert.match(smoke, new RegExp(REPO_URL.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   assert.match(smoke, /Inbox → Task → Approved draft → Retries/);
-  assert.match(smoke, /\$350/);
+  assert.match(smoke, /\$500/);
+  assert.match(smoke, /\$199/);
   assert.match(smoke, /\$250/);
+  assert.match(smoke, /48h/);
+  assert.match(smoke, /same-day audit/);
+  assert.doesNotMatch(smoke, /\$350/);
+  assert.doesNotMatch(smoke, /72h|72 hours/i);
   assert.match(smoke, /No Gmail/);
   assert.match(smoke, /No auto-send|sent still false/);
   assert.match(smoke, /Do not add secrets/);

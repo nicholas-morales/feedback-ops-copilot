@@ -8,7 +8,8 @@ https://app.notion.com/p/3ceeb1cdb78b813bbf92f7f21591e482
 Repo (inactive workflow, `npm test` green locally):
 https://github.com/nickerios101-cpu/feedback-ops-copilot
 
-Founding: **$350 / 72h** to wire one source → classify → Notion Inbox/Tasks → approval gate → retries log.
+Founding: **$500 / 48h** to wire one source → classify → Notion Inbox/Tasks → approval gate → retries log.
+Optional: **$199 same-day audit** that credits in full toward the $500 build.
 Notion-only: **$250** if you already have a runner.
 
 Send stays off until you say otherwise. Happy to walk the demo on a 10-min call.
