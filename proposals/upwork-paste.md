@@ -18,7 +18,7 @@ What the mock does:
 
 I keep send **off** on purpose. You watch the gate, then we decide if a sender ever gets connected.
 
-**Founding price:** $350, done in 72 hours, against a written acceptance table (same checks as `OFFER.md` / `docs/BUYER-ONE-PAGER.md` in the repo). Notion-only (your workspace, no n8n wiring) is $250.
+**Founding price:** $500, done in 48 hours, against a written acceptance table (same checks as `OFFER.md` / `docs/BUYER-ONE-PAGER.md` in the repo). Optional **$199 same-day audit** credits in full toward the $500 build if you convert. Notion-only (your workspace, no n8n wiring) is $250.
 
 **Not included:** live Gmail OAuth on your domain, turning send on, Slack/Intercom sync, or hosting n8n in production.
 
