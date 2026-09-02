@@ -1,0 +1,8 @@
+{
+  "id": "fb-feature-001",
+  "channel": "mock-ingest",
+  "receivedAt": "2026-08-29",
+  "from": "priya.nair@lumen-co.example",
+  "subject": "Can we filter feedback by tag in the portal?",
+  "body": "Would it be possible to add tag filters on the customer portal feedback list? Not urgent — just keeps coming up in customer calls.\n\n— Priya"
+}
