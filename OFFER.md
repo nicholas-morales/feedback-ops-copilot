@@ -8,6 +8,8 @@ This repo is the **mock proof**. The paid job is the same pattern on your stack.
 
 Demo (fictional): [Feedback Ops Copilot (mock)](https://app.notion.com/p/3ceeb1cdb78b813bbf92f7f21591e482)
 
+Send-ready one-pager: [docs/BUYER-ONE-PAGER.md](./docs/BUYER-ONE-PAGER.md)
+
 ---
 
 ## What $350 / 72h includes
@@ -55,7 +57,7 @@ You can run these without me on the call.
 | 5 | Empty body hold | `empty-body.example.json` → Category Ambiguous, Status Classified, **no Task**, Classify-stage retry row unresolved. |
 | 6 | Send gate | `approval-approved.example.json` → Task Status **Approved**, Approval needed **off**, and **`sent === false`**. |
 | 7 | Schema match | Upsert JSON properties match the demo Inbox / Tasks / Retries DBs. |
-| 8 | 3-minute walkthrough | Using [the Notion demo](https://app.notion.com/p/3ceeb1cdb78b813bbf92f7f21591e482) + [proposals/demo-checklist.md](./proposals/demo-checklist.md), a stranger can follow Inbox → Task → Approved draft → Retries. |
+| 8 | 3-minute walkthrough | Using [the Notion demo](https://app.notion.com/p/3ceeb1cdb78b813bbf92f7f21591e482) + [proposals/demo-checklist.md](./proposals/demo-checklist.md) (or `npm run smoke`), a stranger can follow Inbox → Task → Approved draft → Retries. |
 
 For a paid install, we swap “this repo’s samples” for **five of your sanitized tickets** and tick the same boxes in *your* Notion.
 

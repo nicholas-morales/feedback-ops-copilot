@@ -4,7 +4,9 @@ Use this on a sales call. All data is fictional (`*.example`). Do **not** connec
 
 **Notion:** https://app.notion.com/p/3ceeb1cdb78b813bbf92f7f21591e482  
 **Repo:** https://github.com/nickerios101-cpu/feedback-ops-copilot  
-**Offer:** [OFFER.md](../OFFER.md)
+**Offer:** [OFFER.md](../OFFER.md)  
+**Buyer one-pager:** [docs/BUYER-ONE-PAGER.md](../docs/BUYER-ONE-PAGER.md)  
+**Smoke (tests + this path):** `npm run smoke`
 
 ---
 

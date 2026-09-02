@@ -212,15 +212,77 @@ test('n8n mock workflow is inactive, manual-only, and has no mail senders', asyn
   assert.doesNotMatch(blob, /ntn_[A-Za-z0-9]+/);
 });
 
-test('repo docs link the offer and the Notion demo', async () => {
+const NOTION_DEMO = 'https://app.notion.com/p/3ceeb1cdb78b813bbf92f7f21591e482';
+const REPO_URL = 'https://github.com/nickerios101-cpu/feedback-ops-copilot';
+
+test('repo docs link the offer, buyer one-pager, and the Notion demo', async () => {
   const readme = await readFile(join(root, 'README.md'), 'utf8');
   const offer = await readFile(join(root, 'OFFER.md'), 'utf8');
   assert.match(readme, /OFFER\.md/);
+  assert.match(readme, /BUYER-ONE-PAGER\.md/);
   assert.match(readme, /npm test/);
+  assert.match(readme, /npm run smoke|smoke-demo\.sh/);
   assert.match(readme, /5679/);
-  assert.match(readme, /https:\/\/app\.notion\.com\/p\/3ceeb1cdb78b813bbf92f7f21591e482/);
+  assert.match(readme, new RegExp(NOTION_DEMO.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   assert.match(offer, /\$350/);
   assert.match(offer, /\$250/);
   assert.match(offer, /72h|72 hours/i);
   assert.match(offer, /Acceptance/i);
+  assert.match(offer, /BUYER-ONE-PAGER\.md/);
+});
+
+test('OFFER.md and proposals match $350/72h founding and $250 Notion-only', async () => {
+  const files = [
+    'OFFER.md',
+    'docs/BUYER-ONE-PAGER.md',
+    'proposals/upwork-paste.md',
+    'proposals/contra-dm.md',
+    'proposals/demo-checklist.md',
+  ];
+  for (const rel of files) {
+    const text = await readFile(join(root, rel), 'utf8');
+    assert.match(text, /\$350/, `${rel} missing $350`);
+    assert.match(text, /\$250/, `${rel} missing $250`);
+    assert.match(text, /72h|72 hours/i, `${rel} missing 72h`);
+    assert.match(text, /Notion-only/i, `${rel} missing Notion-only`);
+    assert.match(text, /send/i, `${rel} should mention send stays off`);
+    assert.doesNotMatch(text, /gmail\.com|sk-[A-Za-z0-9]{10,}|ntn_[A-Za-z0-9]+|secret_[A-Za-z0-9]+/i);
+  }
+});
+
+test('buyer one-pager is one page: pain, deliverables, exclusions, proof links', async () => {
+  const pager = await readFile(join(root, 'docs/BUYER-ONE-PAGER.md'), 'utf8');
+  assert.match(pager, /## Pain/i);
+  assert.match(pager, /## Deliverables/i);
+  assert.match(pager, /## Exclusions/i);
+  assert.match(pager, /## Proof/i);
+  assert.match(pager, /\$350/);
+  assert.match(pager, /\$250/);
+  assert.match(pager, /72 hours/i);
+  assert.match(pager, /Notion-only/i);
+  assert.match(pager, new RegExp(NOTION_DEMO.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+  assert.match(pager, new RegExp(REPO_URL.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+  assert.match(pager, /human (send )?gate|Approval needed/i);
+  assert.match(pager, /send stays \*\*off\*\*|send stays off|keep \*\*send off\*\*/i);
+  assert.doesNotMatch(pager, /Gmail OAuth setup on \*your\* domain[\s\S]*I will connect/i);
+  const lines = pager.split('\n').length;
+  assert.ok(lines <= 120, `buyer one-pager should stay one page (got ${lines} lines)`);
+});
+
+test('smoke-demo.sh runs npm test and prints the 3-min demo path', async () => {
+  const smoke = await readFile(join(root, 'scripts/smoke-demo.sh'), 'utf8');
+  const pkg = JSON.parse(await readFile(join(root, 'package.json'), 'utf8'));
+  assert.match(smoke, /^#!/);
+  assert.match(smoke, /npm test/);
+  assert.match(smoke, /3-min(?:ute)? demo path/i);
+  assert.match(smoke, new RegExp(NOTION_DEMO.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+  assert.match(smoke, new RegExp(REPO_URL.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+  assert.match(smoke, /Inbox → Task → Approved draft → Retries/);
+  assert.match(smoke, /\$350/);
+  assert.match(smoke, /\$250/);
+  assert.match(smoke, /No Gmail/);
+  assert.match(smoke, /No auto-send|sent still false/);
+  assert.match(smoke, /Do not add secrets/);
+  assert.equal(pkg.scripts.smoke, 'bash scripts/smoke-demo.sh');
+  assert.doesNotMatch(smoke, /sk-[A-Za-z0-9]{10,}|ntn_[A-Za-z0-9]+|secret_[A-Za-z0-9]+/);
 });

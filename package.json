@@ -6,7 +6,8 @@
   "description": "Mock Feedback Ops Copilot — classify inbox feedback, draft Notion upserts, never send without a human gate. Not Verde.",
   "scripts": {
     "test": "node --test scripts/test.mjs",
-    "run:sample": "node scripts/run-sample.mjs"
+    "run:sample": "node scripts/run-sample.mjs",
+    "smoke": "bash scripts/smoke-demo.sh"
   },
   "engines": {
     "node": ">=18"
