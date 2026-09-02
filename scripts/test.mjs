@@ -215,37 +215,56 @@ test('n8n mock workflow is inactive, manual-only, and has no mail senders', asyn
 const NOTION_DEMO = 'https://app.notion.com/p/3ceeb1cdb78b813bbf92f7f21591e482';
 const REPO_URL = 'https://github.com/nickerios101-cpu/feedback-ops-copilot';
 
-test('repo docs link the offer, buyer one-pager, and the Notion demo', async () => {
+test('repo docs link the offer, close kit, buyer one-pager, and the Notion demo', async () => {
   const readme = await readFile(join(root, 'README.md'), 'utf8');
   const offer = await readFile(join(root, 'OFFER.md'), 'utf8');
+  assert.match(readme, /## Close a deal/);
+  assert.match(readme, /close-kit\//);
   assert.match(readme, /OFFER\.md/);
   assert.match(readme, /BUYER-ONE-PAGER\.md/);
   assert.match(readme, /npm test/);
   assert.match(readme, /npm run smoke|smoke-demo\.sh/);
+  assert.match(readme, /npm run demo:15min|install-15min\.sh/);
   assert.match(readme, /5679/);
+  assert.match(readme, /\$500/);
+  assert.match(readme, /\$199/);
+  assert.match(readme, /48h|48 hours/i);
+  assert.doesNotMatch(readme, /\$350/);
+  assert.doesNotMatch(readme, /72h|72 hours/i);
   assert.match(readme, new RegExp(NOTION_DEMO.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
-  assert.match(offer, /\$350/);
-  assert.match(offer, /\$250/);
-  assert.match(offer, /72h|72 hours/i);
+  assert.match(offer, /\$500/);
+  assert.match(offer, /\$199/);
+  assert.match(offer, /48h|48 hours/i);
   assert.match(offer, /Acceptance/i);
   assert.match(offer, /BUYER-ONE-PAGER\.md/);
+  assert.match(offer, /close-kit\//);
+  assert.doesNotMatch(offer, /\$350/);
+  assert.doesNotMatch(offer, /72h|72 hours/i);
 });
 
-test('OFFER.md and proposals match $350/72h founding and $250 Notion-only', async () => {
+test('OFFER.md, close kit, and proposals match $500/48h build and $199 audit', async () => {
   const files = [
     'OFFER.md',
     'docs/BUYER-ONE-PAGER.md',
     'proposals/upwork-paste.md',
     'proposals/contra-dm.md',
     'proposals/demo-checklist.md',
+    'close-kit/README.md',
+    'close-kit/PROPOSAL.md',
+    'close-kit/EMAIL.txt',
+    'close-kit/INSTALL-15MIN.md',
+    'close-kit/GIG-BLURBS.md',
+    'close-kit/DELIVERABLES-CHECKLIST.md',
   ];
   for (const rel of files) {
     const text = await readFile(join(root, rel), 'utf8');
-    assert.match(text, /\$350/, `${rel} missing $350`);
-    assert.match(text, /\$250/, `${rel} missing $250`);
-    assert.match(text, /72h|72 hours/i, `${rel} missing 72h`);
-    assert.match(text, /Notion-only/i, `${rel} missing Notion-only`);
+    assert.match(text, /\$500/, `${rel} missing $500`);
+    assert.match(text, /\$199/, `${rel} missing $199`);
+    assert.match(text, /48h|48 hours/i, `${rel} missing 48h`);
+    assert.match(text, /audit/i, `${rel} missing audit`);
     assert.match(text, /send/i, `${rel} should mention send stays off`);
+    assert.doesNotMatch(text, /\$350/, `${rel} still has $350`);
+    assert.doesNotMatch(text, /72h|72 hours/i, `${rel} still has 72h`);
     assert.doesNotMatch(text, /gmail\.com|sk-[A-Za-z0-9]{10,}|ntn_[A-Za-z0-9]+|secret_[A-Za-z0-9]+/i);
   }
 });
@@ -256,10 +275,10 @@ test('buyer one-pager is one page: pain, deliverables, exclusions, proof links',
   assert.match(pager, /## Deliverables/i);
   assert.match(pager, /## Exclusions/i);
   assert.match(pager, /## Proof/i);
-  assert.match(pager, /\$350/);
-  assert.match(pager, /\$250/);
-  assert.match(pager, /72 hours/i);
-  assert.match(pager, /Notion-only/i);
+  assert.match(pager, /\$500/);
+  assert.match(pager, /\$199/);
+  assert.match(pager, /48 hours/i);
+  assert.match(pager, /audit/i);
   assert.match(pager, new RegExp(NOTION_DEMO.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   assert.match(pager, new RegExp(REPO_URL.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   assert.match(pager, /human (send )?gate|Approval needed/i);
@@ -278,11 +297,86 @@ test('smoke-demo.sh runs npm test and prints the 3-min demo path', async () => {
   assert.match(smoke, new RegExp(NOTION_DEMO.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   assert.match(smoke, new RegExp(REPO_URL.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   assert.match(smoke, /Inbox → Task → Approved draft → Retries/);
-  assert.match(smoke, /\$350/);
-  assert.match(smoke, /\$250/);
+  assert.match(smoke, /\$500/);
+  assert.match(smoke, /\$199/);
   assert.match(smoke, /No Gmail/);
   assert.match(smoke, /No auto-send|sent still false/);
   assert.match(smoke, /Do not add secrets/);
+  assert.doesNotMatch(smoke, /\$350/);
+  assert.doesNotMatch(smoke, /72h|72 hours/i);
   assert.equal(pkg.scripts.smoke, 'bash scripts/smoke-demo.sh');
   assert.doesNotMatch(smoke, /sk-[A-Za-z0-9]{10,}|ntn_[A-Za-z0-9]+|secret_[A-Za-z0-9]+/);
+});
+
+test('close kit is a one-page proposal plus email, 15-min smoke, blurbs, and handoff list', async () => {
+  const proposal = await readFile(join(root, 'close-kit/PROPOSAL.md'), 'utf8');
+  const email = await readFile(join(root, 'close-kit/EMAIL.txt'), 'utf8');
+  const install = await readFile(join(root, 'close-kit/INSTALL-15MIN.md'), 'utf8');
+  const blurbs = await readFile(join(root, 'close-kit/GIG-BLURBS.md'), 'utf8');
+  const handoff = await readFile(join(root, 'close-kit/DELIVERABLES-CHECKLIST.md'), 'utf8');
+  const kitReadme = await readFile(join(root, 'close-kit/README.md'), 'utf8');
+
+  assert.match(proposal, /What’s included/i);
+  assert.match(proposal, /What’s out|Exclusions/i);
+  assert.match(proposal, /Acceptance/i);
+  assert.match(proposal, /START \$500/);
+  assert.match(proposal, /AUDIT \$199/);
+  assert.match(proposal, /credited/i);
+  assert.match(proposal, /\$301/);
+  const proposalLines = proposal.split('\n').length;
+  assert.ok(proposalLines <= 140, `proposal should stay one page (got ${proposalLines} lines)`);
+
+  assert.doesNotMatch(email, /^# /m);
+  assert.match(email, /Subject:/);
+  assert.match(email, /START \$500/);
+  assert.match(email, /AUDIT \$199/);
+  assert.match(email, /npm run demo:15min/);
+  assert.match(email, /No hourly|no hourly/i);
+
+  assert.match(install, /15-minute/i);
+  assert.match(install, /No secrets|no secrets/i);
+  assert.match(install, /npm test/);
+  assert.match(install, /npm run demo:15min/);
+  assert.match(install, /Do not add credentials|Do not add secrets/i);
+  assert.match(install, /Do not.*[Aa]ctivate/i);
+
+  assert.match(blurbs, /## Short/i);
+  assert.match(blurbs, /## Long/i);
+  assert.match(blurbs, /Contra|Upwork/);
+
+  assert.match(handoff, /\$500/);
+  assert.match(handoff, /\$199/);
+  assert.match(handoff, /Never delivered/i);
+  assert.match(handoff, /credentials/i);
+  assert.match(handoff, /on-demand/i);
+
+  assert.match(kitReadme, /PROPOSAL\.md/);
+  assert.match(kitReadme, /EMAIL\.txt/);
+  assert.match(kitReadme, /INSTALL-15MIN\.md/);
+  assert.match(kitReadme, /GIG-BLURBS\.md/);
+  assert.match(kitReadme, /DELIVERABLES-CHECKLIST\.md/);
+});
+
+test('install-15min.sh runs npm test, three proofs, and prints the $500/$199 close', async () => {
+  const script = await readFile(join(root, 'scripts/install-15min.sh'), 'utf8');
+  const pkg = JSON.parse(await readFile(join(root, 'package.json'), 'utf8'));
+  assert.match(script, /^#!/);
+  assert.match(script, /npm test/);
+  assert.match(script, /billing\.example\.json/);
+  assert.match(script, /empty-body\.example\.json/);
+  assert.match(script, /approval-approved\.example\.json/);
+  assert.match(script, /15-minute/i);
+  assert.match(script, /\$500/);
+  assert.match(script, /\$199/);
+  assert.match(script, /48h/);
+  assert.match(script, /START \$500/);
+  assert.match(script, /AUDIT \$199/);
+  assert.match(script, /No Gmail/);
+  assert.match(script, /No secrets|Do not add secrets/);
+  assert.match(script, /On-demand OFF/);
+  assert.match(script, new RegExp(NOTION_DEMO.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+  assert.doesNotMatch(script, /\$350/);
+  assert.doesNotMatch(script, /72h|72 hours/i);
+  assert.doesNotMatch(script, /sk-[A-Za-z0-9]{10,}|ntn_[A-Za-z0-9]+|secret_[A-Za-z0-9]+/);
+  assert.equal(pkg.scripts['demo:15min'], 'bash scripts/install-15min.sh');
 });

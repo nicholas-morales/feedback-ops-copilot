@@ -4,7 +4,30 @@ n8n + Notion proof for a **client-feedback inbox**: classify → summarize → N
 
 This is Nick’s income-proof repo for Upwork / Contra. **Not Verde Comply.**
 
-**Founding offer:** [$350 / 72 hours](./OFFER.md) (or $250 Notion-only). See [OFFER.md](./OFFER.md) for scope, exclusions, and measurable acceptance checks. One-page buyer sheet: [docs/BUYER-ONE-PAGER.md](./docs/BUYER-ONE-PAGER.md).
+**Founding offer:** [$500 / 48 hours](./OFFER.md) to wire one source. Optional door: [$199 same-day audit](./OFFER.md) (credited toward the build). See [OFFER.md](./OFFER.md) for scope, exclusions, and measurable acceptance checks. One-page buyer sheet: [docs/BUYER-ONE-PAGER.md](./docs/BUYER-ONE-PAGER.md).
+
+---
+
+## Close a deal
+
+Use the [close kit](./close-kit/) this week. Primary is **$500 / 48h**. Optional door is **$199 same-day audit** (credited toward the $500 build for 7 days).
+
+| File | What to send |
+| --- | --- |
+| [close-kit/PROPOSAL.md](./close-kit/PROPOSAL.md) | One-page buyer proposal (in / out / acceptance / CTA) |
+| [close-kit/EMAIL.txt](./close-kit/EMAIL.txt) | Plain-text email body |
+| [close-kit/INSTALL-15MIN.md](./close-kit/INSTALL-15MIN.md) | 15-minute install / smoke a buyer runs with **no secrets** |
+| [close-kit/GIG-BLURBS.md](./close-kit/GIG-BLURBS.md) | Contra / Upwork short + long |
+| [close-kit/DELIVERABLES-CHECKLIST.md](./close-kit/DELIVERABLES-CHECKLIST.md) | Files they get after payment |
+
+Buyer replay (Node 18+, no Docker, no paid APIs):
+
+```bash
+npm test
+npm run demo:15min
+```
+
+Reply they should send: **START $500** (mailbox / form / CSV) or **AUDIT $199**.
 
 **Live Notion demo (fictional data):** [Demo — Feedback Ops Copilot (mock)](https://app.notion.com/p/3ceeb1cdb78b813bbf92f7f21591e482)
 
@@ -18,9 +41,11 @@ This is Nick’s income-proof repo for Upwork / Contra. **Not Verde Comply.**
 | [`src/feedback-ops.mjs`](./src/feedback-ops.mjs) | Deterministic classify / summarize / Notion JSON / send gate |
 | [`samples/`](./samples/) | Bug, feature, billing, praise, empty-body, approval-approved |
 | [`OFFER.md`](./OFFER.md) | Price, exclusions, acceptance checks |
+| [`close-kit/`](./close-kit/) | Sellable close pack: proposal, email, 15-min smoke, blurbs, handoff list |
 | [`docs/BUYER-ONE-PAGER.md`](./docs/BUYER-ONE-PAGER.md) | 1-page buyer sheet (pain, deliverables, exclusions, proof) |
 | [`proposals/`](./proposals/) | Upwork paste, Contra DM, 3-minute demo checklist |
 | [`scripts/smoke-demo.sh`](./scripts/smoke-demo.sh) | `npm test` + printed 3-min demo path (`npm run smoke`) |
+| [`scripts/install-15min.sh`](./scripts/install-15min.sh) | Buyer 15-min install / smoke (`npm run demo:15min`) |
 
 Pipeline (mock):
 
@@ -58,6 +83,12 @@ Same tests plus the printed 3-minute demo path:
 
 ```bash
 npm run smoke
+```
+
+Buyer 15-minute install / smoke (tests + three sample proofs + click path):
+
+```bash
+npm run demo:15min
 ```
 
 Run one sample through the stub:
@@ -108,9 +139,11 @@ Do not add credentials. Do not enable the workflow. Do not click Activate.
 
 ## Pitch pack
 
-- [OFFER.md](./OFFER.md) — $350 / 72h founding or $250 Notion-only
+- [close-kit/](./close-kit/) — **Close a deal** ($500 / 48h or $199 audit)
+- [OFFER.md](./OFFER.md) — $500 / 48h build or $199 same-day audit
 - [docs/BUYER-ONE-PAGER.md](./docs/BUYER-ONE-PAGER.md) — 1-page buyer sheet
 - [proposals/upwork-paste.md](./proposals/upwork-paste.md)
 - [proposals/contra-dm.md](./proposals/contra-dm.md)
 - [proposals/demo-checklist.md](./proposals/demo-checklist.md)
 - `npm run smoke` — green tests + 3-minute demo path
+- `npm run demo:15min` — buyer 15-minute install / smoke

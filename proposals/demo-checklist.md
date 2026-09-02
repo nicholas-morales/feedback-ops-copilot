@@ -6,7 +6,9 @@ Use this on a sales call. All data is fictional (`*.example`). Do **not** connec
 **Repo:** https://github.com/nickerios101-cpu/feedback-ops-copilot  
 **Offer:** [OFFER.md](../OFFER.md)  
 **Buyer one-pager:** [docs/BUYER-ONE-PAGER.md](../docs/BUYER-ONE-PAGER.md)  
-**Smoke (tests + this path):** `npm run smoke`
+**Close kit:** [close-kit/](../close-kit/)  
+**15-min buyer smoke:** `npm run demo:15min`  
+**Smoke (tests + 3-min path):** `npm run smoke`
 
 ---
 
@@ -28,7 +30,7 @@ Use this on a sales call. All data is fictional (`*.example`). Do **not** connec
 | 1:40 | “Approved draft — checkbox off, still **never auto-sent**.” | **Issue credit memo for double setup fee** — read the reply |
 | 2:10 | “Waiting approval still blocks send.” | CSV truncation task + Retries “Send gate blocked” |
 | 2:30 | “Exceptions: 429 retried; empty-body still open.” | Retries / Exceptions |
-| 2:50 | “Same pattern on your inbox for $350 / 72h. Send stays off until you flip it.” | [OFFER.md](../OFFER.md) acceptance table |
+| 2:50 | “Same pattern on your inbox for $500 / 48h. $199 same-day audit credits toward the build. Send stays off until you flip it.” | [OFFER.md](../OFFER.md) acceptance table |
 
 ## If they ask to see n8n
 
@@ -42,6 +44,7 @@ Use this on a sales call. All data is fictional (`*.example`). Do **not** connec
 
 ```bash
 npm test
+npm run demo:15min
 node scripts/run-sample.mjs samples/approval-approved.example.json
 ```
 
@@ -49,7 +52,7 @@ Point at `"sent": false` and the Task `Status: Approved` / `Approval needed: fal
 
 ## Close
 
-- [ ] Ask: founding $350 (n8n + Notion) or $250 Notion-only?
+- [ ] Ask: build $500 / 48h, or $199 same-day audit first?
 - [ ] Ask: one source — mailbox, form, or CSV?
-- [ ] Send the repo + Notion link in chat so they can replay without you.
+- [ ] Send the repo + Notion link + [close-kit/EMAIL.txt](../close-kit/EMAIL.txt) so they can replay without you.
 - [ ] Do not promise send-on, Intercom, or a production host in this fee.

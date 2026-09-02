@@ -32,13 +32,15 @@ Talking track (proposals/demo-checklist.md):
   1:40  Approved credit-memo draft — checkbox off, sent still false
   2:10  Waiting approval still blocks send (CSV truncation)
   2:30  Retries: 429 retried; empty-body still open
-  2:50  Close: $350 / 72h founding or $250 Notion-only. Send stays off.
+  2:50  Close: $500 / 48h build or $199 same-day audit (credits toward the build). Send stays off.
 
 Optional one-sample proof:
 
   node scripts/run-sample.mjs samples/approval-approved.example.json
 
 Buyer sheet:  docs/BUYER-ONE-PAGER.md
+Close kit:    close-kit/
+15-min smoke: npm run demo:15min
 Offer + checks: OFFER.md
 Do not connect Gmail. Do not activate n8n. Do not add secrets.
 EOF

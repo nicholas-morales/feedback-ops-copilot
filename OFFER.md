@@ -1,18 +1,20 @@
 # Offer — Feedback Ops Copilot (founding)
 
-**$350 / 72 hours** to wire *your* inbox (or form) → classify/summarize → Notion Inbox + Tasks → human-approved reply draft → retries log.
+**$500 / 48 hours** to wire *your* inbox (or form) → classify/summarize → Notion Inbox + Tasks → human-approved reply draft → retries log.
 
-**$250 Notion-only** if you already have n8n (or another runner) and only want the data model, properties, views, and upsert JSON.
+**$199 same-day audit** if you want a written five-ticket map + gap report first. The $199 is **credited** toward the $500 build if you start within 7 days (you pay $301 remaining).
 
 This repo is the **mock proof**. The paid job is the same pattern on your stack. Not Verde Comply.
 
 Demo (fictional): [Feedback Ops Copilot (mock)](https://app.notion.com/p/3ceeb1cdb78b813bbf92f7f21591e482)
 
+Close kit (proposal, email, 15-min smoke, blurbs, handoff list): [close-kit/](./close-kit/)
+
 Send-ready one-pager: [docs/BUYER-ONE-PAGER.md](./docs/BUYER-ONE-PAGER.md)
 
 ---
 
-## What $350 / 72h includes
+## What $500 / 48h includes
 
 1. n8n workflow (or equivalent) that ingests **one** agreed source: email mailbox *or* form webhook *or* a CSV/JSON drop you already have.
 2. Classify + one-line summary into a Notion **Inbox / Feedback** DB (Category, Priority, Status, Summary, From, Received).
@@ -21,11 +23,12 @@ Send-ready one-pager: [docs/BUYER-ONE-PAGER.md](./docs/BUYER-ONE-PAGER.md)
 5. **Retries / Exceptions** log (empty body, API 429, send-gate block) with retry count + resolved checkbox.
 6. 15-minute handoff: how to approve a draft, how to replay a retry, where the secrets live (your vault, not this repo).
 
-## What $250 Notion-only includes
+## What $199 same-day audit includes
 
-- The three DBs (Inbox, Tasks, Retries) in *your* workspace, same properties as the demo.
-- Sample rows + one approved credit-memo draft.
-- The upsert JSON contract (`src/feedback-ops.mjs` / workflow Code nodes) so your builder can attach a runner later.
+- Review one source (or the public mock if you have not shared a sample yet).
+- Map **five** anonymized tickets onto Inbox / Tasks / Retries.
+- Written gap report: what the $500 build will and will not do on *your* stack.
+- Go / no-go + the conversion number ($301 remaining if you start the build within 7 days).
 
 ---
 
@@ -57,17 +60,21 @@ You can run these without me on the call.
 | 5 | Empty body hold | `empty-body.example.json` → Category Ambiguous, Status Classified, **no Task**, Classify-stage retry row unresolved. |
 | 6 | Send gate | `approval-approved.example.json` → Task Status **Approved**, Approval needed **off**, and **`sent === false`**. |
 | 7 | Schema match | Upsert JSON properties match the demo Inbox / Tasks / Retries DBs. |
-| 8 | 3-minute walkthrough | Using [the Notion demo](https://app.notion.com/p/3ceeb1cdb78b813bbf92f7f21591e482) + [proposals/demo-checklist.md](./proposals/demo-checklist.md) (or `npm run smoke`), a stranger can follow Inbox → Task → Approved draft → Retries. |
+| 8 | 15-minute walkthrough | Using [the Notion demo](https://app.notion.com/p/3ceeb1cdb78b813bbf92f7f21591e482) + [close-kit/INSTALL-15MIN.md](./close-kit/INSTALL-15MIN.md) (or `npm run demo:15min`), a stranger can follow Inbox → Task → Approved draft → Retries. |
 
 For a paid install, we swap “this repo’s samples” for **five of your sanitized tickets** and tick the same boxes in *your* Notion.
+
+Audit acceptance: five-ticket map + gap report the same calendar day you pay and share a sample (or we use the public mock).
 
 ---
 
 ## How we start
 
-1. You pick **founding ($350)** or **Notion-only ($250)**.
+1. You pick **build ($500 / 48h)** or **audit ($199 same day)**.
 2. You share a 10-row anonymized sample (or we use the public mock).
-3. I deliver in 72 hours against the table above.
-4. You run `npm test` / the demo checklist. If a row fails, I fix it before you pay the remainder (50% to start, 50% on checks 1–8).
+3. Build: I deliver in 48 hours against the table above. Audit: same-day written report; $199 credited for 7 days.
+4. You run `npm test` / `npm run demo:15min`. If a build row fails, I fix it before you pay the remainder (50% to start, 50% on checks 1–8).
 
 No retainers. No surprise hours. If the source is messier than one mailbox/form, we stop and requote before writing more.
+
+Reply **START $500** or **AUDIT $199**. Close kit: [close-kit/](./close-kit/).

@@ -1,0 +1,46 @@
+Subject: $500 / 48h to turn your feedback inbox into tracked Notion tasks (send stays off)
+
+Hi —
+
+Client feedback is landing in email or a form and dying there. I already have a working mock of the pattern: classify → Notion Inbox + Task → human approval gate → retries log. Nothing auto-sends.
+
+You can replay it in 15 minutes with no secrets and no paid APIs:
+
+  Notion demo (fictional data):
+  https://app.notion.com/p/3ceeb1cdb78b813bbf92f7f21591e482
+
+  Public repo + smoke (Node 18 only):
+  https://github.com/nickerios101-cpu/feedback-ops-copilot
+  git clone https://github.com/nickerios101-cpu/feedback-ops-copilot.git
+  cd feedback-ops-copilot
+  npm test
+  npm run demo:15min
+
+Two fixed paths. No hourly.
+
+  1) BUILD — $500 / 48 hours
+     One agreed source (mailbox or form or CSV/JSON drop) → classify/summarize →
+     Notion Inbox + Tasks → human-approved reply draft → retries log.
+     15-minute handoff. Send stays off.
+
+  2) AUDIT — $199 same day (optional door)
+     I map five of your sanitized tickets onto this schema and send a written
+     gap report. If you start the $500 build within 7 days, the $199 is credited
+     (you pay $301 remaining).
+
+Not included: Gmail OAuth on your domain, turning send on, Slack/Intercom sync,
+production n8n hosting, or any production mailbox write.
+
+Acceptance (you run these, not me): npm test exits 0; empty body does not create
+a task; approved draft still has sent === false; you can replay Inbox → Task →
+Approved → Retries from the 15-minute script.
+
+Reply with one line:
+
+  START $500   + mailbox / form / CSV
+  or
+  AUDIT $199
+
+Attach a 10-row anonymized sample if you have one. If not, we use the public mock.
+
+— Nick
