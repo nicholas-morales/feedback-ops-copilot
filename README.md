@@ -8,6 +8,8 @@ This is Nick’s income-proof repo for Upwork / Contra. **Not Verde Comply.**
 
 **Live Notion demo (fictional data):** [Demo — Feedback Ops Copilot (mock)](https://app.notion.com/p/3ceeb1cdb78b813bbf92f7f21591e482)
 
+**Clickable buyer preview:** static walkthrough in [`public/`](./public/) (`npm test` covers the page). Deploy as a Vercel preview — send stays off, not Verde.
+
 ---
 
 ## What you get in this repo

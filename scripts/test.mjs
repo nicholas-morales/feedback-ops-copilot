@@ -286,3 +286,40 @@ test('smoke-demo.sh runs npm test and prints the 3-min demo path', async () => {
   assert.equal(pkg.scripts.smoke, 'bash scripts/smoke-demo.sh');
   assert.doesNotMatch(smoke, /sk-[A-Za-z0-9]{10,}|ntn_[A-Za-z0-9]+|secret_[A-Za-z0-9]+/);
 });
+
+test('public buyer demo is a static click-through of the mock contract', async () => {
+  const html = await readFile(join(root, 'public/index.html'), 'utf8');
+  const css = await readFile(join(root, 'public/styles.css'), 'utf8');
+  const js = await readFile(join(root, 'public/app.js'), 'utf8');
+  const vercel = JSON.parse(await readFile(join(root, 'vercel.json'), 'utf8'));
+  const demo = JSON.parse(await readFile(join(root, 'public/demo-data.json'), 'utf8'));
+
+  assert.match(html, /\$350/);
+  assert.match(html, /\$250/);
+  assert.match(html, /sent === false/);
+  assert.match(html, /Not Verde/);
+  assert.match(html, new RegExp(NOTION_DEMO.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+  assert.match(html, new RegExp(REPO_URL.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+  assert.match(html, /id="demo"/);
+  assert.match(css, /--accent/);
+  assert.match(js, /demo-data\.json/);
+  assert.equal(vercel.outputDirectory, 'public');
+  assert.equal(vercel.framework, null);
+
+  const approved = demo.samples.find((s) => s.id === 'approval-approved');
+  const empty = demo.samples.find((s) => s.id === 'empty-body');
+  assert.ok(approved && empty, 'demo-data missing required samples');
+  assert.equal(approved.sent, false);
+  assert.equal(approved.task.Status, 'Approved');
+  assert.equal(approved.task['Approval needed'], false);
+  assert.equal(empty.task, null);
+  assert.equal(empty.classification.category, 'Ambiguous');
+  assert.ok(
+    demo.samples.every((s) => s.sent === false),
+    'every demo sample must keep sent false',
+  );
+
+  const live = processFeedback(await loadSample('approval-approved.example.json'));
+  assert.equal(approved.summary, live.summary);
+  assert.doesNotMatch(html, /sk-[A-Za-z0-9]{10,}|ntn_[A-Za-z0-9]+|secret_[A-Za-z0-9]+/);
+});
