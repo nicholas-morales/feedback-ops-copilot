@@ -1,0 +1,8 @@
+{
+  "id": "fb-billing-001",
+  "channel": "mock-ingest",
+  "receivedAt": "2026-08-30",
+  "from": "ap@brightline-studio.example",
+  "subject": "Invoice #4821 double-charged setup fee",
+  "body": "Hello, our August invoice (#4821) billed the setup fee twice. Please issue a credit memo for the duplicate charge.\n\n— Brightline AP"
+}
