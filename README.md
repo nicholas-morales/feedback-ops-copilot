@@ -8,7 +8,7 @@ This is Nick’s income-proof repo for Upwork / Contra. **Not Verde Comply.**
 
 **Live Notion demo (fictional data):** [Demo — Feedback Ops Copilot (mock)](https://app.notion.com/p/3ceeb1cdb78b813bbf92f7f21591e482)
 
-**Clickable buyer preview (public, no SSO):** https://barber-4gmuvoixl-nickerios101-cpus-projects.vercel.app — static walkthrough in [`public/`](./public/). Send stays off, not Verde.
+**Clickable buyer preview (public, no SSO):** https://barber-f4n9f09sh-nickerios101-cpus-projects.vercel.app — $500 / 48h walkthrough in [`public/`](./public/). Send stays off, not Verde.
 
 ---
 
