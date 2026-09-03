@@ -338,3 +338,31 @@ test('public buyer demo is a static click-through of the mock contract', async (
   assert.equal(approved.summary, live.summary);
   assert.doesNotMatch(html, /sk-[A-Za-z0-9]{10,}|ntn_[A-Za-z0-9]+|secret_[A-Za-z0-9]+/);
 });
+
+test('public demo supports persisted light/dark theme without a FOUC boot', async () => {
+  const html = await readFile(join(root, 'public/index.html'), 'utf8');
+  const css = await readFile(join(root, 'public/styles.css'), 'utf8');
+  const js = await readFile(join(root, 'public/app.js'), 'utf8');
+  const checklist = await readFile(join(root, 'docs/REVIEW-CHECKLIST.md'), 'utf8');
+
+  assert.match(html, /data-theme/);
+  assert.match(html, /fo-theme/);
+  assert.match(html, /prefers-color-scheme/);
+  assert.match(html, /theme-toggle/);
+  assert.match(html, /Switch to dark theme/);
+  assert.match(css, /html\[data-theme="dark"\]/);
+  assert.match(css, /prefers-reduced-motion/);
+  assert.match(js, /THEME_KEY/);
+  assert.match(js, /localStorage/);
+  assert.match(js, /initTheme/);
+  assert.match(checklist, /Visual quality/);
+  assert.match(checklist, /Interaction/);
+  assert.match(checklist, /Responsive/);
+  assert.match(checklist, /Accessibility/);
+  assert.match(checklist, /Content \/ commercial truth/);
+  assert.match(checklist, /Performance/);
+  assert.match(checklist, /Release gates/);
+  assert.match(checklist, /\[ \]/);
+  assert.match(checklist, /empty body/i);
+  assert.match(checklist, /sent: false|sent === false/);
+});

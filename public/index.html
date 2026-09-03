@@ -7,6 +7,23 @@
   <meta name="description" content="Classify inbox feedback, create Notion work, approve before send. Mock proof with sent always false. Founding install from $199 audit to $500 build. Not Verde." />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="theme-color" content="#F7F6F3" />
+  <script>
+    (function () {
+      try {
+        var key = 'fo-theme';
+        var stored = localStorage.getItem(key);
+        var theme = stored === 'light' || stored === 'dark'
+          ? stored
+          : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+        document.documentElement.style.colorScheme = theme;
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#121110' : '#F7F6F3');
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet" />
@@ -29,10 +46,20 @@
         <a href="#pipeline">How it works</a>
         <a href="#offer">Pricing</a>
         <a class="nav-cta" href="https://app.notion.com/p/3ceeb1cdb78b813bbf92f7f21591e482" target="_blank" rel="noreferrer">Notion workspace</a>
+        <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Switch to dark theme" aria-pressed="false">
+          <span class="theme-toggle-icon" aria-hidden="true"></span>
+          <span class="theme-toggle-text" id="theme-toggle-text">Dark</span>
+        </button>
       </nav>
-      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu">
-        <span aria-hidden="true"></span>
-      </button>
+      <div class="header-actions">
+        <button class="theme-toggle theme-toggle-compact" type="button" id="theme-toggle-mobile" aria-label="Switch to dark theme" aria-pressed="false">
+          <span class="theme-toggle-icon" aria-hidden="true"></span>
+          <span class="visually-hidden" id="theme-toggle-mobile-text">Dark</span>
+        </button>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu">
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
     </div>
     <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile" hidden>
       <a href="#demo">Interactive demo</a>

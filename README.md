@@ -21,6 +21,7 @@ This is Nick’s income-proof repo for Upwork / Contra. **Not Verde Comply.**
 | [`samples/`](./samples/) | Bug, feature, billing, praise, empty-body, approval-approved |
 | [`OFFER.md`](./OFFER.md) | Price, exclusions, acceptance checks |
 | [`docs/BUYER-ONE-PAGER.md`](./docs/BUYER-ONE-PAGER.md) | 1-page buyer sheet (pain, deliverables, exclusions, proof) |
+| [`docs/REVIEW-CHECKLIST.md`](./docs/REVIEW-CHECKLIST.md) | Nick’s pre-merge visual / HITL / a11y / release checklist |
 | [`proposals/`](./proposals/) | Upwork paste, Contra DM, 3-minute demo checklist |
 | [`scripts/smoke-demo.sh`](./scripts/smoke-demo.sh) | `npm test` + printed 3-min demo path (`npm run smoke`) |
 
