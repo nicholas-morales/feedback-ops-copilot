@@ -2,13 +2,14 @@
 
 **Status:** draft assets only. **Do not publish** to Fiverr until Nick replies **OK TO LIST** on the Engineering Command.
 
-**Private repo (full paste kit + SVG covers):** https://github.com/nicholas-morales/fiverr-fo-gig-kit
+**Private repo (full paste kit + gallery):** https://github.com/nicholas-morales/fiverr-fo-gig-kit  
+**Draft PR #1 (2026-09 redesign):** https://github.com/nicholas-morales/fiverr-fo-gig-kit/pull/1
 
 That repo holds (Eng-stamped 2026-09-03 — do not drift):
-- seller profile blurb
+- seller profile blurb (productized consultancy voice)
 - Gig title / description / FAQ / requirements paste pack
 - packages: $199 / 3d / 1rev async + top-5 gaps · $399 / 5d / 2rev Vercel demo + Notion/GH checklist (demo source) · $500 / 7d / 3rev MCP/Chrome sketch + Loom
-- 5 operational SVG covers + briefs
+- 5 editorial gallery covers (1280×769 SVG + render script) + asset checks
 - publish checklist
 
 Title: I will build an AI feedback ops audit for your product (Next.js / Vercel)
