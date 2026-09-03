@@ -1,9 +1,9 @@
 # Fiverr Gig kit (pointer)
 
-**Status:** draft assets only. **Do not publish** to Fiverr until Nick replies **OK TO LIST** on the Engineering Command.
+**Status:** Nick approved listing across marketplaces (2026-09-03). Human may publish to Fiverr after account sign-in. **Repo agents must not publish.**
 
 **Private repo (full paste kit + gallery):** https://github.com/nicholas-morales/fiverr-fo-gig-kit  
-**Draft PR #1 (2026-09 redesign):** https://github.com/nicholas-morales/fiverr-fo-gig-kit/pull/1
+**Draft PR #1 (2026-09 redesign + QA wrap fix):** https://github.com/nicholas-morales/fiverr-fo-gig-kit/pull/1
 
 That repo holds (Eng-stamped 2026-09-03 — do not drift):
 - seller profile blurb (productized consultancy voice)
