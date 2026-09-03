@@ -68,4 +68,5 @@ Use this as a print/screenshot checklist while the editor is open. Copy source: 
 | ☐ | No Connects pack, bid bundle, or card checkout |
 | ☐ | No Amplemarket, no scrape, no Contra outbound from this kit |
 | ☐ | $199 / $399 / $500 stay templates — not a published Service / Catalog gig |
+| ☐ | [SHORTLIST.md](./SHORTLIST.md) unread as a bid list — zero Place Bid clicks |
 | ☐ | Hold live until Nick **OK** |

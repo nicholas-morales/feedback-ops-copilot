@@ -110,7 +110,7 @@ Email verification is free and fine if not already done. Skip paid “Verified b
 3. Hourly Rate is empty or unchanged.
 4. **Stop.** Do not open Browse Projects to spray bids. Do not create a Service / Project Catalog listing. Do not run Amplemarket. FO Contra outbound is Parallel.
 
-Proposal templates in the paste pack are for a **later, manual** bid after Nick **OK** — not a step in this how-to.
+Proposal templates in the paste pack are for a **later, manual** bid after Nick **OK** — not a step in this how-to. Three public listings (why-fit + which template): [SHORTLIST.md](./SHORTLIST.md). Research only. Do not open those URLs to Place Bid from this kit.
 
 ---
 

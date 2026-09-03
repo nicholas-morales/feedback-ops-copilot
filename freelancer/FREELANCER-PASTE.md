@@ -340,6 +340,8 @@ Notion inbox feedback
 
 Do **not** place bids from those result pages as part of this kit.
 
+Later, manual-only candidates (research snapshot, not a bid list): [SHORTLIST.md](./SHORTLIST.md).
+
 ---
 
 ## Done when
