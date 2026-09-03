@@ -3,165 +3,321 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Feedback Ops Copilot — $500 / 48h buyer demo</title>
-  <meta name="description" content="Clickable mock: classify inbox feedback, upsert Notion Inbox + Tasks, human send gate stays off. Founding $500 / 48 hours or $250 Notion-only. $199 same-day audit upsells into the $500 build. Not Verde." />
+  <title>Feedback Ops Copilot — Human-in-the-loop feedback operations</title>
+  <meta name="description" content="Classify inbox feedback, create Notion work, approve before send. Mock proof with sent always false. Founding install from $199 audit to $500 build. Not Verde." />
   <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#F7F6F3" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
-  <div class="wrap">
-    <header class="top">
-      <div class="brand">
-        <strong>Feedback Ops Copilot</strong>
-        <span>Mock proof · fictional data · send stays off</span>
-      </div>
-      <nav class="nav">
-        <a class="btn ghost" href="#demo">3-minute demo</a>
-        <a class="btn ghost" href="#offer">$500 offer</a>
-        <a class="btn" href="https://app.notion.com/p/3ceeb1cdb78b813bbf92f7f21591e482" target="_blank" rel="noreferrer">Live Notion</a>
-        <a class="btn primary" href="https://github.com/nickerios101-cpu/feedback-ops-copilot" target="_blank" rel="noreferrer">Public repo</a>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <a class="brand" href="/" aria-label="Feedback Ops Copilot home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-text">
+          <strong>Feedback Ops Copilot</strong>
+          <span>Mock proof · fictional data</span>
+        </span>
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="#demo">Interactive demo</a>
+        <a href="#pipeline">How it works</a>
+        <a href="#offer">Pricing</a>
+        <a class="nav-cta" href="https://app.notion.com/p/3ceeb1cdb78b813bbf92f7f21591e482" target="_blank" rel="noreferrer">Notion workspace</a>
       </nav>
-    </header>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu">
+        <span aria-hidden="true"></span>
+      </button>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile" hidden>
+      <a href="#demo">Interactive demo</a>
+      <a href="#pipeline">How it works</a>
+      <a href="#offer">Pricing</a>
+      <a href="https://app.notion.com/p/3ceeb1cdb78b813bbf92f7f21591e482" target="_blank" rel="noreferrer">Notion workspace</a>
+    </nav>
+  </header>
 
-    <section class="hero">
-      <h1>Inbox feedback becomes tracked work. Nothing sends itself.</h1>
-      <p class="lede">
-        Founding install: one source → classify → Notion Inbox + Tasks → human-approved reply draft → retries log.
-        This page is the clickable mock Nick can send before a $500 close. Not Verde Comply.
-      </p>
-      <div class="pills">
-        <span class="pill">$500 / 48 hours</span>
-        <span class="pill">$199 same-day audit</span>
-        <span class="pill">$250 Notion-only</span>
-        <span class="pill">sent === false</span>
-        <span class="pill">No Gmail · no auto-send</span>
-      </div>
-      <div class="cta">
-        <a class="btn primary" href="#demo">Click the pipeline</a>
-        <a class="btn" href="https://app.notion.com/p/3ceeb1cdb78b813bbf92f7f21591e482" target="_blank" rel="noreferrer">Open Notion demo</a>
-        <a class="btn ghost" href="https://github.com/nickerios101-cpu/feedback-ops-copilot/blob/cursor/buyer-proof-pack-5b3b/OFFER.md" target="_blank" rel="noreferrer">Read OFFER.md</a>
-      </div>
-    </section>
-
-    <section class="grid-3" aria-label="What the mock already proves">
-      <article class="card">
-        <h3>Classify, don’t chatbot</h3>
-        <p>Bug, Feature request, Billing, Praise, Ambiguous. Empty body is held — no Task is invented.</p>
-      </article>
-      <article class="card">
-        <h3>Human send gate</h3>
-        <p>Even the approved credit-memo draft keeps <strong>sent === false</strong>. You watch the gate before any sender is connected.</p>
-      </article>
-      <article class="card">
-        <h3>Retries / exceptions</h3>
-        <p>Empty-body hold, send-gate block, mock “never send.” Same schema as the live Notion demo.</p>
-      </article>
-    </section>
-
-    <section id="demo" class="section">
-      <h2>3-minute clickable demo</h2>
-      <p>Same samples as <code>npm test</code>. Click a ticket. Inbox → Task → send gate → retries. Then replay the same path in Notion.</p>
-      <div class="samples" id="sample-nav" role="tablist" aria-label="Mock tickets"></div>
-      <div class="sent">
-        <div>
-          <strong id="sent-flag">sent: false</strong>
-          <div><span id="sent-reason">Mock contract: nothing leaves, even after approval.</span></div>
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Human-in-the-loop feedback operations</p>
+          <h1 id="hero-title">Inbox feedback becomes tracked work.<br />Nothing sends itself.</h1>
+          <p class="hero-lede">
+            One ingest source, deterministic classification, Notion Inbox and Tasks, reply drafts behind approval.
+            This page is the clickable proof for a productized install — same samples as <code>npm test</code>.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#demo">Walk the pipeline</a>
+            <a class="btn btn-secondary" href="https://github.com/nickerios101-cpu/feedback-ops-copilot" target="_blank" rel="noreferrer">View source</a>
+          </div>
         </div>
-        <span>Human gate</span>
-      </div>
-      <div class="stage">
-        <article class="card">
-          <h3>Inbox / Feedback</h3>
-          <div class="kv" id="inbox-panel"></div>
-          <h3 style="margin-top:16px">Source email</h3>
-          <div class="mail" id="source-panel"></div>
-        </article>
-        <article class="card">
-          <h3>Task + reply draft</h3>
-          <div id="task-panel"></div>
-          <h3 style="margin-top:16px">Retries / Exceptions</h3>
-          <div id="retry-panel"></div>
-        </article>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Inbox at a glance</h2>
-      <p>Five categories plus the approved billing twin. Status and send stay honest.</p>
-      <div class="card table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Subject</th>
-              <th>Category</th>
-              <th>Priority</th>
-              <th>Inbox</th>
-              <th>Task</th>
-              <th>sent</th>
-            </tr>
-          </thead>
-          <tbody id="inbox-table"></tbody>
-        </table>
+        <aside class="contract-panel" aria-label="Mock contract guarantees">
+          <header class="contract-header">
+            <span class="contract-label">Mock contract</span>
+            <span class="contract-status" aria-live="polite">send disabled</span>
+          </header>
+          <dl class="contract-facts">
+            <div>
+              <dt>Send gate</dt>
+              <dd><code>sent === false</code> always</dd>
+            </div>
+            <div>
+              <dt>Empty body</dt>
+              <dd>No Task created</dd>
+            </div>
+            <div>
+              <dt>Approved draft</dt>
+              <dd>Still not sent</dd>
+            </div>
+            <div>
+              <dt>Integrations</dt>
+              <dd>No Gmail · no live SMTP</dd>
+            </div>
+          </dl>
+          <footer class="contract-footer">
+            <span>Founding install from</span>
+            <strong>$199 audit</strong>
+            <span class="contract-sep">→</span>
+            <strong>$500 build</strong>
+          </footer>
+        </aside>
       </div>
     </section>
 
-    <section id="offer" class="section">
-      <h2>Close options</h2>
-      <p>The $199 same-day audit credits toward the $500 founding build.</p>
-      <div class="grid-3">
-        <article class="card">
-          <div class="price"><b>$500</b><span>/ 48 hours founding</span></div>
-          <ul class="clean">
-            <li>One ingest source (mailbox or form webhook or CSV/JSON drop).</li>
-            <li>Classify + summary into Notion Inbox / Feedback.</li>
-            <li>Related Task with next action, reply draft, Approval needed.</li>
-            <li>Human send gate. Default: send stays off.</li>
-            <li>Retries / Exceptions log + 15-minute handoff.</li>
-          </ul>
-        </article>
-        <article class="card">
-          <div class="price"><b>$199</b><span>same-day audit</span></div>
-          <ul class="clean">
-            <li>Inbox + hold/send report on your sample or the public mock.</li>
-            <li>Same mock contract: sent stays false.</li>
-            <li>Credits toward the $500 founding build if you continue.</li>
-          </ul>
-        </article>
-        <article class="card">
-          <div class="price"><b>$250</b><span>Notion-only</span></div>
-          <ul class="clean">
-            <li>Inbox, Tasks, and Retries DBs in your workspace.</li>
-            <li>Sample rows + one approved credit-memo draft.</li>
-            <li>Upsert JSON contract so your builder can attach a runner later.</li>
-            <li>Same exclusions: no Gmail OAuth on your domain, no live SMTP, no Intercom/Slack sync.</li>
-          </ul>
-        </article>
+    <section id="pipeline" class="section principles" aria-labelledby="principles-title">
+      <div class="container">
+        <header class="section-header">
+          <p class="section-eyebrow">What this proves</p>
+          <h2 id="principles-title">Classification and control, not a chatbot</h2>
+          <p class="section-intro">Every sample maps to a real Notion row and a passing test. No invented metrics, no auto-send theater.</p>
+        </header>
+        <div class="principles-grid">
+          <article class="principle-card">
+            <span class="principle-index">01</span>
+            <h3>Deterministic classify</h3>
+            <p>Bug, Feature request, Billing, Praise, Ambiguous. Empty body stays Classified — no Task is fabricated.</p>
+          </article>
+          <article class="principle-card">
+            <span class="principle-index">02</span>
+            <h3>Approve before send</h3>
+            <p>Reply drafts wait on <strong>Approval needed</strong>. Even after human approval, this mock keeps <code>sent: false</code>.</p>
+          </article>
+          <article class="principle-card">
+            <span class="principle-index">03</span>
+            <h3>Exceptions logged</h3>
+            <p>Send-gate blocks, empty-body holds, and retry rows use the same schema as the live Notion demo.</p>
+          </article>
+        </div>
       </div>
     </section>
 
-    <section class="section">
-      <h2>Proof a stranger can replay</h2>
-      <div class="grid-3">
-        <article class="card">
-          <h3>This page</h3>
-          <p>Click every sample. Confirm empty body has no Task and the approved draft still shows sent: false.</p>
-        </article>
-        <article class="card">
-          <h3>Notion demo</h3>
-          <p><a href="https://app.notion.com/p/3ceeb1cdb78b813bbf92f7f21591e482" target="_blank" rel="noreferrer">Open the live mock workspace</a> and walk Inbox → Task → Approved draft → Retries.</p>
-        </article>
-        <article class="card">
-          <h3>Repo + tests</h3>
-          <p><a href="https://github.com/nickerios101-cpu/feedback-ops-copilot" target="_blank" rel="noreferrer">github.com/nickerios101-cpu/feedback-ops-copilot</a> · <code>npm test</code> · <code>npm run smoke</code></p>
-        </article>
+    <section id="demo" class="section demo-section" aria-labelledby="demo-title">
+      <div class="container">
+        <header class="section-header">
+          <p class="section-eyebrow">Interactive proof</p>
+          <h2 id="demo-title">Walk a ticket through the pipeline</h2>
+          <p class="section-intro">Select a sample below. Watch Inbox classification, Task creation, send gate, and retries update together.</p>
+        </header>
+
+        <div class="demo-console" role="region" aria-label="Feedback pipeline demo">
+          <div class="demo-toolbar">
+            <div class="sample-tabs" id="sample-nav" role="tablist" aria-label="Mock tickets">
+              <div class="tabs-loading" id="tabs-loading" aria-hidden="true">
+                <span class="spinner" aria-hidden="true"></span>
+                Loading samples…
+              </div>
+            </div>
+          </div>
+
+          <div class="send-gate" id="send-gate" role="status" aria-live="polite">
+            <div class="send-gate-icon" aria-hidden="true">⏸</div>
+            <div class="send-gate-body">
+              <p class="send-gate-flag" id="sent-flag">sent: false</p>
+              <p class="send-gate-reason" id="sent-reason">Mock contract: nothing leaves, even after approval.</p>
+            </div>
+            <span class="send-gate-label">Human send gate</span>
+          </div>
+
+          <div class="demo-stage" id="demo-stage">
+            <article class="panel panel-inbox" aria-labelledby="inbox-heading">
+              <header class="panel-header">
+                <h3 id="inbox-heading">Inbox / Feedback</h3>
+                <span class="panel-meta">Notion upsert</span>
+              </header>
+              <div class="panel-body">
+                <div class="kv" id="inbox-panel" role="tabpanel" aria-labelledby="inbox-heading">
+                  <div class="panel-loading">
+                    <span class="spinner" aria-hidden="true"></span>
+                    Loading inbox…
+                  </div>
+                </div>
+                <div class="panel-divider" role="separator"></div>
+                <h4 class="panel-subheading">Source message</h4>
+                <pre class="source-message" id="source-panel" aria-label="Source email content">Loading…</pre>
+              </div>
+            </article>
+
+            <article class="panel panel-task" aria-labelledby="task-heading">
+              <header class="panel-header">
+                <h3 id="task-heading">Task + reply draft</h3>
+                <span class="panel-meta">Related work</span>
+              </header>
+              <div class="panel-body">
+                <div id="task-panel">
+                  <div class="panel-loading">
+                    <span class="spinner" aria-hidden="true"></span>
+                    Loading task…
+                  </div>
+                </div>
+                <div class="panel-divider" role="separator"></div>
+                <h4 class="panel-subheading">Retries / Exceptions</h4>
+                <div id="retry-panel">
+                  <div class="panel-loading">
+                    <span class="spinner" aria-hidden="true"></span>
+                    Loading retries…
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <div class="demo-error" id="demo-error" role="alert" hidden>
+            <p id="demo-error-text">Demo failed to load.</p>
+            <button class="btn btn-secondary btn-sm" type="button" id="demo-retry">Retry</button>
+          </div>
+        </div>
       </div>
     </section>
 
-    <footer class="foot">
-      Mock only. Fictional <code>*.example</code> senders. No secrets in git. Workflow stays inactive.
-      Not Verde Comply. Send stays off until the buyer writes “send is on.”
-    </footer>
-  </div>
+    <section class="section inbox-table-section" aria-labelledby="table-title">
+      <div class="container">
+        <header class="section-header">
+          <p class="section-eyebrow">Full inbox</p>
+          <h2 id="table-title">All samples at a glance</h2>
+          <p class="section-intro">Click a row to load that sample in the demo above.</p>
+        </header>
+        <div class="table-shell">
+          <div class="table-scroll">
+            <table>
+              <caption class="visually-hidden">Mock inbox samples with category, priority, status, and send flag</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Subject</th>
+                  <th scope="col">Category</th>
+                  <th scope="col">Priority</th>
+                  <th scope="col">Inbox</th>
+                  <th scope="col">Task</th>
+                  <th scope="col">sent</th>
+                </tr>
+              </thead>
+              <tbody id="inbox-table">
+                <tr><td colspan="6"><div class="table-loading"><span class="spinner" aria-hidden="true"></span> Loading…</div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="offer" class="section pricing-section" aria-labelledby="offer-title">
+      <div class="container">
+        <header class="section-header">
+          <p class="section-eyebrow">Engagement options</p>
+          <h2 id="offer-title">Productized install, scoped honestly</h2>
+          <p class="section-intro">The $199 same-day audit credits toward the $500 founding build. Send stays off until you explicitly enable it.</p>
+        </header>
+        <div class="pricing-grid">
+          <article class="price-card price-card-featured">
+            <header class="price-card-header">
+              <p class="price-tier">Founding install</p>
+              <p class="price-amount"><span class="price-value">$500</span><span class="price-period">/ 48 hours</span></p>
+            </header>
+            <ul class="price-features">
+              <li>One ingest source — mailbox, form webhook, or CSV/JSON drop</li>
+              <li>Classify and summarize into Notion Inbox / Feedback</li>
+              <li>Related Task with next action, reply draft, Approval needed</li>
+              <li>Human send gate — default off</li>
+              <li>Retries / Exceptions log and 15-minute handoff</li>
+            </ul>
+            <a class="btn btn-primary btn-block" href="#demo">See the proof first</a>
+          </article>
+          <article class="price-card">
+            <header class="price-card-header">
+              <p class="price-tier">Same-day audit</p>
+              <p class="price-amount"><span class="price-value">$199</span></p>
+            </header>
+            <ul class="price-features">
+              <li>Inbox and hold/send report on your sample or this mock</li>
+              <li>Same contract: <code>sent</code> stays false</li>
+              <li>Full credit toward the $500 build if you continue</li>
+            </ul>
+          </article>
+          <article class="price-card">
+            <header class="price-card-header">
+              <p class="price-tier">Notion-only</p>
+              <p class="price-amount"><span class="price-value">$250</span></p>
+            </header>
+            <ul class="price-features">
+              <li>Inbox, Tasks, and Retries databases in your workspace</li>
+              <li>Sample rows plus one approved credit-memo draft</li>
+              <li>Upsert JSON contract for a future runner</li>
+              <li>No Gmail OAuth, no live SMTP, no Intercom/Slack sync</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section proof-section" aria-labelledby="proof-title">
+      <div class="container">
+        <header class="section-header">
+          <p class="section-eyebrow">Verify independently</p>
+          <h2 id="proof-title">Three ways to replay the proof</h2>
+        </header>
+        <div class="proof-grid">
+          <article class="proof-card">
+            <h3>This page</h3>
+            <p>Click every sample. Confirm empty body has no Task and the approved draft still shows <code>sent: false</code>.</p>
+          </article>
+          <article class="proof-card">
+            <h3>Notion workspace</h3>
+            <p>
+              <a href="https://app.notion.com/p/3ceeb1cdb78b813bbf92f7f21591e482" target="_blank" rel="noreferrer">Open the live mock</a>
+              and walk Inbox → Task → Approved draft → Retries.
+            </p>
+          </article>
+          <article class="proof-card">
+            <h3>Repo and tests</h3>
+            <p>
+              <a href="https://github.com/nickerios101-cpu/feedback-ops-copilot" target="_blank" rel="noreferrer">Public repository</a>
+              · run <code>npm test</code> · run <code>npm run smoke</code>
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="container footer-inner">
+      <p>
+        Mock only. Fictional <code>*.example</code> senders. No secrets in git. Workflow stays inactive.
+        Not Verde Comply. Send stays off until the buyer writes “send is on.”
+      </p>
+      <p class="footer-links">
+        <a href="https://github.com/nickerios101-cpu/feedback-ops-copilot/blob/cursor/buyer-proof-pack-5b3b/OFFER.md" target="_blank" rel="noreferrer">OFFER.md</a>
+        <span aria-hidden="true">·</span>
+        <a href="https://github.com/nickerios101-cpu/feedback-ops-copilot" target="_blank" rel="noreferrer">GitHub</a>
+      </p>
+    </div>
+  </footer>
+
   <script src="./app.js" type="module"></script>
 </body>
 </html>

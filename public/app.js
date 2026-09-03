@@ -1,11 +1,16 @@
 const dataUrl = new URL('./demo-data.json', import.meta.url);
 
+/** @type {Array<object>|null} */
+let samples = null;
+/** @type {string|null} */
+let activeId = null;
+
 function badgeClass(value) {
-  const v = String(value || '').toLowerCase();
-  if (/(high|bug|blocked|false)/.test(v) && v === 'false') return 'hot';
+  const v = String(value ?? '').toLowerCase();
+  if (v === 'false') return 'hot';
   if (/(high|bug|blocked)/.test(v)) return 'hot';
   if (/(medium|waiting|ambiguous|classified)/.test(v)) return 'warn';
-  if (/(low|approved|done|closed|resolved|praise)/.test(v)) return 'ok';
+  if (/(low|approved|done|closed|resolved|praise|true)/.test(v)) return 'ok';
   return 'info';
 }
 
@@ -27,54 +32,90 @@ function kv(rows) {
     .join('');
 }
 
-function renderSample(sample) {
-  const inbox = sample.inbox || {};
-  document.getElementById('sent-flag').textContent = `sent: ${String(sample.sent)}`;
-  document.getElementById('sent-reason').textContent = sample.sendGate.blockedReason;
-
-  document.getElementById('source-panel').textContent =
-    `From: ${sample.input.from}\nSubject: ${sample.input.subject}\n\n${sample.input.body || '(empty body)'}`;
-
-  document.getElementById('inbox-panel').innerHTML = kv([
-    ['Subject', escapeHtml(inbox.Subject || '(no subject)')],
-    ['From', `<span class="mono">${escapeHtml(inbox.From || '')}</span>`],
-    ['Category', badge(inbox.Category)],
-    ['Priority', badge(inbox.Priority)],
-    ['Status', badge(inbox.Status)],
-    ['Summary', escapeHtml(inbox.Summary || '')],
-    ['Received', escapeHtml(inbox.Received || '')],
-    ['Why', escapeHtml(sample.classification.reason)],
-  ]);
-
-  if (!sample.task) {
-    document.getElementById('task-panel').innerHTML =
-      '<p class="v">No Task created. Empty-body / Ambiguous items stay Classified until a human triages them.</p>';
-  } else {
-    const t = sample.task;
-    document.getElementById('task-panel').innerHTML = `${kv([
-      ['Task', escapeHtml(t.Task)],
-      ['Status', badge(t.Status)],
-      ['Approval needed', badge(t['Approval needed'] ? 'true' : 'false')],
-      ['Next action', escapeHtml(t['Next action'])],
-    ])}<div class="mail" style="margin-top:10px">${escapeHtml(t['Reply draft'])}</div>`;
+function setPanelUpdating(updating) {
+  for (const el of document.querySelectorAll('.panel-body')) {
+    el.classList.toggle('is-updating', updating);
   }
-
-  const retries = sample.retries || [];
-  document.getElementById('retry-panel').innerHTML = retries.length
-    ? retries
-        .map(
-          (r) =>
-            `<div class="row"><div class="k">${escapeHtml(r.Stage)}</div><div class="v">${escapeHtml(r.Event)}<br><span class="mono">${escapeHtml(r.Error)}</span><br>resolved: ${badge(r.Resolved)}</div></div>`,
-        )
-        .join('')
-    : '<p class="v">No retry rows.</p>';
 }
 
-function renderTable(samples) {
-  document.getElementById('inbox-table').innerHTML = samples
+function renderSample(sample) {
+  if (!sample) return;
+
+  activeId = sample.id;
+  setPanelUpdating(true);
+
+  requestAnimationFrame(() => {
+    const inbox = sample.inbox ?? {};
+
+    const sentFlag = document.getElementById('sent-flag');
+    const sentReason = document.getElementById('sent-reason');
+    if (sentFlag) sentFlag.textContent = `sent: ${String(sample.sent)}`;
+    if (sentReason) sentReason.textContent = sample.sendGate?.blockedReason ?? '';
+
+    const sourcePanel = document.getElementById('source-panel');
+    if (sourcePanel) {
+      sourcePanel.textContent =
+        `From: ${sample.input.from}\nSubject: ${sample.input.subject}\n\n${sample.input.body || '(empty body)'}`;
+    }
+
+    const inboxPanel = document.getElementById('inbox-panel');
+    if (inboxPanel) {
+      inboxPanel.innerHTML = kv([
+        ['Subject', escapeHtml(inbox.Subject || '(no subject)')],
+        ['From', `<span class="mono">${escapeHtml(inbox.From || '')}</span>`],
+        ['Category', badge(inbox.Category)],
+        ['Priority', badge(inbox.Priority)],
+        ['Status', badge(inbox.Status)],
+        ['Summary', escapeHtml(inbox.Summary || '')],
+        ['Received', escapeHtml(inbox.Received || '')],
+        ['Why', escapeHtml(sample.classification?.reason || '')],
+      ]);
+    }
+
+    const taskPanel = document.getElementById('task-panel');
+    if (taskPanel) {
+      if (!sample.task) {
+        taskPanel.innerHTML =
+          '<p class="empty-state">No Task created. Empty-body and Ambiguous items stay Classified until a human triages them.</p>';
+      } else {
+        const t = sample.task;
+        taskPanel.innerHTML = `${kv([
+          ['Task', escapeHtml(t.Task)],
+          ['Status', badge(t.Status)],
+          ['Approval needed', badge(t['Approval needed'] ? 'true' : 'false')],
+          ['Next action', escapeHtml(t['Next action'])],
+        ])}<pre class="reply-draft" aria-label="Reply draft">${escapeHtml(t['Reply draft'])}</pre>`;
+      }
+    }
+
+    const retryPanel = document.getElementById('retry-panel');
+    if (retryPanel) {
+      const retries = sample.retries ?? [];
+      retryPanel.innerHTML = retries.length
+        ? retries
+            .map(
+              (r) =>
+                `<div class="row"><div class="k">${escapeHtml(r.Stage)}</div><div class="v">${escapeHtml(r.Event)}<br><span class="mono">${escapeHtml(r.Error)}</span><br>resolved: ${badge(r.Resolved)}</div></div>`,
+            )
+            .join('')
+        : '<p class="empty-state">No retry rows for this sample.</p>';
+    }
+
+    setActive(sample.id);
+    highlightTableRow(sample.id);
+    setPanelUpdating(false);
+  });
+}
+
+function renderTable(allSamples) {
+  const tbody = document.getElementById('inbox-table');
+  if (!tbody) return;
+
+  tbody.innerHTML = allSamples
     .map((s) => {
       const task = s.task ? s.task.Status : '— no Task —';
-      return `<tr>
+      const isActive = s.id === activeId ? ' is-active' : '';
+      return `<tr data-id="${escapeHtml(s.id)}" tabindex="0" role="button" aria-label="Load ${escapeHtml(s.label)}" class="${isActive.trim()}">
         <td>${escapeHtml(s.inbox.Subject)}</td>
         <td>${badge(s.inbox.Category)}</td>
         <td>${badge(s.inbox.Priority)}</td>
@@ -84,45 +125,161 @@ function renderTable(samples) {
       </tr>`;
     })
     .join('');
+
+  for (const row of tbody.querySelectorAll('tr[data-id]')) {
+    row.addEventListener('click', () => selectSample(row.dataset.id));
+    row.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        selectSample(row.dataset.id);
+      }
+    });
+  }
+}
+
+function highlightTableRow(id) {
+  for (const row of document.querySelectorAll('#inbox-table tr[data-id]')) {
+    const active = row.dataset.id === id;
+    row.classList.toggle('is-active', active);
+    row.setAttribute('aria-current', active ? 'true' : 'false');
+  }
 }
 
 function setActive(id) {
   for (const btn of document.querySelectorAll('button.sample')) {
-    btn.classList.toggle('active', btn.dataset.id === id);
+    const active = btn.dataset.id === id;
+    btn.classList.toggle('active', active);
+    btn.setAttribute('aria-selected', active ? 'true' : 'false');
+    btn.tabIndex = active ? 0 : -1;
   }
 }
 
-async function main() {
-  const payload = await fetch(dataUrl).then((r) => {
-    if (!r.ok) throw new Error(`demo-data.json ${r.status}`);
-    return r.json();
-  });
+function selectSample(id) {
+  const sample = samples?.find((s) => s.id === id);
+  if (!sample) return;
+  renderSample(sample);
+  history.replaceState(null, '', `#demo=${id}`);
 
+  const btn = document.querySelector(`button.sample[data-id="${id}"]`);
+  btn?.focus({ preventScroll: true });
+}
+
+function buildTabs(allSamples) {
   const nav = document.getElementById('sample-nav');
-  for (const sample of payload.samples) {
+  const loading = document.getElementById('tabs-loading');
+  if (!nav) return;
+
+  if (loading) loading.remove();
+
+  for (const sample of allSamples) {
     const btn = document.createElement('button');
     btn.className = 'sample';
     btn.type = 'button';
+    btn.role = 'tab';
     btn.dataset.id = sample.id;
+    btn.id = `tab-${sample.id}`;
     btn.textContent = sample.label;
     btn.title = sample.walkthrough;
-    btn.addEventListener('click', () => {
-      setActive(sample.id);
-      renderSample(sample);
-      history.replaceState(null, '', `#demo=${sample.id}`);
-    });
+    btn.setAttribute('aria-selected', 'false');
+    btn.tabIndex = -1;
+    btn.addEventListener('click', () => selectSample(sample.id));
+    btn.addEventListener('keydown', onTabKeydown);
     nav.appendChild(btn);
   }
+}
 
-  renderTable(payload.samples);
+function onTabKeydown(e) {
+  const tabs = [...document.querySelectorAll('button.sample')];
+  const idx = tabs.indexOf(e.currentTarget);
+  if (idx < 0) return;
 
-  const wanted = new URLSearchParams(location.hash.replace('#', '?')).get('demo')
-    || (location.hash.startsWith('#demo=') ? location.hash.slice(6) : 'approval-approved');
-  const initial = payload.samples.find((s) => s.id === wanted) || payload.samples[1] || payload.samples[0];
-  setActive(initial.id);
+  let next = idx;
+  if (e.key === 'ArrowRight') next = (idx + 1) % tabs.length;
+  else if (e.key === 'ArrowLeft') next = (idx - 1 + tabs.length) % tabs.length;
+  else if (e.key === 'Home') next = 0;
+  else if (e.key === 'End') next = tabs.length - 1;
+  else return;
+
+  e.preventDefault();
+  selectSample(tabs[next].dataset.id);
+  tabs[next].focus();
+}
+
+function showError(message) {
+  const err = document.getElementById('demo-error');
+  const text = document.getElementById('demo-error-text');
+  if (text) text.textContent = message;
+  if (err) err.hidden = false;
+
+  for (const id of ['inbox-panel', 'task-panel', 'retry-panel']) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.innerHTML = `<p class="empty-state">${escapeHtml(message)}</p>`;
+    }
+  }
+}
+
+function hideError() {
+  const err = document.getElementById('demo-error');
+  if (err) err.hidden = true;
+}
+
+function resolveInitialId(allSamples) {
+  const hash = location.hash;
+  if (hash.startsWith('#demo=')) return hash.slice(6);
+  const params = new URLSearchParams(hash.replace('#', '?'));
+  return params.get('demo') || 'approval-approved';
+}
+
+function initMobileNav() {
+  const toggle = document.querySelector('.menu-toggle');
+  const mobileNav = document.getElementById('mobile-nav');
+  if (!toggle || !mobileNav) return;
+
+  toggle.addEventListener('click', () => {
+    const open = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', open ? 'false' : 'true');
+    mobileNav.hidden = open;
+  });
+
+  for (const link of mobileNav.querySelectorAll('a[href^="#"]')) {
+    link.addEventListener('click', () => {
+      toggle.setAttribute('aria-expanded', 'false');
+      mobileNav.hidden = true;
+    });
+  }
+}
+
+async function loadDemo() {
+  hideError();
+
+  const payload = await fetch(dataUrl).then((r) => {
+    if (!r.ok) throw new Error(`Could not load demo data (${r.status})`);
+    return r.json();
+  });
+
+  samples = payload.samples;
+  buildTabs(samples);
+  renderTable(samples);
+
+  const wanted = resolveInitialId(samples);
+  const initial = samples.find((s) => s.id === wanted) || samples[1] || samples[0];
   renderSample(initial);
 }
 
-main().catch((err) => {
-  document.getElementById('inbox-panel').textContent = `Demo failed to load: ${err.message}`;
-});
+async function main() {
+  initMobileNav();
+
+  const retryBtn = document.getElementById('demo-retry');
+  retryBtn?.addEventListener('click', () => {
+    loadDemo().catch((err) => showError(`Demo failed to load: ${err.message}`));
+  });
+
+  try {
+    await loadDemo();
+  } catch (err) {
+    showError(`Demo failed to load: ${err.message}`);
+  }
+}
+
+main();
