@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/health", "destination": "/api/health" },
+    { "source": "/mcp", "destination": "/api/mcp" },
+    { "source": "/pricing", "destination": "/pricing.html" }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "id": "fb-bug-001",
+  "channel": "mock-ingest",
+  "receivedAt": "2026-08-28",
+  "from": "jordan.lee@northstar-widgets.example",
+  "subject": "Export CSV truncates long product names",
+  "body": "Hi — when we export the product catalog to CSV, names longer than ~40 characters get cut off. We need the full strings in the next release. Repro: Catalog → Export CSV → open in Sheets.\n\nThanks,\nJordan"
+}

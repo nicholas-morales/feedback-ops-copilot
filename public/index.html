@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FO Gate — classify, task, approve. Nothing sends.</title>
+  <meta name="description" content="FO Gate is a HITL MCP: paste a ticket, classify into Notion Inbox and Tasks, draft the reply, keep sent false." />
+  <meta name="theme-color" content="#121110" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('fo-theme');
+        if (t) document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header>
+    <div class="wrap nav">
+      <a class="brand" href="/">FO Gate</a>
+      <nav class="nav-links" aria-label="Primary">
+        <a class="hide-sm" href="#loop">Loop</a>
+        <a href="/pricing">Pricing</a>
+        <a class="hide-sm" href="#try">Try</a>
+        <a class="hide-sm" href="#adjacent">Other gates</a>
+        <a class="btn" href="/pricing">Seats + founding</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+    <section class="hero">
+      <div>
+        <p class="kicker">Applied AI Ops · HITL MCP</p>
+        <h1>Classify the ticket. Draft the reply. Refuse to send.</h1>
+        <p class="lede">
+          FO Gate is a remote MCP that runs the existing Feedback Ops loop:
+          paste → classify → Notion Inbox / Tasks → human approve-before-send.
+          <code>sent</code> stays false until a buyer writes “send is on.”
+        </p>
+        <p>
+          <a class="btn" href="/pricing">See B $19 / C $49 + $199 / $500</a>
+          <a class="btn ghost" href="#try">Run it locally</a>
+        </p>
+      </div>
+      <aside class="contract" aria-label="Contract">
+        <dl>
+          <dt>Ingest</dt>
+          <dd>Pasted text, form payload, or JSON. Not Gmail.</dd>
+          <dt>Schema</dt>
+          <dd>Inbox / Tasks / Retries — same mock DBs already proven.</dd>
+          <dt>Send</dt>
+          <dd>No <code>send_reply</code> tool. No SMTP. Approved ≠ sent.</dd>
+          <dt>Seller</dt>
+          <dd>Nick Trevino, not a registry. Local npx is free.</dd>
+        </dl>
+      </aside>
+    </section>
+
+    <section id="loop">
+      <p class="kicker">The loop</p>
+      <h2>Same HITL contract as the FO mock</h2>
+      <div class="loop">
+        <article class="step"><strong>1. Paste</strong>Client message, form JSON, or ticket. Empty body holds.</article>
+        <article class="step"><strong>2. Classify</strong>Bug / Feature / Billing / Praise / Ambiguous + one-line summary.</article>
+        <article class="step"><strong>3. Upsert</strong>Inbox row. Related Task with next action and reply draft.</article>
+        <article class="step"><strong>4. Gate</strong>Approval needed stays on. Nothing sends.</article>
+      </div>
+    </section>
+
+    <section id="pricing-preview">
+      <p class="kicker">Cash first</p>
+      <h2>Founding install hits the floor faster than seats</h2>
+      <p class="lede">Seats are the listing SKU. The $199 audit and $500 / 48h wire-up are the cash SKUs. A $19 seat does not include custom Notion wiring.</p>
+      <p><a href="/pricing">Full pricing →</a></p>
+      <div class="grid-2">
+        <article class="card featured">
+          <p class="kicker">Cash SKU</p>
+          <h3>Founding wire-up</h3>
+          <p class="price">$500 <span>/ 48h</span></p>
+          <p>One source → classify → Notion Inbox + Tasks → approval gate → retries log. MCP is how they use it after.</p>
+        </article>
+        <article class="card">
+          <p class="kicker">Door</p>
+          <h3>Same-day audit</h3>
+          <p class="price">$199</p>
+          <p>Five sanitized tickets mapped onto the mock. Credits in full toward founding for 7 days ($301 remaining).</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="try">
+      <p class="kicker">Local demo</p>
+      <h2>Try the Gate without a host</h2>
+      <p class="lede">Node 18+. No install. No secrets. No live Notion. Serve this page and POST <code>/mcp</code>, or run stdio.</p>
+      <div class="playground">
+        <div>
+          <label for="ticket">Paste a ticket</label>
+          <textarea id="ticket" spellcheck="false">Hello, our August invoice (#4821) billed the setup fee twice. Please issue a credit memo for the duplicate charge.</textarea>
+          <p>
+            <button class="btn" id="classify" type="button">Classify</button>
+            <button class="btn ghost" id="loop-btn" type="button">Run HITL loop</button>
+          </p>
+        </div>
+        <pre id="out" aria-live="polite">Results appear here when this page is served by <code>npm start</code>.</pre>
+      </div>
+      <pre>
+# from the repo root
+npm test
+npm start
+# then open http://127.0.0.1:8787
+
+# stdio MCP (Cursor local)
+node bin/fo-gate.mjs stdio
+
+# Cursor install deeplink (not Marketplace):
+# https://cursor.com/install-mcp?name=FO%20Gate&config=…  (see src/mcp/cursor-link.mjs)
+      </pre>
+    </section>
+
+    <section id="adjacent">
+      <p class="kicker">Beyond Feedback Ops</p>
+      <h2>Same seat SKUs, other HITL gates</h2>
+      <p class="lede">B $19 and C $49 are operator/workspace access — not FO-only. Adjacent products reuse approve-before-send. No invented ROI.</p>
+      <div class="grid-3">
+        <article class="card">
+          <h3>FO Gate</h3>
+          <p>This MVP. Inbound feedback → Inbox / Tasks → HITL draft.</p>
+        </article>
+        <article class="card">
+          <h3>Lead Ops Gate</h3>
+          <p>Lead ingest → score → CRM + Tasks → HITL first reply. Demo: <a href="https://lead-ops-gate-mock.vercel.app">lead-ops-gate-mock.vercel.app</a>. Different schema. Not this binary.</p>
+        </article>
+        <article class="card">
+          <h3>Invoice / exception HITL</h3>
+          <p>Same seat idea if packaged later. Not built in this PR. No metrics claimed.</p>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <p class="note">
+        Hard stops: no Chrome Web Store, no MCP registry, no Cursor Marketplace submit, no Gmail OAuth, no live SMTP, no merge to main, no Vercel Pro.
+        Hosted features are paid; Nick, not a directory, is the seller.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      Nick Trevino · Applied AI Ops · LA · Draft product copy · Do not publish to a registry from this branch
+    </div>
+  </footer>
+  <script src="/app.js"></script>
+</body>
+</html>
