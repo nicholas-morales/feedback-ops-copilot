@@ -1,15 +1,15 @@
 # Fiverr Gig kit (pointer)
 
-**Status:** Nick approved listing across marketplaces (2026-09-03). Human may publish to Fiverr after account sign-in. **Repo agents must not publish.**
+**Status:** Nick approved listing. **Repo agents must not publish.** 2026-09-04 ladder: $99 / $329 / $449 (+$80 to $179 full top-5).
 
 **Private repo (full paste kit + gallery):** https://github.com/nicholas-morales/fiverr-fo-gig-kit  
-**Draft PR #1 (2026-09 redesign + QA wrap fix):** https://github.com/nicholas-morales/fiverr-fo-gig-kit/pull/1
+**Draft PR #1 (dark-demo covers + revised ladder):** https://github.com/nicholas-morales/fiverr-fo-gig-kit/pull/1
 
-That repo holds (Eng-stamped 2026-09-03 — do not drift):
+That repo holds:
 - seller profile blurb (productized consultancy voice)
 - Gig title / description / FAQ / requirements paste pack
-- packages: $199 / 3d / 1rev async + top-5 gaps · $399 / 5d / 2rev Vercel demo + Notion/GH checklist (demo source) · $500 / 7d / 3rev MCP/Chrome sketch + Loom
-- 5 editorial gallery covers (1280×769 SVG + render script) + asset checks
+- packages: $99 / 3d / 1rev async + go/no-go · optional +$80 full top-5 ($179) · $329 / 5d / 2rev Vercel demo + Notion/GH checklist (demo source) · $449 / 7d / 3rev MCP/Chrome sketch + Loom
+- 5 dark editorial gallery covers matching the live FO demo (1280×769)
 - publish checklist
 
 Title: I will build an AI feedback ops audit for your product (Next.js / Vercel)
