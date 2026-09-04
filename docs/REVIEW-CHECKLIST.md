@@ -2,17 +2,19 @@
 
 Use this on the redesigned buyer page before merging or deploying. Check every box only after inspecting the exact item. Fail the section if any row is wrong.
 
-**Branch:** `cursor/premium-redesign-d68b`  
+**Branch:** `cursor/dark-first-royal-type-3f49`  
 **Page:** `public/index.html`  
-**Theme:** system preference + `#theme-toggle` / `#theme-toggle-mobile`, persisted as `localStorage.fo-theme`
+**Theme:** **dark-first** default + `#theme-toggle` / `#theme-toggle-mobile`, persisted as `localStorage.fo-theme`
 
 ---
 
 ## Visual quality
 
+- [ ] Dark is the default first paint (no stored theme, no system-preference flip to light)
 - [ ] Light theme: warm paper `#F7F6F3`, forest accent, no neon gradients or glowing blobs
 - [ ] Dark theme: warm charcoal paper `#121110`, pale-sage accent, not a simple invert of the light page
-- [ ] Typography: Newsreader headlines, IBM Plex Sans body, IBM Plex Mono for `sent` / code
+- [ ] Typography: Newsreader headlines + Iowan/Palatino fallback, IBM Plex Sans body, IBM Plex Mono for `sent` / code
+- [ ] Readability: body ~18px / 1.7 leading; UI chrome ≥13px; muted text still contrast-safe
 - [ ] Header: brand + nav + theme toggle align; no wrapping collisions at 1280px
 - [ ] Hero: headline + lede + two CTAs; contract panel sits beside on desktop
 - [ ] Contract panel: Mock contract, `send disabled`, four facts, `$199 audit → $500 build`
@@ -36,7 +38,7 @@ Use this on the redesigned buyer page before merging or deploying. Check every b
 - [ ] Keyboard on table row: Enter or Space loads that sample
 - [ ] Theme toggle switches light ↔ dark immediately
 - [ ] Reload after choosing a theme keeps the same theme (no flash of the opposite theme)
-- [ ] Clearing `localStorage.fo-theme` returns to `prefers-color-scheme`
+- [ ] Clearing `localStorage.fo-theme` returns to dark (the designed default)
 - [ ] Demo error state: with `demo-data.json` blocked, alert + Retry appear; Retry recovers
 - [ ] Loading spinners appear only while samples are fetching
 - [ ] Empty-state copy is used (no Task / no retries) instead of blank panels

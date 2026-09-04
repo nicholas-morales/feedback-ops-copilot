@@ -1,13 +1,14 @@
 const dataUrl = new URL('./demo-data.json', import.meta.url);
 const THEME_KEY = 'fo-theme';
+const DEFAULT_THEME = 'dark';
 
 /** @type {Array<object>|null} */
 let samples = null;
 /** @type {string|null} */
 let activeId = null;
 
-function systemTheme() {
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+function defaultTheme() {
+  return DEFAULT_THEME;
 }
 
 function readStoredTheme() {
@@ -51,23 +52,12 @@ function applyTheme(theme, persist) {
 }
 
 function initTheme() {
-  applyTheme(readStoredTheme() || currentTheme() || systemTheme(), false);
+  applyTheme(readStoredTheme() || currentTheme() || defaultTheme(), false);
 
   for (const btn of document.querySelectorAll('.theme-toggle')) {
     btn.addEventListener('click', () => {
       applyTheme(currentTheme() === 'dark' ? 'light' : 'dark', true);
     });
-  }
-
-  const media = window.matchMedia('(prefers-color-scheme: dark)');
-  const onSystemChange = (event) => {
-    if (readStoredTheme()) return;
-    applyTheme(event.matches ? 'dark' : 'light', false);
-  };
-  if (typeof media.addEventListener === 'function') {
-    media.addEventListener('change', onSystemChange);
-  } else if (typeof media.addListener === 'function') {
-    media.addListener(onSystemChange);
   }
 }
 

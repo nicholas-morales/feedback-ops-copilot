@@ -339,22 +339,30 @@ test('public buyer demo is a static click-through of the mock contract', async (
   assert.doesNotMatch(html, /sk-[A-Za-z0-9]{10,}|ntn_[A-Za-z0-9]+|secret_[A-Za-z0-9]+/);
 });
 
-test('public demo supports persisted light/dark theme without a FOUC boot', async () => {
+test('public demo is dark-first with readable royal typography and a FOUC-safe boot', async () => {
   const html = await readFile(join(root, 'public/index.html'), 'utf8');
   const css = await readFile(join(root, 'public/styles.css'), 'utf8');
   const js = await readFile(join(root, 'public/app.js'), 'utf8');
   const checklist = await readFile(join(root, 'docs/REVIEW-CHECKLIST.md'), 'utf8');
 
-  assert.match(html, /data-theme/);
+  assert.match(html, /data-theme="dark"/);
+  assert.match(html, /theme-color" content="#121110"/);
   assert.match(html, /fo-theme/);
-  assert.match(html, /prefers-color-scheme/);
   assert.match(html, /theme-toggle/);
-  assert.match(html, /Switch to dark theme/);
-  assert.match(css, /html\[data-theme="dark"\]/);
+  assert.match(html, /Switch to light theme/);
+  assert.match(html, /Newsreader/);
+  assert.match(html, /IBM\+Plex\+Sans/);
+  assert.match(css, /html\[data-theme="light"\]/);
+  assert.match(css, /--text-body:\s*1\.125rem/);
+  assert.match(css, /--leading-body:\s*1\.7/);
+  assert.match(css, /Newsreader/);
+  assert.match(css, /IBM Plex Sans/);
   assert.match(css, /prefers-reduced-motion/);
   assert.match(js, /THEME_KEY/);
+  assert.match(js, /DEFAULT_THEME = 'dark'/);
   assert.match(js, /localStorage/);
   assert.match(js, /initTheme/);
+  assert.match(checklist, /dark-first|Dark is the default/i);
   assert.match(checklist, /Visual quality/);
   assert.match(checklist, /Interaction/);
   assert.match(checklist, /Responsive/);

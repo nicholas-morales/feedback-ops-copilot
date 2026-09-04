@@ -88,7 +88,14 @@ async function run() {
     log('End key jumps to last tab', endId === 'praise', endId);
 
     const theme = await page.getAttribute('html', 'data-theme');
-    log('data-theme is set on first paint path', theme === 'light' || theme === 'dark', theme);
+    log('Default first-paint theme is dark', theme === 'dark', theme);
+    const bodyType = await page.$eval('body', (el) => {
+      const s = getComputedStyle(el);
+      return { size: parseFloat(s.fontSize), line: parseFloat(s.lineHeight), family: s.fontFamily };
+    });
+    log('Body size is at least 17px', bodyType.size >= 17, `${bodyType.size}px`);
+    log('Body line-height is at least 1.6×', bodyType.line / bodyType.size >= 1.6, `${(bodyType.line / bodyType.size).toFixed(2)}`);
+    log('Royal / Plex stack is in use', /Newsreader|Iowan|Palatino|IBM Plex/i.test(bodyType.family), bodyType.family);
 
     await page.click('#theme-toggle');
     await page.waitForTimeout(100);
