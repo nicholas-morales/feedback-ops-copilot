@@ -1,6 +1,12 @@
-const dataUrl = new URL('./demo-data.json', import.meta.url);
 const THEME_KEY = 'fo-theme';
 const DEFAULT_THEME = 'dark';
+/** Public root path on Vercel (`outputDirectory: public`). Relative + /public fallbacks cover local and mis-rooted deploys. */
+const DEMO_DATA_PATHS = [
+  '/demo-data.json',
+  new URL('./demo-data.json', import.meta.url).href,
+  './demo-data.json',
+  '/public/demo-data.json',
+];
 
 /** @type {Array<object>|null} */
 let samples = null;
@@ -315,13 +321,27 @@ function initMobileNav() {
   });
 }
 
+async function fetchDemoData() {
+  let lastError = new Error('Could not load demo data');
+  for (const url of DEMO_DATA_PATHS) {
+    try {
+      const res = await fetch(url, { cache: 'no-cache' });
+      if (!res.ok) {
+        lastError = new Error(`Could not load demo data (${res.status}) from ${url}`);
+        continue;
+      }
+      return res.json();
+    } catch (err) {
+      lastError = err instanceof Error ? err : new Error(String(err));
+    }
+  }
+  throw lastError;
+}
+
 async function loadDemo() {
   hideError();
 
-  const payload = await fetch(dataUrl).then((r) => {
-    if (!r.ok) throw new Error(`Could not load demo data (${r.status})`);
-    return r.json();
-  });
+  const payload = await fetchDemoData();
 
   samples = payload.samples;
   buildTabs(samples);

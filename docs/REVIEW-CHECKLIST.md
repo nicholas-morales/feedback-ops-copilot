@@ -84,6 +84,7 @@ Use this on the redesigned buyer page before merging or deploying. Check every b
 - [ ] Static files only (`public/`); no framework bundle
 - [ ] Fonts: Google Fonts preconnect present; page usable if fonts fail
 - [ ] Theme boot script is inline in `<head>` and runs before CSS paint of the wrong theme
+- [ ] Public fixture path `/demo-data.json` returns JSON (not 404); samples tabs populate
 - [ ] `demo-data.json` is one fetch; switching samples does not refetch
 - [ ] No layout jump when samples replace the loading placeholders
 

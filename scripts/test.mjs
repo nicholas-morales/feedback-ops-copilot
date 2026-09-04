@@ -317,9 +317,16 @@ test('public buyer demo is a static click-through of the mock contract', async (
   assert.match(html, new RegExp(REPO_URL.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   assert.match(html, /id="demo"/);
   assert.match(css, /--accent/);
-  assert.match(js, /demo-data\.json/);
+  assert.match(js, /['"]\/demo-data\.json['"]/);
+  assert.match(js, /DEMO_DATA_PATHS/);
+  assert.match(js, /fetchDemoData/);
+  assert.match(html, /href="\/demo-data\.json"/);
   assert.equal(vercel.outputDirectory, 'public');
   assert.equal(vercel.framework, null);
+  assert.ok(
+    (vercel.headers ?? []).some((h) => h.source === '/demo-data.json'),
+    'vercel.json must expose /demo-data.json as a public fixture path',
+  );
 
   const approved = demo.samples.find((s) => s.id === 'approval-approved');
   const empty = demo.samples.find((s) => s.id === 'empty-body');
