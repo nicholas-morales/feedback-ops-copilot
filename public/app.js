@@ -3,6 +3,12 @@ const out = document.getElementById('out');
 const classifyBtn = document.getElementById('classify');
 const loopBtn = document.getElementById('loop-btn');
 
+function unwrap(body) {
+  if (body?.result?.structuredContent) return body.result.structuredContent;
+  if (body?.error) return body.error;
+  return body;
+}
+
 async function rpc(name, args) {
   const res = await fetch('/mcp', {
     method: 'POST',
@@ -18,7 +24,7 @@ async function rpc(name, args) {
   if (!res.ok) {
     throw new Error(body.error || `HTTP ${res.status}`);
   }
-  return body;
+  return unwrap(body);
 }
 
 function show(value) {

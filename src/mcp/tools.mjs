@@ -110,7 +110,6 @@ function inboxRecord(result) {
     receivedAt: result.message.receivedAt,
     notion: result.notion.inbox,
     emptyBody: isEmptyBody(result.message.body),
-    taskCreated: Boolean(result.notion.task),
   };
 }
 
