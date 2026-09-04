@@ -1,0 +1,22 @@
+{
+  "name": "feedback-ops-copilot",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "FO Gate — Feedback Ops HITL MCP. Classify → Notion Inbox/Tasks → approve-before-send. sent stays false.",
+  "bin": {
+    "fo-gate": "./bin/fo-gate.mjs"
+  },
+  "scripts": {
+    "test": "node --test scripts/test.mjs",
+    "start": "FO_GATE_MODE=local FO_GATE_HTTP_LISTEN=1 node src/mcp/http.mjs",
+    "mcp": "node src/mcp/stdio.mjs",
+    "gate": "node bin/fo-gate.mjs",
+    "run:sample": "node scripts/run-sample.mjs",
+    "smoke": "bash scripts/smoke-demo.sh"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "UNLICENSED"
+}

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pricing — FO Gate seats + founding install</title>
+  <meta name="description" content="FO Gate pricing: $199 audit, $500 founding, $19/mo operator seat, $49/mo workspace (5 seats)." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header>
+    <div class="wrap nav">
+      <a class="brand" href="/">FO Gate</a>
+      <nav class="nav-links">
+        <a href="/">Product</a>
+        <a href="#cash">Cash SKUs</a>
+        <a href="#seats">Seats</a>
+        <a href="#adjacent">Other gates</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+    <section class="hero" style="grid-template-columns: 1fr;">
+      <div>
+        <p class="kicker">Pricing</p>
+        <h1>Seats for the listing. Cash SKUs for this week.</h1>
+        <p class="lede">
+          Operator seat <strong>$19/mo</strong>. Workspace <strong>$49/mo</strong> (5 seats).
+          Same-day audit <strong>$199</strong>. Founding wire-up <strong>$500 / 48h</strong>.
+          No ROI invented. Seats do not include custom Notion wiring.
+        </p>
+      </div>
+    </section>
+
+    <section id="cash">
+      <p class="kicker">Hits a $150–$200 floor faster</p>
+      <h2>Cash SKUs (service)</h2>
+      <div class="grid-2">
+        <article class="card featured">
+          <h3>Founding wire-up</h3>
+          <p class="price">$500 <span>/ 48 hours</span></p>
+          <ul class="list">
+            <li>One inbound source wired to the FO loop</li>
+            <li>Notion Inbox + Tasks + Retries</li>
+            <li>Approve-before-send locked</li>
+            <li>MCP is how the buyer uses it after</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Same-day audit</h3>
+          <p class="price">$199</p>
+          <ul class="list">
+            <li>Five sanitized tickets on the mock</li>
+            <li>Credits in full toward founding for 7 days</li>
+            <li>Pay $301 remaining to start the 48h clock</li>
+          </ul>
+          <p>Notion-only remains $250 (DBs + upsert JSON, no n8n).</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="seats">
+      <p class="kicker">Listing SKUs</p>
+      <h2>B operator + C workspace</h2>
+      <p class="lede">Hosted MCP access. Buyer brings their Notion token. Local npx (SKU A) stays $0.</p>
+      <div class="grid-3">
+        <article class="card">
+          <h3>A · Local / proof</h3>
+          <p class="price">$0</p>
+          <ul class="list">
+            <li>npx / <code>node bin/fo-gate.mjs stdio</code></li>
+            <li>Deterministic classify stub</li>
+            <li>In-memory Inbox / Tasks / Retries</li>
+          </ul>
+        </article>
+        <article class="card featured">
+          <h3>B · Operator seat</h3>
+          <p class="price">$19 <span>/ mo</span></p>
+          <p>or $149 / yr</p>
+          <ul class="list">
+            <li>1 seat</li>
+            <li>500 classify calls / month</li>
+            <li>Hosted MCP + HITL drafts</li>
+            <li>Send gate locked</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>C · Workspace</h3>
+          <p class="price">$49 <span>/ mo</span></p>
+          <ul class="list">
+            <li>Up to 5 seats</li>
+            <li>2,500 classify calls / month</li>
+            <li>Shared Inbox / Tasks / Retries view</li>
+            <li>Same send gate</li>
+          </ul>
+        </article>
+      </div>
+      <p class="note">
+        Nick is the seller. Directories do not take checkout. Hosted features require a seat.
+        Do not undercut the $500 founding install with a $19 seat that includes custom wiring.
+      </p>
+    </section>
+
+    <section id="adjacent">
+      <p class="kicker">Not only Feedback Ops</p>
+      <h2>Seat SKUs can cover other HITL gates</h2>
+      <div class="grid-2">
+        <article class="card">
+          <h3>Lead Ops Gate</h3>
+          <p>lead → score → CRM → HITL first reply. Public mock: <a href="https://lead-ops-gate-mock.vercel.app">lead-ops-gate-mock.vercel.app</a>. Founding quote on that product is $750–$1,500 — a different cash SKU, same seat idea.</p>
+        </article>
+        <article class="card">
+          <h3>Invoice / exception HITL</h3>
+          <p>Approve-before-send on exception rows. Not shipped here. Listed so B/C are not framed as FO-only.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">Draft pricing · config/pricing.json is the source of truth · Do not publish</div>
+  </footer>
+</body>
+</html>

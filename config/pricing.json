@@ -1,0 +1,100 @@
+{
+  "seller": "Nick Trevino · Applied AI Ops",
+  "honesty": "Nick is the seller. Registries and directories do not process payment. Hosted MCP requires a seat. Local npx is free. Seats do not include custom Notion wiring.",
+  "noRoiClaims": true,
+  "skus": {
+    "A": {
+      "id": "local-proof",
+      "name": "Local / proof",
+      "priceUsd": 0,
+      "period": null,
+      "seats": 1,
+      "classifyCapPerMonth": null,
+      "includes": [
+        "npx stdio MCP",
+        "Deterministic classify stub",
+        "In-memory Inbox / Tasks / Retries",
+        "Send gate locked (sent stays false)"
+      ],
+      "excludes": ["Hosted MCP", "Live Notion writes", "Custom wiring"]
+    },
+    "B": {
+      "id": "operator-seat",
+      "name": "Operator seat",
+      "priceUsd": 19,
+      "period": "month",
+      "annualUsd": 149,
+      "seats": 1,
+      "classifyCapPerMonth": 500,
+      "includes": [
+        "Hosted FO Gate MCP",
+        "500 classify calls / month",
+        "Buyer-scoped Notion Inbox / Tasks / Retries",
+        "HITL reply drafts",
+        "Send gate locked until the buyer writes \"send is on\""
+      ],
+      "excludes": ["Custom Notion wiring", "Gmail OAuth", "Live SMTP", "Auto-send"]
+    },
+    "C": {
+      "id": "workspace",
+      "name": "Workspace",
+      "priceUsd": 49,
+      "period": "month",
+      "seats": 5,
+      "classifyCapPerMonth": 2500,
+      "includes": [
+        "Shared Inbox / Tasks for up to 5 operator seats",
+        "Retries view",
+        "Higher classify cap (2,500 / month)",
+        "Same HITL send gate"
+      ],
+      "excludes": ["Custom Notion wiring", "Gmail OAuth", "Live SMTP", "Auto-send"]
+    }
+  },
+  "cash": {
+    "audit": {
+      "id": "same-day-audit",
+      "name": "Same-day audit",
+      "priceUsd": 199,
+      "creditsToward": "founding",
+      "note": "Credits in full toward founding wire-up for 7 days ($301 remaining)."
+    },
+    "founding": {
+      "id": "founding-wire-up",
+      "name": "Founding wire-up",
+      "priceUsd": 500,
+      "hours": 48,
+      "note": "One source → classify → Notion Inbox + Tasks → approval gate → retries log. MCP is how they use it after."
+    },
+    "notionOnly": {
+      "id": "notion-only",
+      "name": "Notion-only",
+      "priceUsd": 250,
+      "note": "DBs + upsert JSON, no n8n wiring."
+    }
+  },
+  "products": [
+    {
+      "id": "fo-gate",
+      "name": "FO Gate",
+      "status": "mvp",
+      "loop": "paste ticket → classify → Notion Inbox / Tasks → approve-before-send",
+      "demo": "https://feedback-ops-copilot.vercel.app"
+    },
+    {
+      "id": "lead-ops-gate",
+      "name": "Lead Ops Gate",
+      "status": "adjacent",
+      "loop": "lead ingest → score → CRM + Tasks → HITL first reply",
+      "demo": "https://lead-ops-gate-mock.vercel.app",
+      "note": "Same seat SKUs. Different schema. Not this MCP binary."
+    },
+    {
+      "id": "hitl-invoice-gate",
+      "name": "Invoice / exception HITL",
+      "status": "adjacent",
+      "loop": "exception row → draft → human approve → send stays off",
+      "note": "Same B/C seats if packaged later. No ROI claim. Not built in this PR."
+    }
+  ]
+}
