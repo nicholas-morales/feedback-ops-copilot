@@ -90,16 +90,14 @@ Use this on the redesigned buyer page before merging or deploying. Check every b
 
 ## Gallery (`/gallery` · `/demo/gallery`)
 
-- [ ] Dark-first first paint; **Nothing auto-sends** badge on hero and approve/send UI
-- [ ] Before card: Slack/email pile; After card: classified HITL board with `sent: false`
-- [ ] Five steps with captions: Feedback → Classify → Notion Inbox → Approve gate → Send (human)
-- [ ] HITL board: Approve never flips `sent`; Send stays disabled until approve
-- [ ] After **Send (human)**, demo may show sent locally — no Notion / Twilio / Slack network
-- [ ] Empty-body fixture still has no Task
-- [ ] Captions section matches [docs/GALLERY-CAPTIONS.md](./GALLERY-CAPTIONS.md)
-- [ ] Phone ≤390px: stacked compare, readable captions, full-width gate buttons
-- [ ] `/demo/gallery` reaches the same story (rewrite or redirect)
-- [ ] Parallel screenshot list in [docs/GALLERY-PREVIEW.md](./GALLERY-PREVIEW.md)
+- [ ] Dark-first; flow badge **Feedback → Classify → Notion Inbox → Approve gate → Send (human)**; **Nothing auto-sends**
+- [ ] 01 exact caption; before dump → after columns **Bug / Feature / Praise / Churn risk**
+- [ ] 02 exact caption; draft card + **Approve / Edit / Reject** + audit log; `sent` stays false
+- [ ] 03 exact caption; red **auto-sent** vs green **approved 2m ago**
+- [ ] Captions + links: verdelabs.cloud/work and feedback-ops-copilot.vercel.app
+- [ ] Phone ≤390px: stacked scenarios, full-width gate buttons
+- [ ] `/demo/gallery` reaches the same story
+- [ ] Parallel list in [docs/GALLERY-PREVIEW.md](./GALLERY-PREVIEW.md)
 
 ## Release gates
 

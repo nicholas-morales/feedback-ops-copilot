@@ -1,28 +1,29 @@
-# Gallery captions — Fiverr / Contra / verdelabs.cloud/work
+# Gallery captions — three ship-facing scenarios
 
-Paste-ready lines for Parallel outbound and the portfolio hub. Fictional fixtures. **Nothing auto-sends.**
+Paste-ready. Fixtures only. **Nothing auto-sends.**
 
-**Routes:** `/gallery` · `/demo/gallery` (alias)
+**Flow:** Feedback → Classify → Notion Inbox → Approve gate → Send (human)
+
+**Links**
+- https://verdelabs.cloud/work
+- https://feedback-ops-copilot.vercel.app
+
+**Routes:** `/gallery` · `/demo/gallery`
 
 ---
 
-## Before / after
+## 01 Inbox chaos → classified Notion queue
 
-- **Before:** Slack + email pile. Unread, unowned, missed replies.
-- **After:** HITL board. Classified work waits for a human, not a bot.
+Raw feedback in. Tagged by urgency/theme into Notion Inbox — still zero outbound.
 
-## Five-step walk
+## 02 Draft ready, human gate locked
 
-1. **Feedback** — The note arrives from Slack or email. Nobody replies yet — ingest only.
-2. **Classify** — Bug, billing, feature, or praise — classified so the pile becomes a queue.
-3. **Notion Inbox** — Inbox upsert with owner fields. Empty bodies stay Classified — no fake Task.
-4. **Approve gate** — Approve prepares the reply. It never sends. sent stays false.
-5. **Send (human)** — Explicit human action. This demo records it locally — no live channel.
+AI writes the reply. You approve. Nothing auto-sends — HITL by design.
 
-## Badge (every approve / send frame)
+## 03 Same feedback, wrong autopilot vs your ritual
 
-**Nothing auto-sends**
+Commodity n8n gigs: autopilot send. Feedback Ops: draft → human → send. Built for operators who won’t risk brand.
 
-## One-liner for embed
+## Badge
 
-Inbox chaos → classified Notion work → human approve → human send. No auto-send. No live Notion / Twilio / Slack writes.
+Nothing auto-sends

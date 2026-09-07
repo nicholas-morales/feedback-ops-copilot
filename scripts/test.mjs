@@ -13,18 +13,19 @@ import {
   processFeedback,
 } from '../src/feedback-ops.mjs';
 import {
-  AFTER_CAPTION,
-  BEFORE_CAPTION,
-  GALLERY_STEPS,
+  FLOW_BADGE,
   NOTHING_AUTO_SENDS,
+  PORTFOLIO_LINKS,
+  QUEUE_COLUMNS,
+  QUEUE_FIXTURES,
+  SHIP_SCENARIOS,
   applyApprove,
+  applyEdit,
   applyHumanSend,
-  boardColumn,
+  applyReject,
   canApprove,
-  canHumanSend,
+  createGateTicket,
   isLiveChannel,
-  seedGalleryBoard,
-  seedGalleryItem,
 } from '../public/gallery/hitl.js';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -396,49 +397,39 @@ test('public demo is dark-first with readable royal typography and a FOUC-safe b
   assert.match(checklist, /sent: false|sent === false/);
 });
 
-test('gallery HITL: approve never sends; sent flips only after human Send', async () => {
-  const billing = seedGalleryItem(await loadJson('public/demo-data.json').then((d) => (
-    d.samples.find((s) => s.id === 'billing')
-  )));
-  assert.equal(billing.sent, false);
-  assert.equal(billing.approved, false);
+test('gallery HITL: Approve / Edit / Reject never send', async () => {
+  const ticket = createGateTicket();
+  assert.equal(ticket.sent, false);
+  assert.equal(canApprove(ticket), true);
 
-  const approved = applyApprove(billing);
+  const approved = applyApprove(ticket);
   assert.equal(approved.approved, true);
   assert.equal(approved.sent, false);
   assert.equal(approved.sendGate.sent, false);
-  assert.equal(approved.task.Status, 'Approved');
-  assert.equal(approved.task['Approval needed'], false);
-  assert.equal(approved.sendGate.channel, null);
   assert.equal(isLiveChannel(approved), false);
-  assert.match(approved.sendGate.blockedReason, /Nothing auto-sends|Waiting for a human Send/i);
+  assert.match(approved.audit.at(-1).line, /approved draft/i);
+  assert.match(approved.sendGate.blockedReason, /Nothing auto-sends/i);
 
-  const blocked = applyHumanSend(billing);
+  const edited = applyEdit(ticket, 'Edited draft stays unsent.');
+  assert.equal(edited.sent, false);
+  assert.equal(edited.approved, false);
+  assert.match(edited.audit.at(-1).line, /edited draft/i);
+
+  const rejected = applyReject(ticket);
+  assert.equal(rejected.sent, false);
+  assert.equal(rejected.rejected, true);
+  assert.match(rejected.audit.at(-1).line, /rejected draft/i);
+
+  const blocked = applyHumanSend(ticket);
   assert.equal(blocked.sent, false);
-  assert.equal(blocked.sendBlocked, true);
   assert.match(blocked.sendGate.blockedReason, /approve first/i);
-
-  const sent = applyHumanSend(approved);
-  assert.equal(sent.sent, true);
-  assert.equal(sent.sendGate.sent, true);
-  assert.equal(sent.sendGate.channel, 'demo-local');
-  assert.equal(isLiveChannel(sent), false);
-  assert.match(sent.sendGate.blockedReason, /No Notion \/ Twilio \/ Slack write/i);
-
-  const empty = seedGalleryItem(await loadJson('public/demo-data.json').then((d) => (
-    d.samples.find((s) => s.id === 'empty-body')
-  )));
-  const emptyApproved = applyApprove(empty);
-  assert.equal(emptyApproved.task, null);
-  assert.equal(emptyApproved.sent, false);
-  assert.equal(applyHumanSend(emptyApproved).sent, false);
 
   const live = processFeedback(await loadSample('approval-approved.example.json'));
   assert.equal(live.sent, false);
   assert.equal(live.sendGate.sent, false);
 });
 
-test('gallery routes, captions, and Parallel preview notes are present', async () => {
+test('gallery is the three locked ship scenarios with exact captions', async () => {
   const html = await readFile(join(root, 'public/gallery/index.html'), 'utf8');
   const home = await readFile(join(root, 'public/index.html'), 'utf8');
   const alias = await readFile(join(root, 'public/demo/gallery/index.html'), 'utf8');
@@ -447,68 +438,59 @@ test('gallery routes, captions, and Parallel preview notes are present', async (
   const css = await readFile(join(root, 'public/gallery/gallery.css'), 'utf8');
   const js = await readFile(join(root, 'public/gallery/gallery.js'), 'utf8');
   const vercel = JSON.parse(await readFile(join(root, 'vercel.json'), 'utf8'));
-  const demo = JSON.parse(await readFile(join(root, 'public/demo-data.json'), 'utf8'));
+
+  assert.equal(SHIP_SCENARIOS.length, 3);
+  assert.deepEqual(QUEUE_COLUMNS, ['Bug', 'Feature', 'Praise', 'Churn risk']);
+  assert.equal(FLOW_BADGE, 'Feedback → Classify → Notion Inbox → Approve gate → Send (human)');
+  assert.equal(NOTHING_AUTO_SENDS, 'Nothing auto-sends');
+  assert.equal(PORTFOLIO_LINKS.work, 'https://verdelabs.cloud/work');
+  assert.equal(PORTFOLIO_LINKS.demo, 'https://feedback-ops-copilot.vercel.app');
+
+  const exact = [
+    'Raw feedback in. Tagged by urgency/theme into Notion Inbox — still zero outbound.',
+    'AI writes the reply. You approve. Nothing auto-sends — HITL by design.',
+    'Commodity n8n gigs: autopilot send. Feedback Ops: draft → human → send. Built for operators who won’t risk brand.',
+  ];
+  exact.forEach((caption, i) => {
+    assert.equal(SHIP_SCENARIOS[i].caption, caption);
+    assert.match(html, new RegExp(caption.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+    assert.match(captions, new RegExp(caption.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+  });
 
   assert.match(html, /data-theme="dark"/);
   assert.match(html, /Nothing auto-sends/);
+  assert.match(html, /Feedback → Classify → Notion Inbox → Approve gate → Send \(human\)/);
+  assert.match(html, /id="scenario-chaos"/);
   assert.match(html, /id="gallery-before"/);
   assert.match(html, /id="gallery-after"/);
-  assert.match(html, /id="gallery-step-feedback"/);
-  assert.match(html, /id="gallery-step-classify"/);
-  assert.match(html, /id="gallery-step-notion"/);
-  assert.match(html, /id="gallery-step-approve"/);
-  assert.match(html, /id="gallery-step-send"/);
-  assert.match(html, /id="hitl-board"/);
+  assert.match(html, /id="scenario-gate"/);
   assert.match(html, /id="btn-approve"/);
-  assert.match(html, /id="btn-send"/);
-  assert.match(html, /Nothing auto-sends/);
+  assert.match(html, /id="btn-edit"/);
+  assert.match(html, /id="btn-reject"/);
+  assert.match(html, /id="audit-log"/);
+  assert.match(html, /id="scenario-ritual"/);
+  assert.match(html, /id="autopilot-card"/);
+  assert.match(html, /auto-sent/);
+  assert.match(html, /id="ritual-card"/);
+  assert.match(html, /approved 2m ago/);
+  assert.match(html, /verdelabs\.cloud\/work/);
+  assert.match(html, /feedback-ops-copilot\.vercel\.app/);
   assert.match(home, /href="\/gallery"/);
-  assert.match(home, /Nothing auto-sends/);
   assert.match(alias, /\/gallery/);
-  assert.match(captions, /verdelabs\.cloud\/work/);
-  assert.match(captions, /Fiverr/);
-  assert.match(captions, /Contra/);
-  assert.match(preview, /\/gallery/);
-  assert.match(preview, /\/demo\/gallery/);
-  assert.match(preview, /Screenshot \/ Loom checklist/);
-  assert.match(preview, /Parallel/);
+  assert.match(preview, /Bug \/ Feature \/ Praise \/ Churn risk/);
   assert.match(css, /@media \(max-width: 720px\)/);
   assert.match(js, /applyApprove/);
-  assert.match(js, /applyHumanSend/);
+  assert.match(js, /applyEdit/);
+  assert.match(js, /applyReject/);
+  assert.doesNotMatch(js, /btn-send|applyHumanSend/);
   assert.ok(
     (vercel.rewrites ?? []).some((r) => r.source === '/demo/gallery' && r.destination === '/gallery'),
-    'vercel.json must alias /demo/gallery to /gallery',
   );
-
-  assert.equal(GALLERY_STEPS.length, 5);
   assert.deepEqual(
-    GALLERY_STEPS.map((s) => s.id),
-    ['feedback', 'classify', 'notion', 'approve', 'send'],
+    QUEUE_FIXTURES.map((row) => row.column),
+    ['Bug', 'Feature', 'Praise', 'Churn risk'],
   );
-  assert.match(BEFORE_CAPTION, /Slack \+ email pile/);
-  assert.match(AFTER_CAPTION, /HITL board/);
-  assert.equal(NOTHING_AUTO_SENDS, 'Nothing auto-sends');
-  for (const step of GALLERY_STEPS) {
-    assert.match(html, new RegExp(step.caption.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
-    assert.match(captions, new RegExp(step.caption.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
-  }
-
-  const board = seedGalleryBoard(demo.samples);
-  assert.ok(board.length >= 5);
-  assert.ok(board.every((item) => item.sent === false));
-  const praise = board.find((item) => item.id === 'praise');
-  const empty = board.find((item) => item.id === 'empty-body');
-  const waiting = board.find((item) => item.id === 'billing');
-  assert.equal(boardColumn(praise), 'approved');
-  assert.equal(canApprove(praise), false);
-  assert.equal(canHumanSend(praise), false);
-  assert.equal(boardColumn(empty), 'waiting');
-  assert.equal(canApprove(empty), false);
-  assert.equal(canHumanSend(empty), false);
-  assert.equal(boardColumn(waiting), 'waiting');
-  assert.equal(canApprove(waiting), true);
-  assert.equal(canHumanSend(waiting), false);
-  assert.equal(boardColumn(applyHumanSend(applyApprove(waiting))), 'sent');
+  assert.ok(QUEUE_FIXTURES.every((row) => /@.*\.example/.test(row.from)));
   assert.doesNotMatch(html, /sk-[A-Za-z0-9]{10,}|ntn_[A-Za-z0-9]+|secret_[A-Za-z0-9]+|AC[0-9a-f]{32}/);
   assert.doesNotMatch(js, /twilio|slack\.com\/api|api\.notion\.com/i);
 });

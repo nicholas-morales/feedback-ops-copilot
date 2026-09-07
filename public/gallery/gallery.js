@@ -1,31 +1,26 @@
 import {
-  AFTER_CAPTION,
-  BEFORE_CAPTION,
-  GALLERY_STEPS,
+  FLOW_BADGE,
   NOTHING_AUTO_SENDS,
+  PORTFOLIO_LINKS,
+  QUEUE_COLUMNS,
+  QUEUE_FIXTURES,
+  SHIP_SCENARIOS,
   applyApprove,
-  applyHumanSend,
-  boardColumn,
+  applyEdit,
+  applyReject,
   canApprove,
-  canHumanSend,
-  seedGalleryBoard,
+  canEdit,
+  canReject,
+  captionsText,
+  createGateTicket,
 } from './hitl.js';
 
 const THEME_KEY = 'fo-theme';
 const DEFAULT_THEME = 'dark';
-const DEMO_DATA_PATHS = [
-  '/demo-data.json',
-  new URL('../demo-data.json', import.meta.url).href,
-  '../demo-data.json',
-  '/public/demo-data.json',
-];
 
-/** @type {Array<object>} */
-let originals = [];
-/** @type {Array<object>} */
-let board = [];
-/** @type {string|null} */
-let activeId = null;
+/** @type {object} */
+let ticket = createGateTicket();
+const original = createGateTicket();
 
 function defaultTheme() {
   return DEFAULT_THEME;
@@ -90,162 +85,102 @@ function escapeHtml(s) {
 
 function badgeClass(value) {
   const v = String(value ?? '').toLowerCase();
-  if (v === 'false') return 'hot';
-  if (/(high|bug|blocked|billing)/.test(v)) return 'hot';
-  if (/(medium|waiting|ambiguous|classified|feature)/.test(v)) return 'warn';
-  if (/(low|approved|done|closed|resolved|praise|true)/.test(v)) return 'ok';
+  if (/(high|bug|churn|blocked)/.test(v)) return 'hot';
+  if (/(medium|feature)/.test(v)) return 'warn';
+  if (/(low|praise|approved)/.test(v)) return 'ok';
   return 'info';
 }
 
-function badge(value) {
-  return `<span class="badge ${badgeClass(value)}">${escapeHtml(String(value))}</span>`;
+function renderQueue() {
+  for (const col of QUEUE_COLUMNS) {
+    const list = document.querySelector(`[data-col="${col}"] .board-list`);
+    if (!list) continue;
+    const items = QUEUE_FIXTURES.filter((row) => row.column === col);
+    list.innerHTML = items
+      .map(
+        (row) => `<article class="after-card">
+          <span class="badge ${badgeClass(row.column)}">${escapeHtml(row.column)}</span>
+          <p>${escapeHtml(row.task)}</p>
+          <p class="after-meta">${escapeHtml(row.urgency)} · sent: false</p>
+        </article>`,
+      )
+      .join('');
+  }
 }
 
-function columnFor(item) {
-  return boardColumn(item);
-}
-
-function activeItem() {
-  return board.find((item) => item.id === activeId) || null;
-}
-
-function replaceItem(next) {
-  board = board.map((item) => (item.id === next.id ? next : item));
-}
-
-function updateBanner(item) {
+function renderGate() {
+  const body = document.getElementById('detail-body');
+  const meta = document.getElementById('draft-meta');
+  const editor = document.getElementById('draft-editor');
   const flag = document.getElementById('sent-flag');
   const reason = document.getElementById('sent-reason');
-  if (flag) flag.textContent = `sent: ${String(item?.sent ?? false)}`;
-  if (reason) {
-    reason.textContent =
-      item?.sendGate?.blockedReason ||
-      'Mock contract: approve prepares a draft. Only Send (human) can mark sent — locally, with no live write.';
-  }
-}
+  const log = document.getElementById('audit-log');
 
-function renderBoard() {
-  const lists = {
-    waiting: document.getElementById('col-waiting'),
-    approved: document.getElementById('col-approved'),
-    sent: document.getElementById('col-sent'),
-  };
-
-  for (const key of Object.keys(lists)) {
-    if (lists[key]) lists[key].innerHTML = '';
-  }
-
-  for (const item of board) {
-    const col = lists[columnFor(item)];
-    if (!col) continue;
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = `ticket-card${item.id === activeId ? ' is-active' : ''}`;
-    btn.dataset.id = item.id;
-    btn.setAttribute('aria-pressed', item.id === activeId ? 'true' : 'false');
-    const title = item.task?.Task || item.inbox?.Subject || item.label;
-    btn.innerHTML = `${badge(item.inbox?.Category || 'Held')}<p>${escapeHtml(title)}</p><p class="after-meta">sent: ${escapeHtml(String(item.sent))}</p>`;
-    btn.addEventListener('click', () => selectItem(item.id));
-    col.appendChild(btn);
-  }
-
-  for (const key of Object.keys(lists)) {
-    if (lists[key] && lists[key].children.length === 0) {
-      lists[key].innerHTML = '<p class="empty-state">None</p>';
-    }
-  }
-}
-
-function renderDetail(item) {
-  const body = document.getElementById('detail-body');
-  const meta = document.getElementById('detail-meta');
-  const approveBtn = document.getElementById('btn-approve');
-  const sendBtn = document.getElementById('btn-send');
-
-  if (!item || !body) return;
-
-  if (meta) {
-    const col = boardColumn(item);
-    if (col === 'sent') meta.textContent = 'Human sent (demo)';
-    else if (col === 'approved') meta.textContent = 'Approved · unsent';
-    else meta.textContent = item.label || item.id;
-  }
-
-  if (!item.task) {
-    body.innerHTML = `<p class="empty-state">No Task created. Empty-body and Ambiguous items stay Classified until a human triages them.</p>
-      <p class="after-meta">sent: ${escapeHtml(String(item.sent))}</p>`;
-  } else {
+  if (body) {
     body.innerHTML = `
       <div class="kv">
-        <div class="row"><div class="k">Task</div><div class="v">${escapeHtml(item.task.Task)}</div></div>
-        <div class="row"><div class="k">Status</div><div class="v">${badge(item.task.Status)}</div></div>
-        <div class="row"><div class="k">Approval needed</div><div class="v">${badge(item.task['Approval needed'] ? 'true' : 'false')}</div></div>
-        <div class="row"><div class="k">sent</div><div class="v"><code>${escapeHtml(String(item.sent))}</code></div></div>
-        <div class="row"><div class="k">Channel</div><div class="v">${escapeHtml(item.sendGate?.channel || 'none')}</div></div>
-      </div>
-      <pre class="reply-draft" aria-label="Reply draft">${escapeHtml(item.task['Reply draft'] || '')}</pre>`;
+        <div class="row"><div class="k">From</div><div class="v"><span class="mono">${escapeHtml(ticket.from)}</span></div></div>
+        <div class="row"><div class="k">Subject</div><div class="v">${escapeHtml(ticket.subject)}</div></div>
+        <div class="row"><div class="k">Task</div><div class="v">${escapeHtml(ticket.task)}</div></div>
+        <div class="row"><div class="k">Decision</div><div class="v">${escapeHtml(ticket.decision)}</div></div>
+        <div class="row"><div class="k">sent</div><div class="v"><code>${escapeHtml(String(ticket.sent))}</code></div></div>
+      </div>`;
+  }
+  if (meta) {
+    if (ticket.rejected) meta.textContent = 'Rejected · unsent';
+    else if (ticket.approved) meta.textContent = 'Approved · unsent';
+    else if (ticket.decision === 'edited') meta.textContent = 'Edited · gate locked';
+    else meta.textContent = 'Awaiting human';
+  }
+  if (editor && document.activeElement !== editor) {
+    editor.value = ticket.draft;
+  }
+  if (flag) flag.textContent = `sent: ${String(ticket.sent)}`;
+  if (reason) reason.textContent = ticket.sendGate?.blockedReason || 'Gate locked.';
+  if (log) {
+    log.innerHTML = (ticket.audit ?? [])
+      .map((row) => `<li><span class="mono">${escapeHtml(row.at)}</span> — ${escapeHtml(row.line)}</li>`)
+      .join('');
   }
 
-  if (approveBtn) {
-    approveBtn.disabled = !canApprove(item);
-  }
-  if (sendBtn) {
-    sendBtn.disabled = !canHumanSend(item);
-  }
-}
-
-function selectItem(id) {
-  const item = board.find((row) => row.id === id);
-  if (!item) return;
-  activeId = id;
-  updateBanner(item);
-  renderBoard();
-  renderDetail(item);
+  const approveBtn = document.getElementById('btn-approve');
+  const editBtn = document.getElementById('btn-edit');
+  const rejectBtn = document.getElementById('btn-reject');
+  if (approveBtn) approveBtn.disabled = !canApprove(ticket);
+  if (editBtn) editBtn.disabled = !canEdit(ticket);
+  if (rejectBtn) rejectBtn.disabled = !canReject(ticket);
 }
 
 function onApprove() {
-  const item = activeItem();
-  if (!item) return;
-  const next = applyApprove(item);
-  replaceItem(next);
-  selectItem(next.id);
+  ticket = applyApprove(ticket);
+  renderGate();
 }
 
-function onHumanSend() {
-  const item = activeItem();
-  if (!item) return;
-  const next = applyHumanSend(item);
-  replaceItem(next);
-  selectItem(next.id);
+function onEdit() {
+  const editor = document.getElementById('draft-editor');
+  ticket = applyEdit(ticket, editor?.value ?? ticket.draft);
+  renderGate();
+}
+
+function onReject() {
+  ticket = applyReject(ticket);
+  renderGate();
 }
 
 function onReset() {
-  const original = originals.find((row) => row.id === activeId);
-  if (!original) return;
-  replaceItem(structuredClone(original));
-  selectItem(activeId);
-}
-
-function captionsText() {
-  const lines = [
-    BEFORE_CAPTION,
-    AFTER_CAPTION,
-    ...GALLERY_STEPS.map((step) => `${step.number} ${step.label} — ${step.caption}`),
-    `${NOTHING_AUTO_SENDS}. Approve never sends. Demo send is local only.`,
-  ];
-  return lines.join('\n');
+  ticket = structuredClone(original);
+  renderGate();
 }
 
 function renderCaptions() {
   const list = document.getElementById('caption-list');
   if (!list) return;
   const rows = [
-    { title: 'Before', text: BEFORE_CAPTION },
-    { title: 'After', text: AFTER_CAPTION },
-    ...GALLERY_STEPS.map((step) => ({
-      title: `${step.number} ${step.label}`,
-      text: step.caption,
-    })),
+    ...SHIP_SCENARIOS.map((s) => ({ title: `${s.number} ${s.title}`, text: s.caption })),
+    { title: 'Flow', text: FLOW_BADGE },
+    { title: 'Badge', text: NOTHING_AUTO_SENDS },
+    { title: 'Portfolio', text: PORTFOLIO_LINKS.work },
+    { title: 'Demo', text: PORTFOLIO_LINKS.demo },
   ];
   list.innerHTML = rows
     .map((row) => `<li><strong>${escapeHtml(row.title)}</strong><span>${escapeHtml(row.text)}</span></li>`)
@@ -254,9 +189,8 @@ function renderCaptions() {
 
 async function copyCaptions() {
   const status = document.getElementById('copy-status');
-  const text = captionsText();
   try {
-    await navigator.clipboard.writeText(text);
+    await navigator.clipboard.writeText(captionsText());
     if (status) status.textContent = 'Copied.';
   } catch {
     if (status) status.textContent = 'Copy failed — select the list instead.';
@@ -291,64 +225,20 @@ function initMobileNav() {
   });
 }
 
-function showError(message) {
-  const err = document.getElementById('demo-error');
-  const text = document.getElementById('demo-error-text');
-  if (text) text.textContent = message;
-  if (err) err.hidden = false;
-}
-
-function hideError() {
-  const err = document.getElementById('demo-error');
-  if (err) err.hidden = true;
-}
-
-async function fetchDemoData() {
-  let lastError = new Error('Could not load demo data');
-  for (const url of DEMO_DATA_PATHS) {
-    try {
-      const res = await fetch(url, { cache: 'no-cache' });
-      if (!res.ok) {
-        lastError = new Error(`Could not load demo data (${res.status}) from ${url}`);
-        continue;
-      }
-      return res.json();
-    } catch (err) {
-      lastError = err instanceof Error ? err : new Error(String(err));
-    }
-  }
-  throw lastError;
-}
-
-async function loadBoard() {
-  hideError();
-  const payload = await fetchDemoData();
-  originals = seedGalleryBoard(payload.samples);
-  board = originals.map((item) => structuredClone(item));
-  const initial = board.find((item) => item.id === 'billing') || board[0];
-  if (initial) selectItem(initial.id);
-}
-
-async function main() {
+function main() {
   initTheme();
   initMobileNav();
+  renderQueue();
+  renderGate();
   renderCaptions();
 
   document.getElementById('btn-approve')?.addEventListener('click', onApprove);
-  document.getElementById('btn-send')?.addEventListener('click', onHumanSend);
+  document.getElementById('btn-edit')?.addEventListener('click', onEdit);
+  document.getElementById('btn-reject')?.addEventListener('click', onReject);
   document.getElementById('btn-reset')?.addEventListener('click', onReset);
   document.getElementById('copy-captions')?.addEventListener('click', () => {
     copyCaptions().catch(() => {});
   });
-  document.getElementById('demo-retry')?.addEventListener('click', () => {
-    loadBoard().catch((err) => showError(`Gallery failed to load: ${err.message}`));
-  });
-
-  try {
-    await loadBoard();
-  } catch (err) {
-    showError(`Gallery failed to load: ${err.message}`);
-  }
 }
 
 main();
