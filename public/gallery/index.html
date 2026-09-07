@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Feedback Ops gallery — Inbox chaos to human-approved Notion drafts</title>
+  <meta name="description" content="Portfolio walkthrough: Feedback → Classify → Notion Inbox → Approve gate → Send (human). Nothing auto-sends. Fictional fixtures. No live Notion, Twilio, or Slack writes." />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#121110" />
+  <script>
+    (function () {
+      try {
+        var key = 'fo-theme';
+        var stored = localStorage.getItem(key);
+        var theme = stored === 'light' || stored === 'dark' ? stored : 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+        document.documentElement.style.colorScheme = theme;
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#121110' : '#F7F6F3');
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        document.documentElement.style.colorScheme = 'dark';
+      }
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="./gallery.css" />
+  <link rel="preload" href="/demo-data.json" as="fetch" crossorigin />
+  <link rel="canonical" href="/gallery" />
+</head>
+<body class="gallery-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <a class="brand" href="/" aria-label="Feedback Ops Copilot home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-text">
+          <strong>Feedback Ops Copilot</strong>
+          <span>Gallery · fictional fixtures</span>
+        </span>
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="/gallery" aria-current="page">Gallery</a>
+        <a href="/#demo">Interactive demo</a>
+        <a href="#hitl-board">HITL board</a>
+        <a href="#captions">Captions</a>
+        <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Switch to light theme" aria-pressed="true">
+          <span class="theme-toggle-icon" aria-hidden="true"></span>
+          <span class="theme-toggle-text" id="theme-toggle-text">Light</span>
+        </button>
+      </nav>
+      <div class="header-actions">
+        <button class="theme-toggle theme-toggle-compact" type="button" id="theme-toggle-mobile" aria-label="Switch to light theme" aria-pressed="true">
+          <span class="theme-toggle-icon" aria-hidden="true"></span>
+          <span class="visually-hidden" id="theme-toggle-mobile-text">Light</span>
+        </button>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu">
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile" hidden>
+      <a href="/gallery" aria-current="page">Gallery</a>
+      <a href="/#demo">Interactive demo</a>
+      <a href="#hitl-board">HITL board</a>
+      <a href="#captions">Captions</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero gallery-hero" aria-labelledby="gallery-title">
+      <div class="container">
+        <p class="eyebrow">Portfolio gallery · buyers who do not already run HITL ops</p>
+        <h1 id="gallery-title">Inbox chaos becomes a human-approved Notion draft.</h1>
+        <p class="hero-lede">
+          Screenshot or Loom this path:
+          <strong>Feedback → Classify → Notion Inbox → Approve gate → Send (human)</strong>.
+          Demo mode never writes Notion, Twilio, or Slack.
+        </p>
+        <p class="no-auto-send-badge no-auto-send-badge-hero" role="status">Nothing auto-sends</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#story">Walk the story</a>
+          <a class="btn btn-secondary" href="#hitl-board">Open the HITL board</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="compare" class="section compare-section" aria-labelledby="compare-title">
+      <div class="container">
+        <header class="section-header">
+          <p class="section-eyebrow">Before / after</p>
+          <h2 id="compare-title">Same week of tickets. Two operating systems.</h2>
+          <p class="section-intro">Fictional Brightline / Northstar / Lumen fixtures. Built for a 20-second scroll on a phone.</p>
+        </header>
+
+        <div class="compare-grid">
+          <figure class="compare-card compare-before" id="gallery-before">
+            <figcaption class="compare-kicker">Before</figcaption>
+            <h3>Chaotic shared inbox</h3>
+            <p class="compare-caption" id="before-caption">Before: Slack + email pile. Unread, unowned, missed replies.</p>
+            <div class="chaos-stack" aria-label="Fictional Slack and email pile">
+              <article class="chaos-card chaos-slack">
+                <header>
+                  <span class="chaos-app">#cs-inbox</span>
+                  <span class="chaos-missed">14 unread</span>
+                </header>
+                <p><strong>@here</strong> invoice 4821 again?? AP is in the thread twice</p>
+                <p class="chaos-meta">Maya · 2d · no owner</p>
+              </article>
+              <article class="chaos-card chaos-mail">
+                <header>
+                  <span class="chaos-app">Inbox</span>
+                  <span class="chaos-missed">FWD: FWD:</span>
+                </header>
+                <p>CSV export still truncates. Jordan pinged Slack and emailed.</p>
+                <p class="chaos-meta">jordan.lee@northstar-widgets.example · missed</p>
+              </article>
+              <article class="chaos-card chaos-slack">
+                <header>
+                  <span class="chaos-app">DM · Priya</span>
+                  <span class="chaos-missed">3d stale</span>
+                </header>
+                <p>Can we filter portal feedback by tag? Sitting in saved messages.</p>
+                <p class="chaos-meta">No task · no draft · no reply</p>
+              </article>
+            </div>
+          </figure>
+
+          <figure class="compare-card compare-after" id="gallery-after">
+            <figcaption class="compare-kicker">After</figcaption>
+            <h3>HITL board</h3>
+            <p class="compare-caption" id="after-caption">After: HITL board. Classified work waits for a human, not a bot.</p>
+            <div class="after-board" aria-label="Classified items waiting for human approve">
+              <article class="after-card">
+                <span class="badge hot">Billing</span>
+                <p>Issue credit memo for double setup fee</p>
+                <p class="after-meta">Waiting approval · <code>sent: false</code></p>
+              </article>
+              <article class="after-card">
+                <span class="badge hot">Bug</span>
+                <p>Fix CSV product-name truncation</p>
+                <p class="after-meta">Waiting approval · <code>sent: false</code></p>
+              </article>
+              <article class="after-card">
+                <span class="badge warn">Feature request</span>
+                <p>Roadmap: portal feedback tag filters</p>
+                <p class="after-meta">Waiting approval · <code>sent: false</code></p>
+              </article>
+            </div>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="story" class="section story-section" aria-labelledby="story-title">
+      <div class="container">
+        <header class="section-header">
+          <p class="section-eyebrow">End-to-end flow</p>
+          <h2 id="story-title">Five steps a buyer can screenshot</h2>
+          <p class="section-intro">Captions under each step are paste-ready for Fiverr, Contra, and verdelabs.cloud/work.</p>
+        </header>
+
+        <nav class="step-tabs" aria-label="Gallery steps">
+          <a href="#gallery-step-feedback">01 Feedback</a>
+          <a href="#gallery-step-classify">02 Classify</a>
+          <a href="#gallery-step-notion">03 Notion Inbox</a>
+          <a href="#gallery-step-approve">04 Approve gate</a>
+          <a href="#gallery-step-send">05 Send (human)</a>
+        </nav>
+
+        <ol class="story-steps">
+          <li class="story-step" id="gallery-step-feedback">
+            <div class="story-copy">
+              <span class="principle-index">01</span>
+              <h3>Feedback</h3>
+              <p class="step-caption">The note arrives from Slack or email. Nobody replies yet — ingest only.</p>
+            </div>
+            <div class="story-visual" aria-label="Incoming feedback fixture">
+              <p class="visual-kicker">Ingest · mock-email</p>
+              <p class="visual-from">ap@brightline-studio.example</p>
+              <p class="visual-subject">Invoice #4821 double-charged setup fee</p>
+              <p>Hello, our August invoice (#4821) billed the setup fee twice. Please issue a credit memo for the duplicate charge.</p>
+            </div>
+          </li>
+          <li class="story-step" id="gallery-step-classify">
+            <div class="story-copy">
+              <span class="principle-index">02</span>
+              <h3>Classify</h3>
+              <p class="step-caption">Bug, billing, feature, or praise — classified so the pile becomes a queue.</p>
+            </div>
+            <div class="story-visual" aria-label="Classification result">
+              <div class="kv">
+                <div class="row"><div class="k">Category</div><div class="v"><span class="badge hot">Billing</span></div></div>
+                <div class="row"><div class="k">Priority</div><div class="v"><span class="badge hot">High</span></div></div>
+                <div class="row"><div class="k">Inbox</div><div class="v"><span class="badge info">Tasked</span></div></div>
+                <div class="row"><div class="k">Why</div><div class="v">Billing keywords matched.</div></div>
+              </div>
+            </div>
+          </li>
+          <li class="story-step" id="gallery-step-notion">
+            <div class="story-copy">
+              <span class="principle-index">03</span>
+              <h3>Notion Inbox</h3>
+              <p class="step-caption">Inbox upsert with owner fields. Empty bodies stay Classified — no fake Task.</p>
+            </div>
+            <div class="story-visual" aria-label="Notion inbox row">
+              <p class="visual-kicker">Notion · Inbox / Feedback</p>
+              <div class="kv">
+                <div class="row"><div class="k">Subject</div><div class="v">Invoice #4821 double-charged setup fee</div></div>
+                <div class="row"><div class="k">Summary</div><div class="v">Hello, our August invoice (#4821) billed the setup fee twice.</div></div>
+                <div class="row"><div class="k">Empty body</div><div class="v">No Task created — held for a human</div></div>
+              </div>
+            </div>
+          </li>
+          <li class="story-step" id="gallery-step-approve">
+            <div class="story-copy">
+              <span class="principle-index">04</span>
+              <h3>Approve gate</h3>
+              <p class="step-caption">Approve prepares the reply. It never sends. sent stays false.</p>
+              <p class="no-auto-send-badge" role="status">Nothing auto-sends</p>
+            </div>
+            <div class="story-visual" aria-label="Approval gate">
+              <p class="visual-kicker">Task · Approval needed</p>
+              <p class="visual-subject">Issue credit memo for double setup fee</p>
+              <pre class="reply-draft">Hi Brightline Studio AP team,
+
+Thanks for flagging invoice #4821. A credit memo for $250 will post within 1 business day.
+
+— Support (mock draft)</pre>
+              <p class="after-meta"><code>sent: false</code> after Approve</p>
+            </div>
+          </li>
+          <li class="story-step" id="gallery-step-send">
+            <div class="story-copy">
+              <span class="principle-index">05</span>
+              <h3>Send (human)</h3>
+              <p class="step-caption">Explicit human action. This demo records it locally — no live channel.</p>
+              <p class="no-auto-send-badge" role="status">Nothing auto-sends</p>
+            </div>
+            <div class="story-visual" aria-label="Human send step">
+              <p class="visual-kicker">Human send · demo-local</p>
+              <p>A person taps Send. The gallery may flip this one card to sent. No Notion, Twilio, or Slack write happens.</p>
+              <p class="after-meta">Approve path cannot reach this state.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="hitl-board" class="section board-section" aria-labelledby="board-title">
+      <div class="container">
+        <header class="section-header">
+          <p class="section-eyebrow">Approve / send UI</p>
+          <h2 id="board-title">Human gate you can click</h2>
+          <p class="section-intro">Approve never sends. Send stays disabled until a human approves. Demo send is local only.</p>
+        </header>
+
+        <div class="no-send-banner" id="no-send-banner" role="status">
+          <strong>Nothing auto-sends</strong>
+          <span id="sent-flag">sent: false</span>
+          <span id="sent-reason">Mock contract: approve prepares a draft. Only Send (human) can mark sent — locally, with no live write.</span>
+        </div>
+
+        <div class="board-layout">
+          <div class="board-columns" id="board-columns" aria-label="HITL board columns">
+            <div class="board-col" data-col="waiting">
+              <h3>Waiting approval</h3>
+              <div class="board-list" id="col-waiting"></div>
+            </div>
+            <div class="board-col" data-col="approved">
+              <h3>Approved · unsent</h3>
+              <div class="board-list" id="col-approved"></div>
+            </div>
+            <div class="board-col" data-col="sent">
+              <h3>Human sent (demo)</h3>
+              <div class="board-list" id="col-sent"></div>
+            </div>
+          </div>
+
+          <article class="panel board-detail" aria-labelledby="detail-heading">
+            <header class="panel-header">
+              <h3 id="detail-heading">Selected ticket</h3>
+              <span class="panel-meta" id="detail-meta">Pick a card</span>
+            </header>
+            <div class="panel-body" id="detail-body">
+              <p class="empty-state">Load fixtures to inspect a draft.</p>
+            </div>
+            <div class="gate-actions">
+              <button class="btn btn-secondary" type="button" id="btn-approve">Approve draft</button>
+              <button class="btn btn-primary" type="button" id="btn-send" disabled>Send (human)</button>
+              <button class="btn btn-secondary btn-sm" type="button" id="btn-reset">Reset ticket</button>
+            </div>
+          </article>
+        </div>
+
+        <div class="demo-error" id="demo-error" role="alert" hidden>
+          <p id="demo-error-text">Gallery fixtures failed to load.</p>
+          <button class="btn btn-secondary btn-sm" type="button" id="demo-retry">Retry</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="captions" class="section captions-section" aria-labelledby="captions-title">
+      <div class="container">
+        <header class="section-header">
+          <p class="section-eyebrow">Paste pack</p>
+          <h2 id="captions-title">Captions for Fiverr, Contra, and verdelabs.cloud/work</h2>
+          <p class="section-intro">Short lines under the screenshots. Copy once; reuse on the portfolio hub.</p>
+        </header>
+        <div class="caption-toolbar">
+          <button class="btn btn-secondary" type="button" id="copy-captions">Copy all captions</button>
+          <span class="copy-status" id="copy-status" role="status" aria-live="polite"></span>
+        </div>
+        <ol class="caption-list" id="caption-list"></ol>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="container footer-inner">
+      <p>
+        Gallery demo. Fictional <code>*.example</code> senders. No secrets.
+        Nothing auto-sends. No live Notion, Twilio, Slack, Gmail, or SMTP writes.
+        Not Verde Comply. Routes: <a href="/gallery">/gallery</a> · <a href="/demo/gallery">/demo/gallery</a>
+      </p>
+      <p class="footer-links">
+        <a href="/">Buyer demo</a>
+        <span aria-hidden="true">·</span>
+        <a href="https://verdelabs.cloud/work" target="_blank" rel="noreferrer">verdelabs.cloud/work</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="./gallery.js" type="module"></script>
+</body>
+</html>

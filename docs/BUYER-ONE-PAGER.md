@@ -68,6 +68,7 @@ Add-ons (separate quote): extra sources, extra Notion properties, Slack notify, 
 | What | Link |
 | --- | --- |
 | Live Notion demo (fictional) | https://app.notion.com/p/3ceeb1cdb78b813bbf92f7f21591e482 |
+| Portfolio gallery (before/after + HITL board) | `/gallery` (alias `/demo/gallery`) |
 | Public repo (inactive workflow, no secrets) | https://github.com/nickerios101-cpu/feedback-ops-copilot |
 | Price, scope, 8 acceptance checks | [OFFER.md](../OFFER.md) |
 | 3-minute talking track | [proposals/demo-checklist.md](../proposals/demo-checklist.md) |

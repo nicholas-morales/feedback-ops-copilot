@@ -3,6 +3,7 @@
 Hey — I ship n8n + Notion ops that turn a feedback inbox into tracked tasks with a **human gate before any reply**.
 
 3-min mock (fictional data, no send):
+Gallery (before/after + HITL board): /gallery
 https://app.notion.com/p/3ceeb1cdb78b813bbf92f7f21591e482
 
 Repo (inactive workflow, `npm test` green locally):

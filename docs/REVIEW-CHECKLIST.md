@@ -3,7 +3,7 @@
 Use this on the redesigned buyer page before merging or deploying. Check every box only after inspecting the exact item. Fail the section if any row is wrong.
 
 **Branch:** `cursor/dark-first-royal-type-3f49`  
-**Page:** `public/index.html`  
+**Pages:** `public/index.html` + `public/gallery/index.html` (`/gallery`, alias `/demo/gallery`)  
 **Theme:** **dark-first** default + `#theme-toggle` / `#theme-toggle-mobile`, persisted as `localStorage.fo-theme`
 
 ---
@@ -87,6 +87,19 @@ Use this on the redesigned buyer page before merging or deploying. Check every b
 - [ ] Public fixture path `/demo-data.json` returns JSON (not 404); samples tabs populate
 - [ ] `demo-data.json` is one fetch; switching samples does not refetch
 - [ ] No layout jump when samples replace the loading placeholders
+
+## Gallery (`/gallery` · `/demo/gallery`)
+
+- [ ] Dark-first first paint; **Nothing auto-sends** badge on hero and approve/send UI
+- [ ] Before card: Slack/email pile; After card: classified HITL board with `sent: false`
+- [ ] Five steps with captions: Feedback → Classify → Notion Inbox → Approve gate → Send (human)
+- [ ] HITL board: Approve never flips `sent`; Send stays disabled until approve
+- [ ] After **Send (human)**, demo may show sent locally — no Notion / Twilio / Slack network
+- [ ] Empty-body fixture still has no Task
+- [ ] Captions section matches [docs/GALLERY-CAPTIONS.md](./GALLERY-CAPTIONS.md)
+- [ ] Phone ≤390px: stacked compare, readable captions, full-width gate buttons
+- [ ] `/demo/gallery` reaches the same story (rewrite or redirect)
+- [ ] Parallel screenshot list in [docs/GALLERY-PREVIEW.md](./GALLERY-PREVIEW.md)
 
 ## Release gates
 

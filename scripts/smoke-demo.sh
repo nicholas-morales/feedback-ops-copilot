@@ -15,6 +15,8 @@ npm test
 cat <<'EOF'
 
 === 3-minute demo path ===
+Optional first tab: /gallery (alias /demo/gallery) — before/after + Feedback → Classify → Notion Inbox → Approve gate → Send (human). Nothing auto-sends.
+
 Open these two tabs, then talk Inbox → Task → Approved draft → Retries.
 
   1. Notion demo (fictional data)

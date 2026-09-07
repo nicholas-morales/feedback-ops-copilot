@@ -2,6 +2,7 @@
 
 Use this on a sales call. All data is fictional (`*.example`). Do **not** connect Gmail or activate n8n.
 
+**Gallery:** `/gallery` (alias `/demo/gallery`) — before/after + five screenshot steps. Captions: [docs/GALLERY-CAPTIONS.md](../docs/GALLERY-CAPTIONS.md).  
 **Notion:** https://app.notion.com/p/3ceeb1cdb78b813bbf92f7f21591e482  
 **Repo:** https://github.com/nickerios101-cpu/feedback-ops-copilot  
 **Offer:** [OFFER.md](../OFFER.md)  
@@ -12,6 +13,7 @@ Use this on a sales call. All data is fictional (`*.example`). Do **not** connec
 
 ## Before the call (90 seconds)
 
+- [ ] Open `/gallery` (or `/demo/gallery`) in a clean window — dark-first, **Nothing auto-sends** on screen.
 - [ ] Open the Notion demo in a clean browser window (no other client names on screen).
 - [ ] Optional: `npm test` in the repo so you can flash a green terminal.
 - [ ] Optional: n8n on **localhost:5679**, workflow imported, **inactive**, Test workflow already run on pinned billing sample.

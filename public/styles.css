@@ -754,13 +754,26 @@ button.sample[aria-selected="true"] {
   margin: 0;
 }
 
-.send-gate-label {
+.send-gate-label,
+.no-auto-send-badge {
   font-size: var(--text-label);
   font-weight: var(--weight-strong);
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--signal);
   white-space: nowrap;
+}
+
+.no-auto-send-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--signal-border);
+  background: var(--signal-bg);
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-size: var(--text-small);
 }
 
 /* Demo stage panels */
@@ -1157,7 +1170,8 @@ td.mono { font-family: var(--font-mono); font-size: var(--text-small); font-weig
     flex-wrap: wrap;
     gap: var(--space-2);
   }
-  .send-gate-label { width: 100%; }
+  .send-gate-label,
+  .no-auto-send-badge { width: 100%; }
 
   .demo-error {
     flex-direction: column;

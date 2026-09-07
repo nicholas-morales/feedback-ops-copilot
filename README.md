@@ -10,6 +10,8 @@ This is Nick’s income-proof repo for Upwork / Contra. **Not Verde Comply.**
 
 **Clickable buyer preview (public, no SSO):** https://feedback-ops-copilot.vercel.app — $500 / 48h walkthrough in [`public/`](./public/). Dark-first, royal/Anthropic typography, send stays off, not Verde.
 
+**Portfolio gallery (no live writes):** [`/gallery`](./public/gallery/) · alias [`/demo/gallery`](./public/demo/gallery/). Before/after + Feedback → Classify → Notion Inbox → Approve gate → Send (human). Captions: [docs/GALLERY-CAPTIONS.md](./docs/GALLERY-CAPTIONS.md). Preview notes: [docs/GALLERY-PREVIEW.md](./docs/GALLERY-PREVIEW.md).
+
 ---
 
 ## What you get in this repo
@@ -22,6 +24,9 @@ This is Nick’s income-proof repo for Upwork / Contra. **Not Verde Comply.**
 | [`OFFER.md`](./OFFER.md) | Price, exclusions, acceptance checks |
 | [`docs/BUYER-ONE-PAGER.md`](./docs/BUYER-ONE-PAGER.md) | 1-page buyer sheet (pain, deliverables, exclusions, proof) |
 | [`docs/REVIEW-CHECKLIST.md`](./docs/REVIEW-CHECKLIST.md) | Nick’s pre-merge visual / HITL / a11y / release checklist |
+| [`docs/GALLERY-CAPTIONS.md`](./docs/GALLERY-CAPTIONS.md) | Fiverr / Contra / verdelabs.cloud/work captions |
+| [`docs/GALLERY-PREVIEW.md`](./docs/GALLERY-PREVIEW.md) | Gallery routes + Parallel screenshot checklist |
+| [`public/gallery/`](./public/gallery/) | Dark-first portfolio walkthrough (`/gallery`) |
 | [`proposals/`](./proposals/) | Upwork paste, Contra DM, 3-minute demo checklist |
 | [`scripts/smoke-demo.sh`](./scripts/smoke-demo.sh) | `npm test` + printed 3-min demo path (`npm run smoke`) |
 
