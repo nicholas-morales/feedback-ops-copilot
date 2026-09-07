@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Feedback Ops gallery — three ship-facing demo scenarios</title>
+  <meta name="description" content="Inbox chaos → classified Notion queue. Draft ready, human gate locked. Autopilot vs HITL ritual. Nothing auto-sends. Fixtures only." />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#121110" />
+  <script>
+    (function () {
+      try {
+        var key = 'fo-theme';
+        var stored = localStorage.getItem(key);
+        var theme = stored === 'light' || stored === 'dark' ? stored : 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+        document.documentElement.style.colorScheme = theme;
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#121110' : '#F7F6F3');
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        document.documentElement.style.colorScheme = 'dark';
+      }
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="./gallery.css" />
+  <link rel="canonical" href="/gallery" />
+</head>
+<body class="gallery-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <a class="brand" href="/" aria-label="Feedback Ops Copilot home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-text">
+          <strong>Feedback Ops Copilot</strong>
+          <span>Gallery · three scenarios</span>
+        </span>
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="/gallery" aria-current="page">Gallery</a>
+        <a href="#scenario-chaos">01 Chaos</a>
+        <a href="#scenario-gate">02 Gate</a>
+        <a href="#scenario-ritual">03 Ritual</a>
+        <a href="#captions">Captions</a>
+        <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Switch to light theme" aria-pressed="true">
+          <span class="theme-toggle-icon" aria-hidden="true"></span>
+          <span class="theme-toggle-text" id="theme-toggle-text">Light</span>
+        </button>
+      </nav>
+      <div class="header-actions">
+        <button class="theme-toggle theme-toggle-compact" type="button" id="theme-toggle-mobile" aria-label="Switch to light theme" aria-pressed="true">
+          <span class="theme-toggle-icon" aria-hidden="true"></span>
+          <span class="visually-hidden" id="theme-toggle-mobile-text">Light</span>
+        </button>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu">
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile" hidden>
+      <a href="/gallery" aria-current="page">Gallery</a>
+      <a href="#scenario-chaos">01 Chaos</a>
+      <a href="#scenario-gate">02 Gate</a>
+      <a href="#scenario-ritual">03 Ritual</a>
+      <a href="#captions">Captions</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero gallery-hero" aria-labelledby="gallery-title">
+      <div class="container">
+        <p class="eyebrow">Portfolio gallery · fixtures only</p>
+        <h1 id="gallery-title">Three buyer frames. One ritual. Nothing auto-sends.</h1>
+        <p class="flow-badge" id="flow-badge" role="img" aria-label="Feedback to Classify to Notion Inbox to Approve gate to Send human">
+          Feedback → Classify → Notion Inbox → Approve gate → Send (human)
+        </p>
+        <p class="no-auto-send-badge no-auto-send-badge-hero" role="status">Nothing auto-sends</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#scenario-chaos">01 Inbox chaos</a>
+          <a class="btn btn-secondary" href="#scenario-gate">02 Human gate</a>
+          <a class="btn btn-secondary" href="#scenario-ritual">03 vs autopilot</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="scenario-chaos" class="section scenario" aria-labelledby="chaos-title">
+      <div class="container">
+        <header class="section-header">
+          <p class="section-eyebrow">01 · Inbox chaos → classified Notion queue</p>
+          <h2 id="chaos-title">Inbox chaos → classified Notion queue</h2>
+          <p class="step-caption" id="chaos-caption">Raw feedback in. Tagged by urgency/theme into Notion Inbox — still zero outbound.</p>
+        </header>
+
+        <div class="compare-grid">
+          <figure class="compare-card compare-before" id="gallery-before">
+            <figcaption class="compare-kicker">Before dump</figcaption>
+            <h3>Raw shared inbox</h3>
+            <div class="chaos-stack" aria-label="Untagged feedback dump">
+              <article class="chaos-card">
+                <header><span class="chaos-app">#cs-inbox</span><span class="chaos-missed">no tag</span></header>
+                <p>CSV still truncates. Jordan emailed <em>and</em> Slack’d.</p>
+                <p class="chaos-meta">jordan.lee@northstar-widgets.example</p>
+              </article>
+              <article class="chaos-card">
+                <header><span class="chaos-app">DM · Priya</span><span class="chaos-missed">3d stale</span></header>
+                <p>Can we filter portal feedback by tag?</p>
+                <p class="chaos-meta">priya.nair@lumen-co.example</p>
+              </article>
+              <article class="chaos-card">
+                <header><span class="chaos-app">Inbox</span><span class="chaos-missed">thanks?</span></header>
+                <p>Support turnaround was excellent. Buried under FWD: FWD:</p>
+                <p class="chaos-meta">sam.okoye@harbor-apps.example</p>
+              </article>
+              <article class="chaos-card">
+                <header><span class="chaos-app">@here</span><span class="chaos-missed">cancel?</span></header>
+                <p>Invoice #4821 still wrong. Evaluating other tools.</p>
+                <p class="chaos-meta">ap@brightline-studio.example</p>
+              </article>
+            </div>
+          </figure>
+
+          <figure class="compare-card compare-after" id="gallery-after">
+            <figcaption class="compare-kicker">After · Notion Inbox</figcaption>
+            <h3>Classified queue</h3>
+            <p class="after-meta">Bug / Feature / Praise / Churn risk · <code>sent: false</code></p>
+            <div class="queue-columns" id="queue-columns" aria-label="Classified Notion queue columns">
+              <div class="board-col" data-col="Bug">
+                <h3>Bug</h3>
+                <div class="board-list" id="col-Bug"></div>
+              </div>
+              <div class="board-col" data-col="Feature">
+                <h3>Feature</h3>
+                <div class="board-list" id="col-Feature"></div>
+              </div>
+              <div class="board-col" data-col="Praise">
+                <h3>Praise</h3>
+                <div class="board-list" id="col-Praise"></div>
+              </div>
+              <div class="board-col" data-col="Churn risk">
+                <h3>Churn risk</h3>
+                <div class="board-list" id="col-Churn-risk"></div>
+              </div>
+            </div>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="scenario-gate" class="section scenario" aria-labelledby="gate-title">
+      <div class="container">
+        <header class="section-header">
+          <p class="section-eyebrow">02 · Draft ready, human gate locked</p>
+          <h2 id="gate-title">Draft ready, human gate locked</h2>
+          <p class="step-caption" id="gate-caption">AI writes the reply. You approve. Nothing auto-sends — HITL by design.</p>
+        </header>
+
+        <div class="no-send-banner" role="status">
+          <strong>Nothing auto-sends</strong>
+          <span id="sent-flag">sent: false</span>
+          <span id="sent-reason">Approve / Edit / Reject only. Gate stays locked.</span>
+        </div>
+
+        <article class="draft-card panel" id="draft-card" aria-labelledby="draft-heading">
+          <header class="panel-header">
+            <h3 id="draft-heading">Reply draft</h3>
+            <span class="panel-meta" id="draft-meta">Awaiting human</span>
+          </header>
+          <div class="panel-body" id="detail-body"></div>
+          <label class="draft-edit-label" for="draft-editor">Edit draft (local only)</label>
+          <textarea id="draft-editor" class="draft-editor" rows="8" aria-label="Editable reply draft"></textarea>
+          <div class="gate-actions">
+            <button class="btn btn-primary" type="button" id="btn-approve">Approve</button>
+            <button class="btn btn-secondary" type="button" id="btn-edit">Edit</button>
+            <button class="btn btn-secondary" type="button" id="btn-reject">Reject</button>
+            <button class="btn btn-secondary btn-sm" type="button" id="btn-reset">Reset</button>
+          </div>
+          <div class="audit-log" aria-live="polite">
+            <h4>Audit log</h4>
+            <ol id="audit-log"></ol>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="scenario-ritual" class="section scenario" aria-labelledby="ritual-title">
+      <div class="container">
+        <header class="section-header">
+          <p class="section-eyebrow">03 · Same feedback, wrong autopilot vs your ritual</p>
+          <h2 id="ritual-title">Same feedback, wrong autopilot vs your ritual</h2>
+          <p class="step-caption" id="ritual-caption">Commodity n8n gigs: autopilot send. Feedback Ops: draft → human → send. Built for operators who won’t risk brand.</p>
+        </header>
+
+        <div class="compare-grid ritual-grid">
+          <figure class="compare-card ritual-wrong" id="autopilot-card">
+            <figcaption class="compare-kicker">Commodity n8n</figcaption>
+            <h3>Autopilot</h3>
+            <p class="visual-from">ap@brightline-studio.example</p>
+            <p class="visual-subject">We’re evaluating other tools if invoice #4821 stays broken</p>
+            <pre class="reply-draft">Thanks for reaching out! We’re sorry for the inconvenience. Best, Support Bot</pre>
+            <p class="stamp stamp-hot" id="autopilot-stamp">auto-sent</p>
+          </figure>
+          <figure class="compare-card ritual-right" id="ritual-card">
+            <figcaption class="compare-kicker">Feedback Ops</figcaption>
+            <h3>Your ritual</h3>
+            <p class="visual-from">ap@brightline-studio.example</p>
+            <p class="visual-subject">We’re evaluating other tools if invoice #4821 stays broken</p>
+            <pre class="reply-draft">Hi Brightline AP team,
+
+Thanks for flagging invoice #4821. Credit memo drafted. Nothing has been sent.
+
+— Support (human-approved, unsent)</pre>
+            <p class="stamp stamp-ok" id="ritual-stamp">approved 2m ago</p>
+            <p class="after-meta"><code>sent: false</code> · Nothing auto-sends</p>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="captions" class="section captions-section" aria-labelledby="captions-title">
+      <div class="container">
+        <header class="section-header">
+          <p class="section-eyebrow">Paste pack</p>
+          <h2 id="captions-title">Captions for Fiverr, Contra, and the portfolio hub</h2>
+          <p class="section-intro">
+            Embed on
+            <a href="https://verdelabs.cloud/work" target="_blank" rel="noreferrer">verdelabs.cloud/work</a>
+            · demo
+            <a href="https://feedback-ops-copilot.vercel.app" target="_blank" rel="noreferrer">feedback-ops-copilot.vercel.app</a>
+          </p>
+        </header>
+        <div class="caption-toolbar">
+          <button class="btn btn-secondary" type="button" id="copy-captions">Copy all captions</button>
+          <span class="copy-status" id="copy-status" role="status" aria-live="polite"></span>
+        </div>
+        <ol class="caption-list" id="caption-list"></ol>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="container footer-inner">
+      <p>
+        Fixtures only. Fictional <code>*.example</code> senders. No secrets.
+        Nothing auto-sends. No live Notion, Twilio, Slack, Gmail, or SMTP writes.
+        <a href="/gallery">/gallery</a> · <a href="/demo/gallery">/demo/gallery</a>
+      </p>
+      <p class="footer-links">
+        <a href="/">Buyer demo</a>
+        <span aria-hidden="true">·</span>
+        <a href="https://verdelabs.cloud/work" target="_blank" rel="noreferrer">verdelabs.cloud/work</a>
+        <span aria-hidden="true">·</span>
+        <a href="https://feedback-ops-copilot.vercel.app" target="_blank" rel="noreferrer">feedback-ops-copilot.vercel.app</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="./gallery.js" type="module"></script>
+</body>
+</html>

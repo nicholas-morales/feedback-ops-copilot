@@ -1,0 +1,322 @@
+{
+  "name": "Feedback Ops Copilot (mock)",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## MOCK ONLY — do not activate\n\nInactive, manual-trigger walkthrough.\n\n- No Gmail / SMTP / webhook / schedule\n- Notion HTTP is **disabled and unconnected**\n- `sent` is always `false`\n- On-demand OFF (do not publish or enable)\n\nImport → keep inactive → Test workflow.\nPin data = Brightline billing sample.",
+        "height": 380,
+        "width": 320,
+        "color": 3
+      },
+      "id": "note-safety",
+      "name": "Safety (read first)",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [40, 40]
+    },
+    {
+      "parameters": {
+        "content": "## Flow\n\n1. **Mock Ingest** — fictional email JSON\n2. **Classify & Summarize** — deterministic stub (no LLM)\n3. **Build Notion Upsert JSON** — Inbox + Task + Retries payloads\n4. **Human Approval Send Gate** — never sends\n5. **Retries Log** — empty-body / send-gate rows\n\nNotion HTTP sits unused on the right.",
+        "height": 320,
+        "width": 300,
+        "color": 5
+      },
+      "id": "note-flow",
+      "name": "Flow notes",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [40, 460]
+    },
+    {
+      "parameters": {},
+      "id": "mock-ingest",
+      "name": "Mock Ingest",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [420, 360],
+      "notes": "Manual only. No webhook, no schedule, on-demand OFF."
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "language": "javaScript",
+        "jsCode": "const item = $input.item.json;\nconst from = String(item.from || '').trim();\nconst subject = String(item.subject || '').trim();\nconst body = String(item.body || '');\nconst receivedAt = item.receivedAt || item.received || null;\nconst approval = item.approval && item.approval.approved === true;\n\nconst empty = body.trim().length === 0;\nconst hay = subject + '\\n' + body;\nconst billing = /\\b(invoice|invoices|billing|billed|charge[ds]?|refund|payment|credit memo|double[- ]charg|setup fee|ap team)\\b/i.test(hay);\nconst bug = /\\b(bug|broken|crash(?:es|ed)?|error|truncat(?:e|es|ed|ion)|doesn'?t work|not working|repro)\\b/i.test(hay);\nconst feature = /\\b(can we|could we|feature|request|would it be possible|wishlist|add(?:ing)?|filter[s]?)\\b/i.test(hay);\nconst praise = /\\b(thank(?:s| you)?|excellent|love|great|awesome|amazing|no action(?: needed)?)\\b/i.test(hay);\n\nlet category = 'Ambiguous';\nlet priority = 'Medium';\nlet inboxStatus = 'Classified';\nlet reason = 'No category keywords matched.';\n\nif (empty) {\n  reason = 'Empty body held for human triage before task upsert.';\n} else if (billing) {\n  category = 'Billing'; priority = 'High'; inboxStatus = 'Tasked'; reason = 'Billing keywords matched.';\n} else if (bug) {\n  category = 'Bug'; priority = 'High'; inboxStatus = 'Tasked'; reason = 'Bug keywords matched.';\n} else if (feature) {\n  category = 'Feature request'; priority = 'Medium'; inboxStatus = 'Tasked'; reason = 'Feature-request keywords matched.';\n} else if (praise) {\n  category = 'Praise'; priority = 'Low'; inboxStatus = 'Closed'; reason = 'Praise keywords matched.';\n}\n\nlet summary;\nif (empty) {\n  summary = 'Empty body / bounce-like sender; held for human triage before task upsert.';\n} else {\n  const cleaned = body.replace(/\\s+/g, ' ').trim();\n  const m = cleaned.match(/.*?[.!?](?:\\s|$)/);\n  summary = (m ? m[0] : cleaned).trim().slice(0, 180);\n}\n\nreturn {\n  id: item.id || null,\n  from,\n  subject,\n  body,\n  receivedAt,\n  channel: item.channel || 'mock-ingest',\n  approvalApproved: approval,\n  approvedBy: item.approval && item.approval.approvedBy || null,\n  category,\n  priority,\n  inboxStatus,\n  reason,\n  summary,\n  emptyBody: empty,\n};"
+      },
+      "id": "classify-summarize",
+      "name": "Classify & Summarize (stub)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [660, 360],
+      "notes": "Deterministic keyword stub. Same rules as src/feedback-ops.mjs. No LLM."
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "language": "javaScript",
+        "jsCode": "const j = $input.item.json;\nconst inboxDb = 'e7ef4cee56c14c42a2976b82980830a8';\nconst tasksDb = '9bc2938020014c3182bacca4f626bc3f';\nconst retriesDb = '6e7d1e89ed5a40c38a3a838647a22f4f';\n\nconst title = (c) => ({ title: [{ type: 'text', text: { content: String(c || '').slice(0, 2000) } }] });\nconst rich = (c) => ({ rich_text: [{ type: 'text', text: { content: String(c || '').slice(0, 2000) } }] });\nconst sel = (n) => ({ select: { name: n } });\nconst dateOnly = (v) => {\n  if (!v) return new Date().toISOString().slice(0, 10);\n  const d = new Date(v);\n  if (Number.isNaN(d.getTime())) {\n    const m = String(v).match(/\\d{4}-\\d{2}-\\d{2}/);\n    return m ? m[0] : new Date().toISOString().slice(0, 10);\n  }\n  return d.toISOString().slice(0, 10);\n};\n\nconst inbox = {\n  parent: { database_id: inboxDb },\n  properties: {\n    Subject: title(j.subject || '(no subject)'),\n    From: { email: j.from || null },\n    Category: sel(j.category),\n    Priority: sel(j.priority),\n    Status: sel(j.inboxStatus),\n    Summary: rich(j.summary),\n    Received: { date: { start: dateOnly(j.receivedAt) } },\n  },\n};\n\nconst createTask = j.category !== 'Ambiguous';\nlet task = null;\nif (createTask) {\n  const approved = j.approvalApproved === true;\n  const praise = j.category === 'Praise';\n  const status = praise ? 'Done' : approved ? 'Approved' : 'Waiting approval';\n  const needed = praise || approved ? false : true;\n  let taskTitle = j.subject || 'Triage feedback';\n  if (j.category === 'Bug' && /truncat/i.test(j.subject)) taskTitle = 'Fix CSV product-name truncation';\n  if (j.category === 'Feature request') taskTitle = 'Roadmap: portal feedback tag filters';\n  if (j.category === 'Billing') taskTitle = 'Issue credit memo for double setup fee';\n  if (j.category === 'Praise') taskTitle = 'Archive praise — Harbor Apps';\n\n  task = {\n    parent: { database_id: tasksDb },\n    properties: {\n      Task: title(taskTitle),\n      Status: sel(status),\n      'Approval needed': { checkbox: needed },\n      'Next action': rich(j.category === 'Billing'\n        ? 'Confirm credit memo issued; close after AP confirms.'\n        : j.category === 'Bug'\n          ? 'Engineering triage; draft ETA for the reporter.'\n          : j.category === 'Feature request'\n            ? 'Add to roadmap; soft acknowledge.'\n            : 'No reply needed; archive praise for CS metrics.'),\n      'Reply draft': rich('(see src/feedback-ops.mjs — mock draft, never sent)'),\n    },\n  };\n}\n\nreturn {\n  ...j,\n  notion: { inbox, task, retriesDb },\n  createTask,\n};"
+      },
+      "id": "build-notion-upsert",
+      "name": "Build Notion Upsert JSON",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 360],
+      "notes": "Builds Notion API JSON only. Does not call Notion."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "empty-or-ambiguous",
+              "leftValue": "={{ $json.category }}",
+              "rightValue": "Ambiguous",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "ambiguous-hold",
+      "name": "Empty / Ambiguous Hold",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [1140, 360]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "human-approved",
+              "leftValue": "={{ $json.approvalApproved }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "approval-gate",
+      "name": "Human Approval Send Gate",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [1380, 520]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "language": "javaScript",
+        "jsCode": "const j = $input.item.json;\nreturn {\n  ...j,\n  sendGate: {\n    approved: true,\n    sent: false,\n    blockedReason: 'Send skipped: mock mode — sent is always false even after human approval.',\n    channel: null,\n  },\n  sent: false,\n};"
+      },
+      "id": "approved-hold-send",
+      "name": "Approved — Hold Send (sent=false)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1620, 420],
+      "notes": "Even approved drafts never send in this mock."
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "language": "javaScript",
+        "jsCode": "const j = $input.item.json;\nconst praise = j.category === 'Praise';\nreturn {\n  ...j,\n  sendGate: {\n    approved: false,\n    sent: false,\n    blockedReason: praise\n      ? 'Send gate skipped: praise archived, no send required. Mock never sends.'\n      : 'Send gate blocked: Approval needed still checked. No email sent (by design).',\n    channel: null,\n  },\n  sent: false,\n};"
+      },
+      "id": "blocked-hold-send",
+      "name": "Blocked — Hold Send (sent=false)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1620, 640]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "language": "javaScript",
+        "jsCode": "const j = $input.item.json;\nconst retriesDb = (j.notion && j.notion.retriesDb) || '6e7d1e89ed5a40c38a3a838647a22f4f';\nconst title = (c) => ({ title: [{ type: 'text', text: { content: String(c || '').slice(0, 2000) } }] });\nconst rich = (c) => ({ rich_text: [{ type: 'text', text: { content: String(c || '').slice(0, 2000) } }] });\nconst dateOnly = (v) => {\n  if (!v) return new Date().toISOString().slice(0, 10);\n  const d = new Date(v);\n  return Number.isNaN(d.getTime()) ? String(v).slice(0, 10) : d.toISOString().slice(0, 10);\n};\n\nconst retries = [];\nif (j.emptyBody || j.category === 'Ambiguous') {\n  retries.push({\n    parent: { database_id: retriesDb },\n    properties: {\n      Event: title('Empty body — classify skipped'),\n      Stage: { select: { name: 'Classify' } },\n      Error: rich('Classifier returned empty-body hold; routed to human triage.'),\n      'Retry count': { number: 0 },\n      Resolved: { checkbox: false },\n      Occurred: { date: { start: dateOnly(j.receivedAt) } },\n    },\n  });\n}\n\nconst reason = j.sendGate && j.sendGate.blockedReason;\nif (reason) {\n  retries.push({\n    parent: { database_id: retriesDb },\n    properties: {\n      Event: title(j.sendGate.approved ? 'Send skipped (mock never sends)' : 'Send gate blocked (approval)'),\n      Stage: { select: { name: 'Send gate' } },\n      Error: rich(reason),\n      'Retry count': { number: 0 },\n      Resolved: { checkbox: true },\n      Occurred: { date: { start: dateOnly(j.receivedAt) } },\n    },\n  });\n}\n\nreturn {\n  ...j,\n  notion: { ...(j.notion || {}), retries },\n  sent: false,\n};"
+      },
+      "id": "retries-log",
+      "name": "Retries Log",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1860, 360],
+      "notes": "Writes retry/exception JSON only. No outbound calls."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.notion.com/v1/pages",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Notion-Version",
+              "value": "2022-06-28"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.notion.inbox }}",
+        "options": {}
+      },
+      "id": "notion-http-disabled",
+      "name": "Notion HTTP (disabled / unconnected)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1860, 80],
+      "disabled": true,
+      "notes": "Intentionally disabled and unconnected. No credentials. Mock never writes to Notion."
+    }
+  ],
+  "connections": {
+    "Mock Ingest": {
+      "main": [
+        [
+          {
+            "node": "Classify & Summarize (stub)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Classify & Summarize (stub)": {
+      "main": [
+        [
+          {
+            "node": "Build Notion Upsert JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Notion Upsert JSON": {
+      "main": [
+        [
+          {
+            "node": "Empty / Ambiguous Hold",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Empty / Ambiguous Hold": {
+      "main": [
+        [
+          {
+            "node": "Retries Log",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Human Approval Send Gate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Human Approval Send Gate": {
+      "main": [
+        [
+          {
+            "node": "Approved — Hold Send (sent=false)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Blocked — Hold Send (sent=false)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Approved — Hold Send (sent=false)": {
+      "main": [
+        [
+          {
+            "node": "Retries Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Blocked — Hold Send (sent=false)": {
+      "main": [
+        [
+          {
+            "node": "Retries Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {
+    "Mock Ingest": [
+      {
+        "json": {
+          "id": "fb-billing-001",
+          "channel": "mock-ingest",
+          "receivedAt": "2026-08-30",
+          "from": "ap@brightline-studio.example",
+          "subject": "Invoice #4821 double-charged setup fee",
+          "body": "Hello, our August invoice (#4821) billed the setup fee twice. Please issue a credit memo for the duplicate charge.\n\n— Brightline AP"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "versionId": "00000000-0000-4000-8000-feedbackops01",
+  "id": "feedback-ops-copilot-mock",
+  "tags": [
+    {
+      "name": "mock"
+    },
+    {
+      "name": "inactive"
+    }
+  ]
+}

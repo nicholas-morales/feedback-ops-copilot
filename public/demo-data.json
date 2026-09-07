@@ -1,0 +1,350 @@
+{
+  "product": "Feedback Ops Copilot",
+  "offer": {
+    "founding": "$500 / 48 hours",
+    "audit": "$199 same-day (credits toward $500 build)",
+    "notionOnly": "$250 Notion-only"
+  },
+  "notionDemo": "https://app.notion.com/p/3ceeb1cdb78b813bbf92f7f21591e482",
+  "repo": "https://github.com/nickerios101-cpu/feedback-ops-copilot",
+  "contract": "Mock only. Fictional *.example senders. sent is always false. Not Verde Comply.",
+  "samples": [
+    {
+      "id": "billing",
+      "file": "billing.example.json",
+      "label": "Billing · waiting",
+      "walkthrough": "High billing row + draft behind Approval needed",
+      "input": {
+        "id": "fb-billing-001",
+        "channel": "mock-ingest",
+        "receivedAt": "2026-08-30",
+        "from": "ap@brightline-studio.example",
+        "subject": "Invoice #4821 double-charged setup fee",
+        "body": "Hello, our August invoice (#4821) billed the setup fee twice. Please issue a credit memo for the duplicate charge.\n\n— Brightline AP"
+      },
+      "classification": {
+        "category": "Billing",
+        "priority": "High",
+        "inboxStatus": "Tasked",
+        "reason": "Billing keywords matched.",
+        "bounceLike": false
+      },
+      "summary": "Hello, our August invoice (#4821) billed the setup fee twice.",
+      "inbox": {
+        "Subject": "Invoice #4821 double-charged setup fee",
+        "From": "ap@brightline-studio.example",
+        "Category": "Billing",
+        "Priority": "High",
+        "Status": "Tasked",
+        "Summary": "Hello, our August invoice (#4821) billed the setup fee twice.",
+        "Received": "2026-08-30"
+      },
+      "task": {
+        "Task": "Issue credit memo for double setup fee",
+        "Status": "Waiting approval",
+        "Approval needed": true,
+        "Next action": "Confirm credit memo issued; close after AP confirms.",
+        "Reply draft": "Hi Brightline Studio AP team,\n\nThanks for flagging invoice #4821. We confirmed the setup fee was billed twice in error. A credit memo for $250 will post to your account within 1 business day, and you'll receive the PDF by email.\n\nIf anything still looks off after that, reply to this thread and we'll dig in.\n\n— Support (mock draft)"
+      },
+      "retries": [
+        {
+          "Event": "Send gate blocked (approval)",
+          "Stage": "Send gate",
+          "Error": "Send gate blocked: Approval needed still checked. No email sent (by design).",
+          "Retry count": 0,
+          "Resolved": true,
+          "Occurred": "2026-08-30"
+        }
+      ],
+      "sendGate": {
+        "approved": false,
+        "sent": false,
+        "blockedReason": "Send gate blocked: Approval needed still checked. No email sent (by design).",
+        "channel": null
+      },
+      "sent": false
+    },
+    {
+      "id": "approval-approved",
+      "file": "approval-approved.example.json",
+      "label": "Billing · approved",
+      "walkthrough": "Approved credit-memo draft — sent still false",
+      "input": {
+        "id": "fb-billing-001-approved",
+        "channel": "mock-ingest",
+        "receivedAt": "2026-08-30",
+        "from": "ap@brightline-studio.example",
+        "subject": "Invoice #4821 double-charged setup fee",
+        "body": "Hello, our August invoice (#4821) billed the setup fee twice. Please issue a credit memo for the duplicate charge.\n\n— Brightline AP",
+        "approval": {
+          "approved": true,
+          "approvedBy": "ops@example.test",
+          "approvedAt": "2026-08-30T16:00:00.000Z"
+        }
+      },
+      "classification": {
+        "category": "Billing",
+        "priority": "High",
+        "inboxStatus": "Tasked",
+        "reason": "Billing keywords matched.",
+        "bounceLike": false
+      },
+      "summary": "Hello, our August invoice (#4821) billed the setup fee twice.",
+      "inbox": {
+        "Subject": "Invoice #4821 double-charged setup fee",
+        "From": "ap@brightline-studio.example",
+        "Category": "Billing",
+        "Priority": "High",
+        "Status": "Tasked",
+        "Summary": "Hello, our August invoice (#4821) billed the setup fee twice.",
+        "Received": "2026-08-30"
+      },
+      "task": {
+        "Task": "Issue credit memo for double setup fee",
+        "Status": "Approved",
+        "Approval needed": false,
+        "Next action": "Confirm credit memo issued; close after AP confirms.",
+        "Reply draft": "Hi Brightline Studio AP team,\n\nThanks for flagging invoice #4821. We confirmed the setup fee was billed twice in error. A credit memo for $250 will post to your account within 1 business day, and you'll receive the PDF by email.\n\nIf anything still looks off after that, reply to this thread and we'll dig in.\n\n— Support (mock draft, human-approved)"
+      },
+      "retries": [
+        {
+          "Event": "Send skipped (mock never sends)",
+          "Stage": "Send gate",
+          "Error": "Send skipped: mock mode — sent is always false even after human approval.",
+          "Retry count": 0,
+          "Resolved": true,
+          "Occurred": "2026-08-30"
+        }
+      ],
+      "sendGate": {
+        "approved": true,
+        "sent": false,
+        "blockedReason": "Send skipped: mock mode — sent is always false even after human approval.",
+        "channel": null
+      },
+      "sent": false
+    },
+    {
+      "id": "bug",
+      "file": "bug.example.json",
+      "label": "Bug · high",
+      "walkthrough": "CSV truncation task waiting approval",
+      "input": {
+        "id": "fb-bug-001",
+        "channel": "mock-ingest",
+        "receivedAt": "2026-08-28",
+        "from": "jordan.lee@northstar-widgets.example",
+        "subject": "Export CSV truncates long product names",
+        "body": "Hi — when we export the product catalog to CSV, names longer than ~40 characters get cut off. We need the full strings in the next release. Repro: Catalog → Export CSV → open in Sheets.\n\nThanks,\nJordan"
+      },
+      "classification": {
+        "category": "Bug",
+        "priority": "High",
+        "inboxStatus": "Tasked",
+        "reason": "Bug keywords matched.",
+        "bounceLike": false
+      },
+      "summary": "Hi — when we export the product catalog to CSV, names longer than ~40 characters get cut off.",
+      "inbox": {
+        "Subject": "Export CSV truncates long product names",
+        "From": "jordan.lee@northstar-widgets.example",
+        "Category": "Bug",
+        "Priority": "High",
+        "Status": "Tasked",
+        "Summary": "Hi — when we export the product catalog to CSV, names longer than ~40 characters get cut off.",
+        "Received": "2026-08-28"
+      },
+      "task": {
+        "Task": "Fix CSV product-name truncation",
+        "Status": "Waiting approval",
+        "Approval needed": true,
+        "Next action": "Engineering triage; draft ETA for the reporter.",
+        "Reply draft": "Hi Jordan,\n\nThanks for the clear repro on Export CSV truncates long product names. We've logged this as a High bug. I'll follow up with an ETA once engineering confirms the fix window.\n\n— Support (mock draft, awaiting approval)"
+      },
+      "retries": [
+        {
+          "Event": "Send gate blocked (approval)",
+          "Stage": "Send gate",
+          "Error": "Send gate blocked: Approval needed still checked. No email sent (by design).",
+          "Retry count": 0,
+          "Resolved": true,
+          "Occurred": "2026-08-28"
+        }
+      ],
+      "sendGate": {
+        "approved": false,
+        "sent": false,
+        "blockedReason": "Send gate blocked: Approval needed still checked. No email sent (by design).",
+        "channel": null
+      },
+      "sent": false
+    },
+    {
+      "id": "empty-body",
+      "file": "empty-body.example.json",
+      "label": "Empty body · hold",
+      "walkthrough": "No Task created; Classify retry stays open",
+      "input": {
+        "id": "fb-empty-001",
+        "channel": "mock-ingest",
+        "receivedAt": "2026-09-01",
+        "from": "noreply@mailer-daemon.example",
+        "subject": "Re: (no subject)",
+        "body": ""
+      },
+      "classification": {
+        "category": "Ambiguous",
+        "priority": "Medium",
+        "inboxStatus": "Classified",
+        "reason": "Empty body held for human triage before task upsert.",
+        "bounceLike": true
+      },
+      "summary": "Empty body / bounce-like sender; held for human triage before task upsert.",
+      "inbox": {
+        "Subject": "Re: (no subject)",
+        "From": "noreply@mailer-daemon.example",
+        "Category": "Ambiguous",
+        "Priority": "Medium",
+        "Status": "Classified",
+        "Summary": "Empty body / bounce-like sender; held for human triage before task upsert.",
+        "Received": "2026-09-01"
+      },
+      "task": null,
+      "retries": [
+        {
+          "Event": "Empty body — classify skipped",
+          "Stage": "Classify",
+          "Error": "Classifier returned empty-body hold for noreply@mailer-daemon.example; routed to human triage.",
+          "Retry count": 0,
+          "Resolved": false,
+          "Occurred": "2026-09-01"
+        },
+        {
+          "Event": "Send gate blocked (approval)",
+          "Stage": "Send gate",
+          "Error": "Send gate blocked: ambiguous/empty-body item has no task. No email sent (by design).",
+          "Retry count": 0,
+          "Resolved": true,
+          "Occurred": "2026-09-01"
+        }
+      ],
+      "sendGate": {
+        "approved": false,
+        "sent": false,
+        "blockedReason": "Send gate blocked: ambiguous/empty-body item has no task. No email sent (by design).",
+        "channel": null
+      },
+      "sent": false
+    },
+    {
+      "id": "feature",
+      "file": "feature.example.json",
+      "label": "Feature request",
+      "walkthrough": "Roadmap task, medium priority",
+      "input": {
+        "id": "fb-feature-001",
+        "channel": "mock-ingest",
+        "receivedAt": "2026-08-29",
+        "from": "priya.nair@lumen-co.example",
+        "subject": "Can we filter feedback by tag in the portal?",
+        "body": "Would it be possible to add tag filters on the customer portal feedback list? Not urgent — just keeps coming up in customer calls.\n\n— Priya"
+      },
+      "classification": {
+        "category": "Feature request",
+        "priority": "Medium",
+        "inboxStatus": "Tasked",
+        "reason": "Feature-request keywords matched.",
+        "bounceLike": false
+      },
+      "summary": "Would it be possible to add tag filters on the customer portal feedback list?",
+      "inbox": {
+        "Subject": "Can we filter feedback by tag in the portal?",
+        "From": "priya.nair@lumen-co.example",
+        "Category": "Feature request",
+        "Priority": "Medium",
+        "Status": "Tasked",
+        "Summary": "Would it be possible to add tag filters on the customer portal feedback list?",
+        "Received": "2026-08-29"
+      },
+      "task": {
+        "Task": "Roadmap: portal feedback tag filters",
+        "Status": "Waiting approval",
+        "Approval needed": true,
+        "Next action": "Add to roadmap; soft acknowledge.",
+        "Reply draft": "Hi Priya,\n\nAppreciate the feature request. We've captured it and will prioritize against the next sprint. Happy to share timing once it's sequenced.\n\n— Support (mock draft)"
+      },
+      "retries": [
+        {
+          "Event": "Send gate blocked (approval)",
+          "Stage": "Send gate",
+          "Error": "Send gate blocked: Approval needed still checked. No email sent (by design).",
+          "Retry count": 0,
+          "Resolved": true,
+          "Occurred": "2026-08-29"
+        }
+      ],
+      "sendGate": {
+        "approved": false,
+        "sent": false,
+        "blockedReason": "Send gate blocked: Approval needed still checked. No email sent (by design).",
+        "channel": null
+      },
+      "sent": false
+    },
+    {
+      "id": "praise",
+      "file": "praise.example.json",
+      "label": "Praise · archive",
+      "walkthrough": "Archived, no send",
+      "input": {
+        "id": "fb-praise-001",
+        "channel": "mock-ingest",
+        "receivedAt": "2026-08-31",
+        "from": "sam.okoye@harbor-apps.example",
+        "subject": "Support turnaround was excellent",
+        "body": "Just a thanks note — you fixed our webhook retries the same day. No action needed.\n\n— Sam"
+      },
+      "classification": {
+        "category": "Praise",
+        "priority": "Low",
+        "inboxStatus": "Closed",
+        "reason": "Praise keywords matched.",
+        "bounceLike": false
+      },
+      "summary": "Just a thanks note — you fixed our webhook retries the same day.",
+      "inbox": {
+        "Subject": "Support turnaround was excellent",
+        "From": "sam.okoye@harbor-apps.example",
+        "Category": "Praise",
+        "Priority": "Low",
+        "Status": "Closed",
+        "Summary": "Just a thanks note — you fixed our webhook retries the same day.",
+        "Received": "2026-08-31"
+      },
+      "task": {
+        "Task": "Archive praise — Harbor Apps",
+        "Status": "Done",
+        "Approval needed": false,
+        "Next action": "No reply needed; archive praise for CS metrics.",
+        "Reply draft": "(optional thank-you already closed — no send)"
+      },
+      "retries": [
+        {
+          "Event": "Send gate blocked (approval)",
+          "Stage": "Send gate",
+          "Error": "Send gate skipped: praise archived, no send required. Mock never sends.",
+          "Retry count": 0,
+          "Resolved": true,
+          "Occurred": "2026-08-31"
+        }
+      ],
+      "sendGate": {
+        "approved": false,
+        "sent": false,
+        "blockedReason": "Send gate skipped: praise archived, no send required. Mock never sends.",
+        "channel": null
+      },
+      "sent": false
+    }
+  ]
+}

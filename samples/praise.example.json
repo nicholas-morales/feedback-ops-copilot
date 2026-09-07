@@ -1,0 +1,8 @@
+{
+  "id": "fb-praise-001",
+  "channel": "mock-ingest",
+  "receivedAt": "2026-08-31",
+  "from": "sam.okoye@harbor-apps.example",
+  "subject": "Support turnaround was excellent",
+  "body": "Just a thanks note — you fixed our webhook retries the same day. No action needed.\n\n— Sam"
+}
