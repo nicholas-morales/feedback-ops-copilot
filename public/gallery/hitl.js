@@ -86,6 +86,13 @@ export function seedGalleryBoard(samples) {
   return (samples ?? []).map(seedGalleryItem);
 }
 
+export function boardColumn(item) {
+  if (item?.sent) return 'sent';
+  if (item?.approved) return 'approved';
+  if (item?.task && item.task['Approval needed'] === false) return 'approved';
+  return 'waiting';
+}
+
 /**
  * Human approve. Draft is ready. sent stays false. No network.
  */
@@ -171,4 +178,12 @@ export function applyHumanSend(item) {
 export function isLiveChannel(item) {
   const channel = item?.sendGate?.channel ?? item?.demoWrite ?? null;
   return channel != null && channel !== 'demo-local';
+}
+
+export function canApprove(item) {
+  return Boolean(item?.task) && item.approved !== true && item.task['Approval needed'] === true;
+}
+
+export function canHumanSend(item) {
+  return Boolean(item?.task) && item.approved === true && item.sent !== true;
 }

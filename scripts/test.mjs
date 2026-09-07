@@ -19,6 +19,9 @@ import {
   NOTHING_AUTO_SENDS,
   applyApprove,
   applyHumanSend,
+  boardColumn,
+  canApprove,
+  canHumanSend,
   isLiveChannel,
   seedGalleryBoard,
   seedGalleryItem,
@@ -493,6 +496,19 @@ test('gallery routes, captions, and Parallel preview notes are present', async (
   const board = seedGalleryBoard(demo.samples);
   assert.ok(board.length >= 5);
   assert.ok(board.every((item) => item.sent === false));
+  const praise = board.find((item) => item.id === 'praise');
+  const empty = board.find((item) => item.id === 'empty-body');
+  const waiting = board.find((item) => item.id === 'billing');
+  assert.equal(boardColumn(praise), 'approved');
+  assert.equal(canApprove(praise), false);
+  assert.equal(canHumanSend(praise), false);
+  assert.equal(boardColumn(empty), 'waiting');
+  assert.equal(canApprove(empty), false);
+  assert.equal(canHumanSend(empty), false);
+  assert.equal(boardColumn(waiting), 'waiting');
+  assert.equal(canApprove(waiting), true);
+  assert.equal(canHumanSend(waiting), false);
+  assert.equal(boardColumn(applyHumanSend(applyApprove(waiting))), 'sent');
   assert.doesNotMatch(html, /sk-[A-Za-z0-9]{10,}|ntn_[A-Za-z0-9]+|secret_[A-Za-z0-9]+|AC[0-9a-f]{32}/);
   assert.doesNotMatch(js, /twilio|slack\.com\/api|api\.notion\.com/i);
 });

@@ -5,6 +5,9 @@ import {
   NOTHING_AUTO_SENDS,
   applyApprove,
   applyHumanSend,
+  boardColumn,
+  canApprove,
+  canHumanSend,
   seedGalleryBoard,
 } from './hitl.js';
 
@@ -99,9 +102,7 @@ function badge(value) {
 }
 
 function columnFor(item) {
-  if (item.sent) return 'sent';
-  if (item.approved) return 'approved';
-  return 'waiting';
+  return boardColumn(item);
 }
 
 function activeItem() {
@@ -163,7 +164,12 @@ function renderDetail(item) {
 
   if (!item || !body) return;
 
-  if (meta) meta.textContent = item.label || item.id;
+  if (meta) {
+    const col = boardColumn(item);
+    if (col === 'sent') meta.textContent = 'Human sent (demo)';
+    else if (col === 'approved') meta.textContent = 'Approved · unsent';
+    else meta.textContent = item.label || item.id;
+  }
 
   if (!item.task) {
     body.innerHTML = `<p class="empty-state">No Task created. Empty-body and Ambiguous items stay Classified until a human triages them.</p>
@@ -181,10 +187,10 @@ function renderDetail(item) {
   }
 
   if (approveBtn) {
-    approveBtn.disabled = !item.task || item.approved;
+    approveBtn.disabled = !canApprove(item);
   }
   if (sendBtn) {
-    sendBtn.disabled = !item.approved || item.sent || !item.task;
+    sendBtn.disabled = !canHumanSend(item);
   }
 }
 
