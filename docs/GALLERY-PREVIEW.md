@@ -24,7 +24,7 @@ Dark-first. Phone crop last. Use the **exact** captions in [GALLERY-CAPTIONS.md]
 6. **03 Autopilot** — `#autopilot-card` red **auto-sent**
 7. **03 Ritual** — `#ritual-card` green **approved 2m ago**
 8. **Captions** — `#captions` (or paste pack)
-9. **Phone 390px** — stacked 01/02/03, full-width gate buttons
+9. **Phone 390px** — stacked 01/02/03, full-width gate buttons, readable captions (no clipped emails or paste-pack overflow)
 
 ## HITL contract (do not break on camera)
 

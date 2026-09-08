@@ -2,7 +2,7 @@
 
 Use this on the redesigned buyer page before merging or deploying. Check every box only after inspecting the exact item. Fail the section if any row is wrong.
 
-**Branch:** `cursor/dark-first-royal-type-3f49`  
+**Branch:** `cursor/demo-optimize-nick-f52b`  
 **Pages:** `public/index.html` + `public/gallery/index.html` (`/gallery`, alias `/demo/gallery`)  
 **Theme:** **dark-first** default + `#theme-toggle` / `#theme-toggle-mobile`, persisted as `localStorage.fo-theme`
 
@@ -17,11 +17,11 @@ Use this on the redesigned buyer page before merging or deploying. Check every b
 - [ ] Readability: body ~18px / 1.7 leading; UI chrome ≥13px; muted text still contrast-safe
 - [ ] Header: brand + nav + theme toggle align; no wrapping collisions at 1280px
 - [ ] Hero: headline + lede + two CTAs; contract panel sits beside on desktop
-- [ ] Contract panel: Mock contract, `send disabled`, four facts, `$199 audit → $500 build`
+- [ ] Contract panel: Mock contract, `send disabled`, four facts, `$179–$199 first close` + Fiverr `$99 / $329 / $449`
 - [ ] Principles: three cards (01 / 02 / 03), even spacing, hover border only
 - [ ] Demo console: toolbar tabs, terracotta send-gate bar, two panels, no clipped copy
 - [ ] Inbox table: header row readable; active row tinted; badges remain distinct
-- [ ] Pricing: $500 featured card emphasized; $199 and $250 secondary
+- [ ] Pricing: $179–$199 first-close featured; Fiverr $99 and $329/$449 secondary
 - [ ] Proof + footer: three cards, disclaimer, OFFER.md + GitHub links
 - [ ] Dark theme: header, hero, contract, principles, demo, table, pricing, proof, footer all use dark tokens (no leftover white slabs)
 - [ ] Status colors (hot / warn / ok / info) remain distinguishable in both themes
@@ -69,8 +69,8 @@ Use this on the redesigned buyer page before merging or deploying. Check every b
 
 ## Content / commercial truth
 
-- [ ] Prices shown: **$500 / 48 hours**, **$199** same-day audit, **$250** Notion-only
-- [ ] Audit credits toward the $500 founding build
+- [ ] Prices shown: **$179–$199** first close, Fiverr **$99 / $329 / $449**
+- [ ] No stale $500 founding number on the live demo page
 - [ ] `sent === false` / send disabled / no Gmail / no live SMTP appear on the page
 - [ ] Empty body creates no Task — stated in contract panel and proven in the demo
 - [ ] Approved draft remains unsent — stated and proven
@@ -95,7 +95,7 @@ Use this on the redesigned buyer page before merging or deploying. Check every b
 - [ ] 02 exact caption; draft card + **Approve / Edit / Reject** + audit log; `sent` stays false
 - [ ] 03 exact caption; red **auto-sent** vs green **approved 2m ago**
 - [ ] Captions + links: verdelabs.cloud/work and feedback-ops-copilot.vercel.app
-- [ ] Phone ≤390px: stacked scenarios, full-width gate buttons
+- [ ] Phone ≤390px: stacked scenarios, full-width gate buttons, captions wrap without horizontal scroll, paste-pack titles stay readable
 - [ ] `/demo/gallery` reaches the same story
 - [ ] Parallel list in [docs/GALLERY-PREVIEW.md](./GALLERY-PREVIEW.md)
 
