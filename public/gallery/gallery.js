@@ -172,29 +172,50 @@ function onReset() {
   renderGate();
 }
 
-function renderCaptions() {
-  const list = document.getElementById('caption-list');
-  if (!list) return;
-  const rows = [
+function captionRows() {
+  return [
     ...SHIP_SCENARIOS.map((s) => ({ title: `${s.number} ${s.title}`, text: s.caption })),
     { title: 'Flow', text: FLOW_BADGE },
     { title: 'Badge', text: NOTHING_AUTO_SENDS },
     { title: 'Portfolio', text: PORTFOLIO_LINKS.work },
     { title: 'Demo', text: PORTFOLIO_LINKS.demo },
   ];
-  list.innerHTML = rows
-    .map((row) => `<li><strong>${escapeHtml(row.title)}</strong><span>${escapeHtml(row.text)}</span></li>`)
+}
+
+function renderCaptions() {
+  const list = document.getElementById('caption-list');
+  if (!list) return;
+  list.innerHTML = captionRows()
+    .map(
+      (row, i) => `<li>
+        <div class="caption-row">
+          <strong>${escapeHtml(row.title)}</strong>
+          <button class="btn btn-secondary btn-sm caption-copy" type="button" data-caption-index="${i}">Copy</button>
+        </div>
+        <p class="caption-body">${escapeHtml(row.text)}</p>
+      </li>`,
+    )
     .join('');
 }
 
-async function copyCaptions() {
+async function writeClipboard(text, okMessage) {
   const status = document.getElementById('copy-status');
   try {
-    await navigator.clipboard.writeText(captionsText());
-    if (status) status.textContent = 'Copied.';
+    await navigator.clipboard.writeText(text);
+    if (status) status.textContent = okMessage;
   } catch {
     if (status) status.textContent = 'Copy failed — select the list instead.';
   }
+}
+
+async function copyCaptions() {
+  await writeClipboard(captionsText(), 'Copied all captions.');
+}
+
+async function copyOneCaption(index) {
+  const row = captionRows()[index];
+  if (!row) return;
+  await writeClipboard(`${row.title} — ${row.text}`, `Copied ${row.title}.`);
 }
 
 function initMobileNav() {
@@ -238,6 +259,14 @@ function main() {
   document.getElementById('btn-reset')?.addEventListener('click', onReset);
   document.getElementById('copy-captions')?.addEventListener('click', () => {
     copyCaptions().catch(() => {});
+  });
+  document.getElementById('caption-list')?.addEventListener('click', (event) => {
+    const button = event.target instanceof Element ? event.target.closest('.caption-copy') : null;
+    if (!button) return;
+    const index = Number(button.getAttribute('data-caption-index'));
+    if (Number.isInteger(index)) {
+      copyOneCaption(index).catch(() => {});
+    }
   });
 }
 

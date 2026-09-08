@@ -8,7 +8,7 @@ This is Nick’s income-proof repo for Upwork / Contra. **Not Verde Comply.**
 
 **Live Notion demo (fictional data):** [Demo — Feedback Ops Copilot (mock)](https://app.notion.com/p/3ceeb1cdb78b813bbf92f7f21591e482)
 
-**Clickable buyer preview (public, no SSO):** https://feedback-ops-copilot.vercel.app — $500 / 48h walkthrough in [`public/`](./public/). Dark-first, royal/Anthropic typography, send stays off, not Verde.
+**Clickable buyer preview (public, no SSO):** https://feedback-ops-copilot.vercel.app — first-close $179–$199 and Fiverr $99 / $329 / $449 walkthrough in [`public/`](./public/). Dark-first, royal/Anthropic typography, send stays off, not Verde.
 
 **Portfolio gallery (no live writes):** [`/gallery`](./public/gallery/) · alias [`/demo/gallery`](./public/demo/gallery/). Three locked scenarios: chaos → Notion queue, draft + HITL gate, autopilot vs ritual. Captions: [docs/GALLERY-CAPTIONS.md](./docs/GALLERY-CAPTIONS.md). Preview notes: [docs/GALLERY-PREVIEW.md](./docs/GALLERY-PREVIEW.md).
 
